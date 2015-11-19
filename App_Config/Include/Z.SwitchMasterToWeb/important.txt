@@ -1,0 +1,9 @@
+Purpose: the SwitchMasterToWeb.config file simplifies the setup of Sitecore CD instances by removing any references to the Master database from the Sitecore configuration files.
+
+The SwitchMasterToWeb.config file should be used only on CD servers.
+Important: Include files are applied in alphabetical order. The include files in the root folder are applied before the include files in the subdirectories.
+The subdirectories are applied in alphabetical order. Therefore the SwitchMasterToWeb.config file cannot remove any references to the Master database 
+that are defined in include files that are applied later. In this situation, you must rename the SwitchMasterToWeb.config file or the folder that contains it, so that it is applied after 
+any other include files that contain references to the Master database.
+
+To enable the SwitchMasterToWeb.config file, rename it to have a ".config" extension.

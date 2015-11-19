@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Purpose: Sitecore.Marketing.Taxonomy.config patch for the content delivery server roles. -->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <taxonomy>
+      <cacheExpirationInSeconds>10</cacheExpirationInSeconds>
+      <repositories>
+        <itemTaxonomyRepository>
+          <param desc="databaseName">web</param>
+        </itemTaxonomyRepository>
+      </repositories>
+    </taxonomy>
+  </sitecore>
+</configuration>

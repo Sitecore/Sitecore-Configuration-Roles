@@ -1,0 +1,72 @@
+﻿<!--
+
+Purpose: This include file contains some experimental optimizations that can speed up publishing.
+
+Important: Review each of the comments in this file and consider if some of the optimizations should be commented out due to the specifics
+of your solution.
+
+Please consult your Sitecore partner before enabling this include file.
+Enabling this file without taking into account the specifics of your solution can have unexpected consequences.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      <!-- Enables indexing of cache keys as an experimental optimization to speed up publishing. -->
+      <setting name="Caching.CacheKeyIndexingEnabled.AccessResultCache">
+        <patch:attribute name="value">true</patch:attribute>
+      </setting>
+      <!-- Enables indexing of cache keys as an experimental optimization to speed up publishing. -->
+      <setting name="Caching.CacheKeyIndexingEnabled.ItemCache">
+        <patch:attribute name="value">true</patch:attribute>
+      </setting>
+      <!-- Enables indexing of cache keys as an experimental optimization to speed up publishing. -->
+      <setting name="Caching.CacheKeyIndexingEnabled.ItemPathsCache">
+        <patch:attribute name="value">true</patch:attribute>
+      </setting>
+      <!-- Disables performance counters as an experimental optimization to speed up publishing.
+           You should comment out this element if you need to use performance counters. -->
+      <setting name="Counters.Enabled">
+        <patch:attribute name="value">false</patch:attribute>
+      </setting>
+      <!-- Disables cache size limits as an experimental optimization to speed up publishing.
+           You should comment out this element if you are not running 64-bit systems, or if your servers do not have enough memory to cache
+           the data that is requested from the database. -->
+      <setting name="Caching.DisableCacheSizeLimits">
+        <patch:attribute name="value">true</patch:attribute>
+      </setting>
+      <!-- Disables Fast Query descendant lookups as an experimental optimization to speed up publishing.
+           You should comment out this element if you use Fast Query to perform descendant lookups. -->
+      <setting name="FastQueryDescendantsDisabled">
+        <patch:attribute name="value">true</patch:attribute>
+      </setting>
+      <!-- Disables incremental updates to the link database during publishing operations as an experimental optimization to speed up
+           publishing.
+           You should comment out this element if you use the LinkDatabase API on your content delivery instances. -->
+      <setting name="LinkDatabase.UpdateDuringPublish">
+        <patch:attribute name="value">false</patch:attribute>
+      </setting>
+      <!-- Disables rule item event handlers as an experimental optimization to speed up publishing.
+           This setting only affects the instance that runs the publishing operation.
+           You should comment out this element if there are rules in any of the following folders that must be executed during publishing:
+           /sitecore/system/Settings/Rules/Item Saved/Rules
+           /sitecore/system/Settings/Rules/Item Deleted/Rules
+           /sitecore/system/Settings/Rules/Version Removed/Rules -->
+      <setting name="Rules.ItemEventHandlers.RunDuringPublishing">
+        <patch:attribute name="value">false</patch:attribute>
+      </setting>
+      <!-- This setting is enabled as an experimental optimization to speed up publishing.
+           The following configuration limits the execution of rules by item event handlers in the core and master databases.
+           You should comment out this element if there are rules in any of the following folders that must be executed on the web database
+           or on any custom databases:
+           /sitecore/system/Settings/Rules/Item Saved/Rules
+           /sitecore/system/Settings/Rules/Item Deleted/Rules
+           /sitecore/system/Settings/Rules/Version Removed/Rules -->
+      <setting name="Rules.ItemEventHandlers.SupportedDatabases">
+        <patch:attribute name="value">core|master</patch:attribute>
+      </setting>
+    </settings>
+  </sitecore>
+</configuration>

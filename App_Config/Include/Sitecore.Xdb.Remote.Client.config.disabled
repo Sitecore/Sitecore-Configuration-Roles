@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file contains the configuration settings that let the reporting APIs communicate with a remote reporting server. This
+is useful in environments where the reporting SQL Server is located behind a firewall or where you want to use a separate reporting server.
+
+To enable this include file, rename it so that is has a ".config" extension and update the serviceUrl element with the host name of your
+reporting server.
+
+-->
+
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+
+    <aggregation>
+      <reportingStorageProviders>
+        <remote type="Sitecore.Analytics.Reporting.DefinitionData.RemoteWriteOnlyDefinitionsStorageProvider, Sitecore.Analytics" singleInstance="true" />
+      </reportingStorageProviders>
+    </aggregation>
+
+    <httpTransportFactory type="Sitecore.Analytics.Commons.ApiKeyHttpTransportFactory, Sitecore.Analytics" singleInstance="true">
+      <param desc="serviceUrl"></param>
+      <param desc="requireHttps" type="System.Boolean" factoryMethod="Parse" arg0="true" />
+      <param desc="connectionStringName">reporting.apikey</param>
+      <!-- The same header name must be defined in Sitecore.Xdb.Remote.Server.config for reporting.-->
+      <param desc="headerName">X-Reporting-Api-Key</param>
+      <param desc="minimalApiKeyLength">32</param>
+    </httpTransportFactory>
+
+    <reporting>
+      <remote enabled="true">
+        <proxyDataSource type="Sitecore.Analytics.Reporting.Datasources.Remote.RemoteReportDataSourceProxy, Sitecore.Analytics" />
+        <paths>
+          <Reporting>/~/v75/reporting/remotedatasourceproxy/</Reporting>
+          <DefinitionDeployment>/~/v75/reporting/masterdata/datadefinitionservice/</DefinitionDeployment>
+          <ReportingStorageManager>/~/v81/reporting/reportingstoragemanager/</ReportingStorageManager>
+        </paths>
+      </remote>
+    </reporting>
+
+    <marketingDefinitions>
+      <deploymentManagerTargetRepository>remote</deploymentManagerTargetRepository>
+      <sc.variable name="marketingDefinitions.deploymentManager.targetRepository">
+        <patch:attribute name="value">remote</patch:attribute>
+      </sc.variable>
+
+      <!--Enable remote definition repositories-->
+      <campaign>
+        <repositories>
+          <remote type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.CampaignRemoteDefinitionRepository, Sitecore.Analytics" singleInstance="true">
+            <param desc="httpTransport" ref="httpTransportFactory" />
+            <param desc="handler">/~/v80/marketingdefinitions/remote/campaign/</param>
+          </remote>
+        </repositories>
+      </campaign>
+
+      <goal>
+        <repositories>
+          <remote type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.GoalRemoteDefinitionRepository, Sitecore.Analytics" singleInstance="true">
+            <param desc="httpTransport" ref="httpTransportFactory" />
+            <param desc="handler">/~/v80/marketingdefinitions/remote/goal/</param>
+          </remote>
+        </repositories>
+      </goal>
+
+      <outcome>
+        <repositories>
+          <remote type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.OutcomeRemoteDefinitionRepository, Sitecore.Analytics" singleInstance="true">
+            <param desc="httpTransport" ref="httpTransportFactory" />
+            <param desc="handler">/~/v80/marketingdefinitions/remote/outcome/</param>
+          </remote>
+        </repositories>
+      </outcome>
+
+      <funnel>
+        <repositories>
+          <remote type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.FunnelRemoteDefinitionRepository, Sitecore.Analytics" singleInstance="true">
+            <param desc="httpTransport" ref="httpTransportFactory" />
+            <param desc="handler">/~/v80/marketingdefinitions/remote/funnel/</param>
+          </remote>
+        </repositories>
+      </funnel>
+      <!--End-->
+
+    </marketingDefinitions>
+
+    <taxonomy>
+      <deployHandler>
+        <patch:delete />
+      </deployHandler>
+
+      <deployHandler type="Sitecore.Analytics.Reporting.DefinitionData.Taxonomy.Deployment.HttpDeployHandler, Sitecore.Analytics" singleInstance="true">
+        <param desc="httpTransport" ref="httpTransportFactory"/>
+        <param desc="publishPath">/~/v80/publish/taxonomy/</param>
+      </deployHandler>
+    </taxonomy>
+  </sitecore>
+</configuration>

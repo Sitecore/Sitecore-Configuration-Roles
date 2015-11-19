@@ -1,0 +1,54 @@
+﻿<!--
+
+Purpose: This include file disables features that are not expected to be run on a dedicated publishing server.
+
+Please consult your Sitecore partner before enabling this include file. Enabling this file without taking into account the specifics of your
+solution can have unexpected consequences.
+
+Important: Include files are applied in alphabetical order. Therefore this include file cannot remove indexes that are defined by include
+files that are applied later. In that situation, you must rename this include file so that it is applied after any other include files that
+contain index definitions.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration>
+        <indexes>
+          <!-- Removes content search indexes. -->
+          <patch:delete />
+        </indexes>
+      </configuration>
+    </contentSearch>
+    <search>
+      <configuration>
+        <indexes>
+          <!-- Removes search indexes. -->
+          <patch:delete />
+        </indexes>
+      </configuration>
+    </search>
+    <settings>
+      <!-- Disables incremental index updates. -->
+      <setting name="Indexing.UpdateInterval">
+        <patch:attribute name="value">00:00:00</patch:attribute>
+      </setting>
+      <!-- Increases the publishing thread priority. -->
+      <setting name="Publishing.ThreadPriority">
+        <patch:attribute name="value">Highest</patch:attribute>
+      </setting>
+    </settings>
+    <hooks>
+      <!-- Disables memory monitoring to avoid the unnecessary overhead. -->
+      <hook type="Sitecore.Diagnostics.MemoryMonitorHook, Sitecore.Kernel">
+        <patch:delete />
+      </hook>
+    </hooks>
+    <scheduling>
+      <!-- Disables the execution of scheduled tasks. -->
+      <frequency>00:00:00</frequency>
+    </scheduling>
+  </sitecore>
+</configuration>

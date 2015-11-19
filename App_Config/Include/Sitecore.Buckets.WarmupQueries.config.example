@@ -1,0 +1,16 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <search>
+      <warmup>
+        <!-- Runs a query to retrieve all items under the home item -->
+        <query>-_template:adb6ca4f03ef4f47b9ac9ce2ba53ff97|+(_path:110d559fdea542ea9c1c8a5df7e70ef9)|+_latestversion:1|-_group:110d559fdea542ea9c1c8a5df7e70ef9*</query>
+        <!-- Runs a query to retrieve of the latest item versions in the content tree -->
+        <query>-_template:adb6ca4f03ef4f47b9ac9ce2ba53ff97|+_latestversion:1</query>
+        <!-- Runs a query to get all template fields that are too be displayed in the search results -->
+        <query>+_language:en|-_template:adb6ca4f03ef4f47b9ac9ce2ba53ff97|+(_path:3c1715fe6a134fcf845fde308ba9741d)|+(+is displayed in search results:1)|+_latestversion:1|-_group:3c1715fe6a134fcf845fde308ba9741d*</query>
+        <!-- Runs a query to get all items under the home node -->
+        <query>+(_path:110d559fdea542ea9c1c8a5df7e70ef9)|_content:*</query>
+      </warmup>
+    </search>
+  </sitecore>
+</configuration>

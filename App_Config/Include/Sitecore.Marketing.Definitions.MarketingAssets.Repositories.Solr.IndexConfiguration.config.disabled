@@ -1,0 +1,29 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <marketingDefinitions>
+      <indexConfigurations>
+        <solrIndexConfiguration ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration">
+          <fieldMap ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="_uniqueid" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.LuceneProvider.LuceneSearchFieldConfiguration, Sitecore.ContentSearch.LuceneProvider">
+                <analyzer type="Sitecore.ContentSearch.LuceneProvider.Analyzers.LowerCaseKeywordAnalyzer, Sitecore.ContentSearch.LuceneProvider" />
+              </field>
+              <field fieldName="marketing asset" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.LuceneProvider.LuceneSearchFieldConfiguration, Sitecore.ContentSearch.LuceneProvider">
+                <analyzer type="Sitecore.ContentSearch.LuceneProvider.Analyzers.LowerCaseKeywordAnalyzer, Sitecore.ContentSearch.LuceneProvider" />
+              </field>
+              <field fieldName="asset 1" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.LuceneProvider.LuceneSearchFieldConfiguration, Sitecore.ContentSearch.LuceneProvider">
+                <analyzer type="Sitecore.ContentSearch.LuceneProvider.Analyzers.LowerCaseKeywordAnalyzer, Sitecore.ContentSearch.LuceneProvider" />
+              </field>
+              <field fieldName="asset 2" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.LuceneProvider.LuceneSearchFieldConfiguration, Sitecore.ContentSearch.LuceneProvider">
+                <analyzer type="Sitecore.ContentSearch.LuceneProvider.Analyzers.LowerCaseKeywordAnalyzer, Sitecore.ContentSearch.LuceneProvider" />
+              </field>
+              <field fieldName="asset 3" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.LuceneProvider.LuceneSearchFieldConfiguration, Sitecore.ContentSearch.LuceneProvider">
+                <analyzer type="Sitecore.ContentSearch.LuceneProvider.Analyzers.LowerCaseKeywordAnalyzer, Sitecore.ContentSearch.LuceneProvider" />
+              </field>
+            </fieldNames>
+          </fieldMap>
+        </solrIndexConfiguration>
+      </indexConfigurations>
+    </marketingDefinitions>
+  </sitecore>
+</configuration>

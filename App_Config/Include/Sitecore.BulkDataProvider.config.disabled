@@ -1,0 +1,29 @@
+<!--
+
+Purpose: This include file enables the bulk data provider that replaces the standard data provider.
+The bulk data provider saves the data in the publish queue to the database in batches after the specified timeout period.
+
+Please consult your Sitecore partner before enabling this include file.
+Enabling this file without taking into account the specifics of your solution can have unexpected consequences.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>    
+    <settings>
+      <!--  BULK DATA FLUSH TIMEOUT IN MINUTES
+            Defines the timeout in minutes before performing a bulk data flush operation.
+            Default value: 2
+      -->
+      <setting name="BulkDataFlushTimeoutInMinute" value="2" />
+    </settings>
+    <dataProviders>
+      <main type="Sitecore.Data.$(database).$(database)DataProvider, Sitecore.Kernel">
+        <patch:attribute name="type">Sitecore.Data.$(database).$(database)BulkDataProvider, Sitecore.Kernel</patch:attribute>
+        <param resolve="true" type="Sitecore.Abstractions.BaseEventManager, Sitecore.Kernel"/>
+        <param resolve="true" type="Sitecore.Abstractions.BaseLog, Sitecore.Kernel"/>
+      </main>
+    </dataProviders>    
+  </sitecore>
+</configuration>

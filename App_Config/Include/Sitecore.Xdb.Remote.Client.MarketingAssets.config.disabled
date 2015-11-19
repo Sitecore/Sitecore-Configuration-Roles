@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file contains the configuration settings that let the reporting APIs communicate with a remote reporting server. This
+is useful in environments where the reporting SQL Server is located behind a firewall or where you want to use a separate reporting server.
+
+To enable this include file, rename it so that is has a ".config" extension and update the serviceUrl element with the host name of your
+reporting server.
+
+-->
+
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <marketingDefinitions>
+      
+      <asset>
+        <repositories>
+          <remote type="Sitecore.Marketing.Definitions.MarketingAssets.Data.Remote.MarketingAssetRemoteDefinitionRepository, Sitecore.Marketing.Definitions.MarketingAssets.Repositories" singleInstance="true">
+            <param desc="httpTransport" ref="httpTransportFactory" />
+            <param desc="handler">/~/v80/marketingdefinitions/remote/asset/</param>
+          </remote>
+        </repositories>
+      </asset>
+    </marketingDefinitions>
+  </sitecore>
+</configuration>

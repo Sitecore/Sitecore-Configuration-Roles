@@ -1,0 +1,36 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes>
+          <index id="sitecore_marketingdefinitions_master" type="Sitecore.ContentSearch.SolrProvider.SolrSearchIndex, Sitecore.ContentSearch.SolrProvider">
+            <param desc="name">$(id)</param>
+            <param desc="core">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="marketingDefinitionSearch/indexConfigurations/marketingDefinitionSolrIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/manual" />
+            </strategies>
+            <commitPolicyExecutor type="Sitecore.ContentSearch.CommitPolicyExecutor, Sitecore.ContentSearch">
+              <policies hint="list:AddCommitPolicy">
+                <policy type="Sitecore.ContentSearch.TimeIntervalCommitPolicy, Sitecore.ContentSearch" />
+              </policies>
+            </commitPolicyExecutor>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>{EC095310-746F-4C1B-A73F-941863564DC2}</Root>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>{09CF9489-8F71-4A16-B707-4F013D8CDEFB}</Root>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

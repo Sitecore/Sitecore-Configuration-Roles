@@ -1,0 +1,60 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+  <sitecore>
+    <!-- INDEXES -->
+    <listManagementSearch>
+      <indexConfigurations>
+        <listManagementCloudIndexConfiguration ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration">
+          <fieldMap ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="name" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="description" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="owner" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="recipients" boost="1f" type="System.Int32" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="source.includedlists" cloudFieldName="source_includedlists" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="source.excludedlists" cloudFieldName="source_excludedlists" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="source.predefinedsourcetype" cloudFieldName="source_predefinedsourcetype" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="source.predefinedparameters" cloudFieldName="source_predefinedparameters" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="source.usealldatabase" cloudFieldName="source_usealldatabase" boost="1f" type="System.Boolean" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="segmentation" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="__fullcreateddate"  cloudFieldName="fullcreateddate_2" boost="1f" type="System.DateTime" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="__fullupdateddate"  cloudFieldName="fullupdateddate_2" boost="1f" type="System.DateTime" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+            </fieldNames>
+          </fieldMap>
+          <fields hint="raw:AddComputedIndexField">
+            <field fieldName="source.includedlists" itemFieldName="IncludedSources">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.excludedlists" itemFieldName="ExcludedSources">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.predefinedsourcetype" itemFieldName="PredefinedSourceType">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.predefinedparameters" itemFieldName="PredefinedParameters">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.usealldatabase" itemFieldName="UseAllDatabase">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="segmentation" itemFieldName="Query">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="__fullcreateddate">Sitecore.ContentSearch.ComputedFields.CreatedDate,Sitecore.ContentSearch</field>
+            <field fieldName="__fullupdateddate">Sitecore.ContentSearch.ComputedFields.UpdatedDate,Sitecore.ContentSearch</field>
+          </fields>
+          <!-- INDEX DOCUMENT TO PROPERTY MAPPER
+               Maintains a collection of all the possible Convertors for the provider.
+          -->
+          <indexDocumentPropertyMapper type="Sitecore.ContentSearch.Azure.Query.DefaultCloudDocumentTypeMapper, Sitecore.ContentSearch.Azure">
+            <!-- OBJECT FACTORY
+                 Constructs search result objects based on the type that is passed in .GetQueryable<T>() and the rules defined in this section.
+            -->
+            <objectFactory type="Sitecore.ContentSearch.DefaultDocumentMapperObjectFactory, Sitecore.ContentSearch">
+              <rules hint="list:AddRule">
+                <rule fieldName="_template" comparison="Equal" value="c0caf6988a424b669eaf7d442b46f722" valueType="System.String, mscorlib"
+                      creationType="Sitecore.ListManagement.ContentSearch.Model.SegmentedList, Sitecore.ListManagement.ContentSearch"
+                      baseType="Sitecore.ListManagement.ContentSearch.Model.ContactList, Sitecore.ListManagement.ContentSearch"
+                      type="Sitecore.ContentSearch.DefaultDocumentMapperFactorySimpleRule, Sitecore.ContentSearch">
+                  <param desc="fieldName">$(fieldName)</param>
+                  <param desc="comparison">$(comparison)</param>
+                  <param desc="value">$(value)</param>
+                  <param desc="type">$(valueType)</param>
+                  <param desc="creationType">$(creationType)</param>
+                  <param desc="baseType">$(baseType)</param>
+                </rule>
+              </rules>
+            </objectFactory>
+          </indexDocumentPropertyMapper>
+        </listManagementCloudIndexConfiguration>
+      </indexConfigurations>
+    </listManagementSearch>
+  </sitecore>
+</configuration>

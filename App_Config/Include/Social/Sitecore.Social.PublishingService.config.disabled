@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+    
+Purpose: This include file configures the plugin to the Social Connected module that enables integration with Sitecore publishing service.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <events>
+      <event name="publish:itemProcessed">
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.ItemPublishedHandler, Sitecore.Social.Client">
+          <patch:delete />
+        </handler>
+      </event>
+      <event name="publishingservice:publishend">
+        <handler type="Sitecore.Social.Client.PublishingService.MessagePosting.Handlers.PublishingServicePublishEndHandler, Sitecore.Social.Client.PublishingService" method="UpdatePostingConfigurations" patch:after="*[last()]">
+          <!--
+            The batch size for querying the manifest results from the Publishing service into the Sitecore process. 
+           -->
+          <ManifestResultLoadBatchSize>600</ManifestResultLoadBatchSize>
+        </handler>
+      </event>
+    </events>
+  </sitecore>
+</configuration>

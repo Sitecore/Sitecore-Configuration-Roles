@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This configuration file disables the list locking mechanism of Sitecore List Manager.
+
+You should enable this file only if you understand and accept the implications 
+of disabling the list locking mechanism.
+
+Use cases:
+
+The list locking mechanism was intended to ensure that contact lists were 
+uploaded, indexed and completed before they were available for use, for 
+example as an email distribution list, or as a source for another contact list.
+It was also intended to ensure that lists could only be edited by one user at 
+a time to avoid any concurrency issues.
+
+Some Sitecore users may encounter scenarios where multiple changes to a list 
+may be required in short periods of time. For example, during email dispatches 
+where large numbers of list subscriptions or unsubscriptions happen at the 
+same time. In such scenarios, list locking may not be appropriate and 
+developers may prefer to disable this functionality.
+
+For consideration when disabling the list locking mechanism:
+
+IMPORTANT: Disabling list locking may lead to inconsistencies in the number of 
+contacts available in a contact list or an EXM dispatch, versus the number of 
+expected contacts, as the list locking mechanism will not be able to prevent 
+the premature usage of a contact list.
+
+If the list locking mechanism is disabled, a contact list will be available to 
+use in EXM immediately after import, even if most of the contacts have not yet 
+been processed. This may result in an email being sent to a smaller audience 
+than intended. In such scenarios, please check the list count in List Manager 
+before using the list in EXM, to ensure that the list count is as expected 
+before proceeding with an EXM dispatch.
+
+If the list locking mechanism is disabled, incomplete contact lists will be 
+available to use as sources for other lists. This may result in incomplete 
+child lists. In such scenarios, please check the list count of any source 
+lists, to ensure that the list count is as expected before proceeding with a 
+new list.
+
+If the list locking mechanism is disabled, incomplete contact lists will be
+editable by multiple users at the same time. This will result in lists that 
+may contain unexpected contacts, if list sources are being changed 
+concurrently while contact associations are being written and indexed. In such 
+scenarios, ensure that your list management processes and user groups are 
+aligned to take into account the potential impact of concurrent edits.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+
+    <!--  BYPASS LOCK REPOSITORY
+          Ignores all operations with locks.
+    -->
+    <lockRepository
+      patch:instead="lockRepository[@type='Sitecore.ListManagement.ContentSearch.Pipelines.Locking.IdTableLockRepository, Sitecore.ListManagement.ContentSearch']"
+      type="Sitecore.ListManagement.ContentSearch.Pipelines.Locking.BypassLockRepository, Sitecore.ListManagement.ContentSearch"
+      singleInstance="true" />
+
+    <!--  BYPASS USE REPOSITORY
+          Ignores all operations with 'in-use' locks.
+    -->
+    <useRepository
+      patch:instead="useRepository[@type='Sitecore.ListManagement.ContentSearch.Pipelines.Locking.IdTableLockRepository, Sitecore.ListManagement.ContentSearch']"
+      type="Sitecore.ListManagement.ContentSearch.Pipelines.Locking.BypassLockRepository, Sitecore.ListManagement.ContentSearch"
+      singleInstance="true" />
+  </sitecore>
+</configuration>

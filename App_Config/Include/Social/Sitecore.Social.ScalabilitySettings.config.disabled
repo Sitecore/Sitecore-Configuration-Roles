@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    
+Important: Before enabling this including file or changing any of the settings, read the Sitecore scaling documentation.
+
+Purpose: This include file configures the Social Connected features to work in a multi-instance environment.
+
+When this include file is enabled, the Social Connected scheduling agents are only run on the content management instance that is defined in the 
+Social.Scalability.ContentManagement.TasksExecutionInstance setting. The Social Connected remote events are also enabled by this include file.
+
+You must specify a value for the Social.Scalability.ContentManagement.TasksExecutionInstance setting before you start Sitecore.
+
+To enable this include file, rename it to have a ".config" extension.
+    
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      
+      <!--  SOCIAL - SCALABILITY - CONTENT MANAGEMENT - TASKS EXECUTION INSTANCE
+            The name of the Sitecore content management installation that performs Social tasks.
+            If this value is empty, Social tasks are not performed.
+            Default value: ""
+            To perform tasks into Azure environment it should be changed to "0"
+      -->
+      <setting name="Social.Scalability.ContentManagement.TasksExecutionInstance" value="" />
+
+      <!--  SOCIAL - SCALABILITY - CONTENT MANAGEMENT - TASKS EXECUTION MANAGER
+            The name of the class that performs logic of detecting the particular instance depending on environment.
+            Default value: "Sitecore.Social.Client.Tasks.Managers.DefaultInstanceExecutionManager, Sitecore.Social.Client"
+            For Azure environment it should be changed to "Sitecore.Social.Client.Tasks.Managers.AzureInstanceExecutionManager, Sitecore.Social.Client"
+      -->
+      <setting name="Social.Scalability.ContentManagement.InstanceExecutionManager" value="Sitecore.Social.Client.Tasks.Managers.DefaultInstanceExecutionManager, Sitecore.Social.Client" />
+
+      
+    </settings>
+
+    <events>
+      <event name="publish:end:remote">
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.PublishEndHandler, Sitecore.Social.Client" method="ClearDbMesageCache"/>
+      </event>     
+      
+      <event name="social:connector:user:created">
+        <!-- Raises the "social:connector:user:created:remote" event. -->
+        <handler type="Sitecore.Social.Client.Connector.Handlers.SocialConnectorUserCreatedHandler, Sitecore.Social.Client" method="OnSocialConnectorUserCreated"/>
+      </event>
+      
+      <!-- social:connector:user:created:remote(string userName)
+           Raised after a new Sitecore user has been created by the module on a remote Sitecore instance. -->
+      <event name="social:connector:user:created:remote">
+      </event>
+      
+      <event name="social:connector:user:loggedin">
+        <!-- Raises the "social:connector:user:loggedin:remote" event. -->
+        <handler type="Sitecore.Social.Client.Connector.Handlers.SocialConnectorUserLoggedInHandler, Sitecore.Social.Client" method="OnSocialConnectorUserLoggedIn"/>
+      </event>
+      
+      <!-- social:connector:user:loggedin:remote(SocialNetworkUserLoggedInEventArgs args)
+           Raised after a user has logged into a remote Sitecore instance from a social network. -->
+      <event name="social:connector:user:loggedin:remote">
+      </event>
+      
+      <event name="social:connector:user:socialprofileattached">
+        <!-- Throws the "social:connector:user:loggedin:remote" event. -->
+        <handler type="Sitecore.Social.Client.Connector.Handlers.SocialProfileAttachedHandler, Sitecore.Social.Client" method="OnSocialProfileAttached"/>
+      </event>     
+      
+      <!-- social:connector:user:socialprofileattached:remote(SocialProfileAttachedEventArgs args)
+           Raised after a new social profile has been attached to user on a remote Sitecore instance. -->
+      <event name="social:connector:user:socialprofileattached:remote">
+      </event>
+           
+      <event name="social:message:created">
+        <!-- Raises the "social:message:created:remote" event. -->
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.SocialMessageCreatedHandler, Sitecore.Social.Client" method="OnSocialMessageCreated"/>
+      </event>
+      
+      <!-- social:message:created:remote
+           Raised after a new social message has been created on a remote Sitecore instance. -->
+      <event name="social:message:created:remote">
+        <!-- Adds the appropriate message to cache. -->
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.MessagesByContainerCacheHandler, Sitecore.Social.Client" method="AddMessageToCache"/>
+      </event>
+      
+      <event name="social:message:deleted">
+        <!-- Raises the "social:message:deleted:remote" event. -->
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.SocialMessageDeletedHandler, Sitecore.Social.Client" method="OnSocialMessageDeleted"/>
+      </event>
+      
+      <!-- social:message:deleted:remote
+           Raised after a social message has been deleted from a remote Sitecore instance. -->
+      <event name="social:message:deleted:remote">
+        <!-- Removes the appropriate message from cache. -->
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.MessagesByContainerCacheHandler, Sitecore.Social.Client" method="RemoveMessageFromCache"/>
+      </event>
+      
+      <event name="social:message:updated">
+        <!-- Raises the "social:message:updated:remote" event. -->
+        <handler type="Sitecore.Social.Client.MessagePosting.Handlers.SocialMessageUpdatedHandler, Sitecore.Social.Client" method="OnSocialMessageUpdated"/>
+      </event>
+      
+      <!-- social:message:updated:remote
+           Raised after a social message has been updated on a remote Sitecore instance. -->
+      <event name="social:message:updated:remote">
+      </event>
+      
+    </events>
+  </sitecore>
+</configuration>
+

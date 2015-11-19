@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file configures the current server as a remote reporting server by enabling the reporting service that makes
+reporting data available to remote reporting clients.
+
+To enable this include file, rename it so that is has a ".config" extension.
+
+-->
+
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <customHandlers>
+      <handler trigger="/~/v75/reporting/remotedatasourceproxy" type="Sitecore.Analytics.Reporting.Datasources.Remote.RemoteReportDataSourceProxyHandler, Sitecore.Analytics" />
+      <handler trigger="/~/v75/reporting/masterdata/datadefinitionservice" type="Sitecore.Analytics.Reporting.DefinitionData.RemoteMasterDataDefinitionServiceHandler, Sitecore.Analytics" />
+      <handler trigger="/~/v81/reporting/reportingstoragemanager/" type="Sitecore.Analytics.Aggregation.History.Remoting.ReportingStorageManagerHandler, Sitecore.Analytics.Aggregation" />
+      <handler trigger="/~/v80/publish/taxonomy/" type="Sitecore.Analytics.Reporting.DefinitionData.Taxonomy.Deployment.TaxonomyDeployRequestHandler, Sitecore.Analytics" />
+
+      <!-- remote definition handlers to receive requests from remote repositories -->
+      <handler trigger="/~/v80/marketingdefinitions/remote/campaign" type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.CampaignRemoteDefinitionHandler, Sitecore.Analytics" />
+      <handler trigger="/~/v80/marketingdefinitions/remote/goal" type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.GoalRemoteDefinitionHandler, Sitecore.Analytics" />
+      <handler trigger="/~/v80/marketingdefinitions/remote/outcome" type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.OutcomeRemoteDefinitionHandler, Sitecore.Analytics" />
+      <handler trigger="/~/v80/marketingdefinitions/remote/funnel" type="Sitecore.Analytics.Reporting.DefinitionData.Marketing.Remote.FunnelRemoteDefinitionHandler, Sitecore.Analytics" />
+    </customHandlers>
+
+    <reporting>
+      <dataProvider type="Sitecore.Analytics.Reporting.ReportDataProvider, Sitecore.Analytics" singleInstance="true" cacheEnabled="false">
+        <patch:attribute name="type">Sitecore.Analytics.Reporting.ApiKeyReportDataProvider, Sitecore.Analytics</patch:attribute>
+        <!-- The same header name must be defined in Sitecore.Xdb.Remote.Client.config for CM instance.-->
+        <param desc="headerName">X-Reporting-Api-Key</param>
+        <param desc="connectionStringName">reporting.apikey</param>
+      </dataProvider>
+    </reporting>
+      
+    <taxonomy>
+      <sc.variable name="taxonomy.repository">
+        <patch:attribute name="value">rdbTaxonomyRepository</patch:attribute>
+      </sc.variable>
+    </taxonomy>
+
+    <marketingDefinitions>
+      <sc.variable name="marketingDefinitions.isReadOnly">
+        <patch:attribute name="value">true</patch:attribute>
+      </sc.variable>
+      <sc.variable name="marketingDefinitions.repository">
+        <patch:attribute name="value">rdb</patch:attribute>
+      </sc.variable>
+    </marketingDefinitions>
+  </sitecore>
+</configuration>

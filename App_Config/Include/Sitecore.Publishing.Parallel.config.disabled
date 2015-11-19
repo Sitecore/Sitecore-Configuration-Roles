@@ -1,0 +1,41 @@
+﻿<!--
+
+Purpose: This include file enables parallel publishing by replacing the standard ProcessQueue processor in the <publish> pipeline with a
+new ParallelProcessQueue processor.
+
+Please consult your Sitecore partner before enabling this include file.
+Enabling this file without taking into account the specifics of your solution can have unexpected consequences.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      <!-- This setting is changed from the default value to enable parallel processing of publishing candidates.
+           The value '4 ' is specified here as an example.
+           The optimal value for this setting depends on your solution and on the CPU capacity of the server that runs the publishing operations.
+
+           For example, if the system architecture leverages a dedicated publishing instance with plenty of CPU capacity, this setting can be
+           increased even further.
+           On the other hand, on solutions where publishing is run on an authoring server that is already running a high load, changing this
+           setting to a non-default value may cause system stability issues. 
+           We highly recommend that you perform publishing tests with the expected load before you change this setting in production environments.
+
+           Please remember that your database server's CPU and disk capacity may need to be adjusted to accommodate this setting.
+      -->
+      <setting name="Publishing.MaxDegreeOfParallelism">
+        <patch:attribute name="value">4</patch:attribute>
+      </setting>
+    </settings>
+    <pipelines>
+      <publish>
+        <!-- This processor performs parallel processing of publishing candidates.
+             The Publishing.MaxDegreeOfParallelism setting specifies how many concurrent operations can be run. -->
+        <processor type="Sitecore.Publishing.Pipelines.Publish.ProcessQueue, Sitecore.Kernel">
+          <patch:attribute name="type">Sitecore.Publishing.Pipelines.ParallelPublish.ParallelProcessQueue,Sitecore.Kernel</patch:attribute>
+        </processor>
+      </publish>
+    </pipelines>
+  </sitecore>
+</configuration>

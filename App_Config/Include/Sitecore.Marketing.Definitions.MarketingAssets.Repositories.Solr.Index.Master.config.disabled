@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    
+Purpose: This include file configures the SOLR index for the "master" database that is used by the Social Connected module to search for messages.
+
+You must enable this include file on Sitecore instances that use SOLR.
+You must disable this include file on content delivery instances in multi-instance environments.
+
+To enable this include file, rename it to have a ".config" extension.
+    
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes>
+          <index id="sitecore_marketing_asset_index_master" type="Sitecore.ContentSearch.SolrProvider.SolrSearchIndex, Sitecore.ContentSearch.SolrProvider">
+            <param desc="name">$(id)</param>
+            <param desc="core">$(id)</param>
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <strategies hint="list:AddStrategy">
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/syncMaster" />
+            </strategies>
+            <configuration ref="marketingDefinitions/indexConfigurations/solrIndexConfiguration" />
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>/sitecore/media library</Root>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

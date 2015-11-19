@@ -1,0 +1,15 @@
+<!--
+
+Purpose: This include file allows to enable switching providers mechanism for some managers.
+
+To enable this, rename this file so that it has a ".config" extension.
+-->
+
+<configuration>
+  <sitecore>
+    <services>
+      <!--To enable switching for ArchiveProviders please uncoment the following line:-->
+      <!--<register serviceType="Sitecore.Abstractions.BaseArchiveManager, Sitecore.Kernel" implementationType="Sitecore.Data.Archiving.SwitchingArchiveManager, Sitecore.Kernel" lifeTime="Singletone"/>-->
+    </services>
+  </sitecore>
+</configuration>

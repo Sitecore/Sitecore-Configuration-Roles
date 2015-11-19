@@ -1,0 +1,91 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+  <sitecore>
+    <!-- INDEXES -->
+    <marketingDefinitionSearch>
+      <indexConfigurations>
+        <marketingDefinitionSolrIndexConfiguration ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration">
+          <fieldMap ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="culture" returnType="text" settingType="Sitecore.ContentSearch.SolrProvider.SolrSearchFieldConfiguration, Sitecore.ContentSearch.SolrProvider" />
+              <field fieldName="classifications" indexType="UNTOKENIZED" returnType="string" settingType="Sitecore.ContentSearch.SolrProvider.SolrSearchFieldConfiguration, Sitecore.ContentSearch.SolrProvider" />
+              <field fieldName="startdate"  nullValue="0001-01-01T00:00:00Z" emptyString="0001-01-01T00:00:00Z" returnType="string" format="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+              <field fieldName="enddate"    nullValue="9999-12-31T23:59:59Z" emptyString="9999-12-31T23:59:59Z" returnType="string" format="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+            </fieldNames>
+          </fieldMap>
+
+          <documentOptions ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/documentOptions">
+            <fields hint="raw:AddComputedIndexField">
+              <field fieldName="createddate"                    returnType="datetime">Sitecore.ContentSearch.ComputedFields.CreatedDate,Sitecore.ContentSearch</field>
+              <field fieldName="lastmodifieddate"               returnType="datetime">Sitecore.ContentSearch.ComputedFields.UpdatedDate,Sitecore.ContentSearch</field>
+              <field fieldName="id"                             returnType="id">Sitecore.Marketing.Search.ComputedFields.IdIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="name" description="campaign name" returnType="text" fieldId="{0F47D1B4-BCB4-4F7F-9065-6ECB46AAB9A1}">Sitecore.Marketing.Search.ComputedFields.MappedIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="name" description="funnel name" returnType="text" fieldId="{27E43ED9-5E4E-4E8D-9F35-4FB443F8FB92}">Sitecore.Marketing.Search.ComputedFields.MappedIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="automationstateenrollmentlist"  returnType="guidCollection" fieldId="{1C534A2D-0B6D-4E89-8FCA-6289475A3A46}">Sitecore.Marketing.Search.ComputedFields.GuidMappedIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="createdby"                      returnType="string" fieldId="{5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}">Sitecore.Marketing.Search.ComputedFields.MappedIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="lastmodifiedby"                 returnType="string" fieldId="{BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}">Sitecore.Marketing.Search.ComputedFields.MappedIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="campaigngroupuri"               returnType="string" fieldId="{FFAEA943-DF50-4F11-94ED-4690418A7D96}">Sitecore.Marketing.Search.ComputedFields.TaxonUriIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="channeluri"                     returnType="string" fieldId="{4C1BF83B-06E2-4B07-AD16-0E65D95E356E}">Sitecore.Marketing.Search.ComputedFields.TaxonUriIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="marketingasseturi"              returnType="string" fieldId="{3C0EEC17-C74D-4921-9577-D41AEA11B6DB}">Sitecore.Marketing.Search.ComputedFields.TaxonUriIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="classifications"                returnType="string">Sitecore.Marketing.Search.ComputedFields.TaxonomicClassificationIndexField, Sitecore.Marketing.Search</field>
+              <field fieldName="sequence" returnType="stringCollection" fieldId="{01E123EC-6642-4AAE-AEE8-985D49ED1647}" stepStringConverterType="marketingDefinitions/funnel/stepStringConverter" stepTypeResolverType="marketingDefinitions/funnel/funnelStepTypeResolver">Sitecore.Marketing.Search.ComputedFields.SequenceMappedIndexField, Sitecore.Marketing.Search</field>
+            </fields>
+            <exclude hint="list:AddExcludedTemplate">
+              <FolderTemplateId>{A87A00B1-E6DB-45AB-8B54-636FEC3B5523}</FolderTemplateId>
+              <CampaignCategoryTemplateId>{56682FE6-9679-4B69-9589-60C99AA08BEC}</CampaignCategoryTemplateId>
+            </exclude>
+            <exclude hint="list:AddExcludedField">
+              <Sequence>{01E123EC-6642-4AAE-AEE8-985D49ED1647}</Sequence>
+            </exclude>
+          </documentOptions>
+          
+          <indexDocumentPropertyMapper type="Sitecore.ContentSearch.SolrProvider.Mapping.SolrDocumentPropertyMapper, Sitecore.ContentSearch.SolrProvider">
+            <objectFactory type="Sitecore.ContentSearch.DefaultDocumentMapperObjectFactory, Sitecore.ContentSearch">
+              <rules hint="list:AddRule">
+                <rule type="Sitecore.ContentSearch.DefaultDocumentMapperFactoryRule, Sitecore.ContentSearch"
+                      creationType="Sitecore.Marketing.Search.IndexedCampaign, Sitecore.Marketing.Search"
+                      baseType="Sitecore.Marketing.Definitions.ICampaignActivityDefinition, Sitecore.Marketing">
+                  <param desc="creationType">$(creationType)</param>
+                  <param desc="baseType">$(baseType)</param>
+                </rule>
+                <rule type="Sitecore.ContentSearch.DefaultDocumentMapperFactoryRule, Sitecore.ContentSearch"
+                      creationType="Sitecore.Marketing.Search.IndexedFunnel, Sitecore.Marketing.Search"
+                      baseType="Sitecore.Marketing.Definitions.Funnels.IFunnelDefinition, Sitecore.Marketing">
+                  <param desc="creationType">$(creationType)</param>
+                  <param desc="baseType">$(baseType)</param>
+                </rule>
+              </rules>
+            </objectFactory>
+          </indexDocumentPropertyMapper>
+          <indexFieldStorageValueFormatter ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/indexFieldStorageValueFormatter">
+            <converters hint="raw:AddConverter">
+              <converter handlesType="System.Nullable`1[[System.DateTime]]" typeConverter="Sitecore.ContentSearch.Converters.IndexFieldUTCDateTimeValueConverter, Sitecore.ContentSearch" />
+              <converter handlesType="Sitecore.Marketing.Taxonomy.Model.TaxonUri, Sitecore.Marketing.Taxonomy"
+                         typeConverter="Sitecore.Marketing.Search.TypeConverters.IndexFieldTaxonUriConverter, Sitecore.Marketing.Search" />
+              <converter handlesType="Sitecore.Marketing.Definitions.TaxonomicClassification, Sitecore.Marketing"
+                         typeConverter="Sitecore.Marketing.Search.TypeConverters.IndexFieldTaxonomicClassificationTypeConverter, Sitecore.Marketing.Search" />
+              <converter handlesType="Sitecore.Marketing.Definitions.Funnels.Step, Sitecore.Marketing"
+                         typeConverter="Sitecore.Marketing.Search.TypeConverters.IndexFieldSequenceStepConverter, Sitecore.Marketing.Search">
+                <param desc="stepStringConverter" type="Sitecore.Marketing.Search.TypeConverters.StepStringConverter, Sitecore.Marketing.Search" />
+              </converter>
+            </converters>
+          </indexFieldStorageValueFormatter>
+
+        </marketingDefinitionSolrIndexConfiguration>
+      </indexConfigurations>
+    </marketingDefinitionSearch>
+
+    <contentSearch>
+      <indexConfigurations>
+        <defaultSolrIndexConfiguration>
+          <fieldReaders>
+            <mapFieldByTypeName>
+              <fieldReader fieldTypeName="date|datetime" fieldReaderType="Sitecore.ContentSearch.FieldReaders.DateFieldReader, Sitecore.ContentSearch">
+               <patch:attribute name="fieldReaderType">Sitecore.Marketing.Search.FieldReaders.NullableDateFieldReader, Sitecore.Marketing.Search</patch:attribute>
+              </fieldReader>
+            </mapFieldByTypeName>
+          </fieldReaders>
+        </defaultSolrIndexConfiguration>
+      </indexConfigurations>
+    </contentSearch>
+  </sitecore>
+</configuration>

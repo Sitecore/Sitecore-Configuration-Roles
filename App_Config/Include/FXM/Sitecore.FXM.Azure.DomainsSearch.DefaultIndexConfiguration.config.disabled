@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Purpose: This include file specifies the default configuration of the Lucene search index.
+
+To disable this file, change its extension to ".disabled".
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <indexConfigurations>
+        <defaultFxmCloudIndexConfiguration type="Sitecore.ContentSearch.Azure.CloudIndexConfiguration, Sitecore.ContentSearch.Azure">
+
+          <documentOptions type="Sitecore.ContentSearch.Azure.CloudSearchDocumentBuilderOptions,Sitecore.ContentSearch.Azure">
+
+            <indexAllFields>false</indexAllFields>
+
+            <include hint="list:AddIncludedTemplate">
+              <domainMatcherTemplateId>{036DB470-1850-4848-A48A-0931F825B867}</domainMatcherTemplateId>
+            </include>
+
+            <include hint="list:AddIncludedField">
+              <fieldId>{B5E02AD9-D56F-4C41-A065-A133DB87BDEB}</fieldId>
+              <!-- display name -->
+            </include>
+
+            <fields hint="raw:AddComputedIndexField">
+              <field fieldName="urllink">Sitecore.ContentSearch.ComputedFields.UrlLink,Sitecore.ContentSearch</field>
+              <field fieldName="createdby">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.CreatedBy, Sitecore.FXM.Service</field>
+              <field fieldName="updatedby">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.UpdatedBy, Sitecore.FXM.Service</field>
+              <field fieldName="revision">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.Revision, Sitecore.FXM.Service</field>
+              <field fieldName="domainmatchrule">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.DomainMatcherRule, Sitecore.FXM.Service</field>
+            </fields>
+
+          </documentOptions>
+
+          <initializeOnAdd>true</initializeOnAdd>
+
+          <fieldMap type="Sitecore.ContentSearch.Azure.FieldMaps.CloudFieldMap, Sitecore.ContentSearch.Azure">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="_uniqueid" cloudFieldName="uniqueid_1" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="_database" cloudFieldName="database_1" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="urllink" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="createdby" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="updatedby" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="revision" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="domainmatchrule" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+            </fieldNames>
+          </fieldMap>
+
+          <!-- **** Inherited default configuration **** -->
+
+          <fieldReaders ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/fieldReaders" />
+          <indexFieldStorageValueFormatter ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/indexFieldStorageValueFormatter" />
+          <indexDocumentPropertyMapper ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/indexDocumentPropertyMapper" />
+          <documentBuilderType ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/documentBuilderType" />
+          <defaultSearchSecurityOption ref="contentSearch/indexConfigurations/defaultSearchSecurityOption" />
+          <cloudTypeMapper ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/cloudTypeMapper" />
+        </defaultFxmCloudIndexConfiguration>
+      </indexConfigurations>
+    </contentSearch>
+  </sitecore>
+</configuration>

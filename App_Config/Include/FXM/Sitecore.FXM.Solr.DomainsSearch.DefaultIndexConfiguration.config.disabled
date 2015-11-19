@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Purpose: This include file specifies the default configuration of the Solr search index.
+
+To enable this include file, rename it so that is has a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <indexConfigurations>
+        <defaultFxmSolrIndexConfiguration type="Sitecore.ContentSearch.SolrProvider.SolrIndexConfiguration, Sitecore.ContentSearch.SolrProvider">
+          
+          <documentOptions type="Sitecore.ContentSearch.SolrProvider.SolrDocumentBuilderOptions, Sitecore.ContentSearch.SolrProvider">
+
+            <indexAllFields>false</indexAllFields>
+
+            <include hint="list:AddIncludedTemplate">
+              <domainMatcherTemplateId>{036DB470-1850-4848-A48A-0931F825B867}</domainMatcherTemplateId>
+            </include>
+
+            <include hint="list:AddIncludedField">
+              <!-- display name -->
+              <fieldId>{B5E02AD9-D56F-4C41-A065-A133DB87BDEB}</fieldId>
+            </include>
+
+            <fields hint="raw:AddComputedIndexField">
+              <field fieldName="createdby" returnType="string">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.CreatedBy, Sitecore.FXM.Service</field>
+              <field fieldName="updatedby" returnType="string">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.UpdatedBy, Sitecore.FXM.Service</field>
+              <field fieldName="revision" returnType="string">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.Revision, Sitecore.FXM.Service</field>
+              <field fieldName="domainmatchrule" returnType="string">Sitecore.FXM.Service.Data.DomainMatchers.ContentSearch.ComputedFields.DomainMatcherRule, Sitecore.FXM.Service</field>
+            </fields>
+            
+          </documentOptions>
+          
+          <fieldMap ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <fieldType fieldName="createdby" returnType="string" />
+              <fieldType fieldName="updatedby" returnType="string" />
+              <fieldType fieldName="revision" returnType="string" />
+              <fieldType fieldName="domainmatchrule" returnType="string" />
+            </fieldNames>
+          </fieldMap>
+
+          <fieldReaders ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldReaders" />
+          <indexFieldStorageValueFormatter ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/indexFieldStorageValueFormatter" />
+          <indexDocumentPropertyMapper ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/indexDocumentPropertyMapper" />
+          <documentBuilderType ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/documentBuilderType" />
+
+        </defaultFxmSolrIndexConfiguration>
+      </indexConfigurations>
+    </contentSearch>
+  </sitecore>
+</configuration>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Purpose: This include file specifies the configuration of the Solr search index for the master database.
+
+To enable this include file, rename it so that is has a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <index id="sitecore_fxm_master_index" type="Sitecore.ContentSearch.SolrProvider.SolrSearchIndex, Sitecore.ContentSearch.SolrProvider">
+            <param desc="name">$(id)</param>
+            <param desc="core">$(id)</param>
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultFxmSolrIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/syncMaster" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>/sitecore/system/Marketing Control Panel/fxm/</Root>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

@@ -1,0 +1,19 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <marketingDefinitions>
+      <indexConfigurations>
+        <cloudIndexConfiguration ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration">
+          <fieldMap ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="_uniqueid"          cloudFieldName="uniqueid_1"      boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="marketing asset"    cloudFieldName="marketing_asset" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="asset 1"            cloudFieldName="asset_1"         boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="asset 2"            cloudFieldName="asset_2"         boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+              <field fieldName="asset 3"            cloudFieldName="asset_3"         boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+            </fieldNames>
+          </fieldMap>
+        </cloudIndexConfiguration>
+      </indexConfigurations>
+    </marketingDefinitions>
+  </sitecore>
+</configuration>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+  Purpose: This include file simplifies the setup of Sitecore CD instances by removing any references to the Master database from Sitecore configuration files.
+
+  This include file should be used only on CD servers. 
+
+  Important: Include files are applied in alphabetical order. The include files in root folder are applied before the include files in the subdirectories.
+  The subdirectories are applied in alphabetical order. Therefore this include file cannot remove any references to the Master database 
+  that are defined in include files that are applied later. In this situation, you must rename this include file so that it is applied after 
+  any other include files that contain references to "master" database.
+
+  To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+  <sitecore>
+    <settings>
+      <setting name="Analytics.DefaultDefinitionDatabase" set:value="web"/>
+      <setting name="ExperienceAnalytics.Api.MasterDatabase" value="web" patch:instead="setting[@name='ExperienceAnalytics.Api.MasterDatabase']"/>
+      <setting name="ListManagement.Database" value="web" patch:instead="setting[@name='ListManagement.Database']"/>
+      <setting name="Social.Messages.SearchIndex.Master" value="social_messages_web" patch:instead="setting[@name='Social.Messages.SearchIndex.Master']"/>
+    </settings>
+    <sites>
+      <site name="shell" set:content="web" />
+      <site name="modules_shell" set:content="web" />
+      <site name="testing">
+        <patch:delete />
+      </site>
+    </sites>
+    <IDTable>
+      <param connectionStringName="master" set:connectionStringName="web" />
+    </IDTable>
+    <databases>
+      <database id="master">
+        <patch:delete />
+      </database>
+    </databases>
+    <search>
+      <configuration>
+        <indexes>
+          <index>
+            <locations>
+              <master>
+                <patch:delete />
+              </master>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </search>
+    <scheduling>
+      <agent type="Sitecore.Tasks.CleanupFDAObsoleteMediaData">
+        <databases hint="raw:AddDatabase">
+          <database name="master">
+            <patch:delete />
+          </database>
+        </databases>
+      </agent>
+      <agent type="Sitecore.Tasks.PublishAgent">
+        <patch:delete/>
+      </agent>
+      <agent type="Sitecore.ContentSearch.Tasks.Optimize">
+        <indexes hint="list">
+          <index>
+            sitecore_master_index<patch:delete/>
+          </index>
+        </indexes>
+      </agent>
+      <agent type="Sitecore.Analytics.Tasks.EmailReportsTask, Sitecore.Analytics">
+        <patch:delete />
+      </agent>
+      <agent type="Sitecore.Analytics.Tasks.SubscriptionTask, Sitecore.Analytics">
+        <patch:delete />
+      </agent>
+    </scheduling>
+    <contentSearch>
+      <configuration>
+        <indexes>
+          <index id="sitecore_master_index">
+            <patch:delete />
+          </index>
+          <index id="sitecore_marketing_asset_index_master">
+            <patch:delete/>
+          </index>
+          <index id="sitecore_testing_index">
+            <patch:delete/>
+          </index>
+          <index id="sitecore_suggested_test_index">
+            <patch:delete/>
+          </index>
+          <index id="sitecore_fxm_master_index">
+            <patch:delete />
+          </index>
+          <index id="social_messages_master">
+            <patch:delete/>
+          </index>
+        </indexes>
+      </configuration>
+      <indexConfigurations>
+        <indexUpdateStrategies>
+          <syncMaster>
+            <patch:delete />
+          </syncMaster>
+          <intervalAsyncMaster>
+            <patch:delete />
+          </intervalAsyncMaster>
+        </indexUpdateStrategies>
+      </indexConfigurations>
+    </contentSearch>
+    <taxonomy>
+      <repositories>
+        <itemTaxonomyRepository>
+          <param desc="databaseName">web</param>
+        </itemTaxonomyRepository>
+      </repositories>
+    </taxonomy>
+    <reporting>
+      <dataProvider>
+        <datasources>
+          <add key="collection">
+            <FiltersFactory>
+              <param desc="definitionDatabaseName">web</param>
+            </FiltersFactory>
+          </add>
+          <add key="reporting">
+            <FiltersFactory>
+              <param desc="definitionDatabaseName">web</param>
+            </FiltersFactory>
+          </add>
+        </datasources>
+      </dataProvider>
+    </reporting>
+    <marketingDefinitions>
+      <campaign>
+        <repositories>
+          <item>
+            <param desc="databaseName">web</param>
+          </item>
+        </repositories>
+      </campaign>
+      <asset>
+        <repositories>
+          <item>
+            <param desc="databaseName">web</param>
+            <param desc="indexName">sitecore_marketing_asset_index_web</param>
+          </item>
+        </repositories>
+      </asset>
+      <goal>
+        <repositories>
+          <item>
+            <param desc="databaseName">web</param>
+          </item>
+        </repositories>
+      </goal>
+      <outcome>
+        <repositories>
+          <item>
+            <param desc="databaseName">web</param>
+          </item>
+        </repositories>
+      </outcome>
+    </marketingDefinitions>
+    <ruleEngine>
+      <param desc="ruleDatabaseName">web</param>
+    </ruleEngine>
+    <hooks>
+      <hook type="Sitecore.Marketing.Taxonomy.Hooks.DeployInitializer, Sitecore.Marketing.Taxonomy">
+        <patch:delete />
+      </hook>
+    </hooks>
+  </sitecore>
+</configuration>

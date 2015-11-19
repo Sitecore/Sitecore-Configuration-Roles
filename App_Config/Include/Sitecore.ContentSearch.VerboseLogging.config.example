@@ -1,0 +1,18 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      <!--  VERBOSE LOGGING
+            This feature is designed to facilitate search index configuration and provide the necessary insight
+            in troubleshooting scenarios. For example, if a particular item is not getting indexed,
+            the VerboseLogger can provide more context and help you to figure out the problem.
+
+            It is important that you only enable the VerboseLogger component in special circumstances
+            and never run it for long periods in a production environment.
+            Otherwise, this would result in an extremely large log file, which may have performance implications.
+      -->
+      <setting name="ContentSearch.VerboseLogging" value="true" />
+    </settings>
+  </sitecore>
+</configuration>
+
+

@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <index id="sitecore_analytics_index" type="Sitecore.ContentSearch.Azure.CloudSearchProviderIndex, Sitecore.ContentSearch.Azure">
+            <param desc="name">$(id)</param>
+            <param desc="connectionStringName">cloud.search</param>
+            <param desc="totalParallelServices">5</param>
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <param desc="group">experience</param>
+            <configuration ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration">
+
+              <fieldMap ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/fieldMap">
+
+                <fieldNames hint="raw:AddFieldByFieldName">
+                  <field fieldName="address.country"                        cloudFieldName="address_country" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.stateprovince"                  cloudFieldName="address_stateprovince" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.city"                           cloudFieldName="address_city" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.postalcode"                     cloudFieldName="address_postalcode" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="browser.browsermajorname"               cloudFieldName="browser_browsermajorname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="browser.browserminorname"               cloudFieldName="browser_browserminorname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="browser.browserversion"                 cloudFieldName="browser_browserversion" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.gender"                         cloudFieldName="contact_gender" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.country"       cloudFieldName="contact_preferredaddress_country" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.stateprovince" cloudFieldName="contact_preferredaddress_stateprovince" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.city"          cloudFieldName="contact_preferredaddress_city" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.postalcode"    cloudFieldName="contact_preferredaddress_postalcode" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="os.name"                                cloudFieldName="os_name" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="os.majorversion"                        cloudFieldName="os_majorversion" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="os.minorversion"                        cloudFieldName="os_minorversion" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="visitpage.url"                          cloudFieldName="visitpage_url" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.areacode"                         cloudFieldName="whois_areacode" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.city"                             cloudFieldName="whois_city" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.country"                          cloudFieldName="whois_country" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.metrocode"                        cloudFieldName="whois_metrocode" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.postalcode"                       cloudFieldName="whois_postalcode" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.region"                           cloudFieldName="whois_region" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.ip"                               cloudFieldName="whois_ip" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+
+                  <field fieldName="address.streetline1"                    cloudFieldName="address_streetline1" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.streetline2"                    cloudFieldName="address_streetline2" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.streetline3"                    cloudFieldName="address_streetline3" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="address.streetline4"                    cloudFieldName="address_streetline4" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.externaluser"                   cloudFieldName="contact_externaluser" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.identificationlevel"            cloudFieldName="contact_identificationlevel" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.integrationlabel"               cloudFieldName="contact_integrationlabel" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredEmail"                 cloudFieldName="contact_preferredemail" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredAddressKey"            cloudFieldName="contact_preferredaddresskey" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.firstname"                      cloudFieldName="contact_firstname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.middlename"                     cloudFieldName="contact_middlename" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.surname"                        cloudFieldName="contact_surname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.title"                          cloudFieldName="contact_title" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.suffix"                         cloudFieldName="contact_suffix" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.nickname"                       cloudFieldName="contact_nickname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.jobtitle"                       cloudFieldName="contact_jobtitle" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.streetline1"   cloudFieldName="contact_preferredaddress_streetline1" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.streetline2"   cloudFieldName="contact_preferredaddress_streetline2" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.streetline3"   cloudFieldName="contact_preferredaddress_streetline3" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.preferredaddress.streetline4"   cloudFieldName="contact_preferredaddress_streetline4" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="contact.latestvisitdate"                cloudFieldName="contact_latestvisitdate" boost="1f" type="System.DateTime" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+
+                  <field fieldName="visit.startdatetime"                    cloudFieldName="visit_startdatetime" boost="1f" type="System.DateTime" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="visit.enddatetime"                      cloudFieldName="visit_enddatetime" boost="1f" type="System.DateTime" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="visit.referrer"                         cloudFieldName="visit_referrer" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="visit.referringsite"                    cloudFieldName="visit_referringsite" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.businessname"                     cloudFieldName="whois_businessname" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <field fieldName="whois.isp"                              cloudFieldName="whois_isp" boost="1f" type="System.String" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                </fieldNames>
+
+                <typeMatches hint="raw:AddTypeMatch">
+                  <typeMatch type="System.String"   boost="1f" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <typeMatch type="System.Guid"     boost="1f" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <typeMatch type="System.DateTime" boost="1f" format="yyyy-MM-ddTHH:mm:ss.fffZ" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <typeMatch type="System.Int32"    boost="1f" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <typeMatch type="System.Collections.Generic.List`1[System.String]" boost="1f" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                  <typeMatch type="System.String[]" boost="1f" settingType="Sitecore.ContentSearch.Azure.CloudSearchFieldConfiguration, Sitecore.ContentSearch.Azure" />
+                </typeMatches>
+
+              </fieldMap>
+
+              <documentOptions ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/documentOptions">
+                <fields hint="raw:AddComputedIndexField">
+                  <field fieldName="Contact.FullName" type="Sitecore.ContentSearch.ComputedFields.CompositeTextField, Sitecore.ContentSearch" matchField="type" matchValue="contact" separator=" ">
+                    <part>Contact.Title</part>
+                    <part>Contact.FirstName</part>
+                    <part>Contact.MiddleName</part>
+                    <part>Contact.Surname</part>
+                    <part>Contact.Suffix</part>
+                  </field>
+                </fields>
+              </documentOptions>
+
+              <fieldReaders ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/fieldReaders">
+                <fieldNames hint="raw:AddFieldReaderByType">
+                  <fieldReader fieldType="System.Byte[]"                                               fieldReaderType="Sitecore.ContentSearch.Analytics.FieldReaders.ByteArrayFieldReader, Sitecore.ContentSearch.Analytics"/>
+                  <fieldReader fieldType="Sitecore.Analytics.Model.UrlData, Sitecore.Analytics.Model"  fieldReaderType="Sitecore.ContentSearch.Analytics.FieldReaders.ToStringFieldReader, Sitecore.ContentSearch.Analytics"/>
+                </fieldNames>
+              </fieldReaders>
+
+              <indexFieldStorageValueFormatter ref="contentSearch/indexConfigurations/defaultCloudIndexConfiguration/indexFieldStorageValueFormatter">
+                <converters hint="raw:AddConverter">
+                  <converter handlesType="System.Byte[]"                                                                  typeConverter="Sitecore.ContentSearch.Analytics.Converters.IndexFieldByteArrayValueConverter, Sitecore.ContentSearch.Analytics" />
+                  <converter handlesType="Sitecore.Analytics.Model.UrlData, Sitecore.Analytics.Model"                     typeConverter="Sitecore.ContentSearch.Analytics.Converters.IndexFieldUrlDataValueConverter, Sitecore.ContentSearch.Analytics" />
+                  <converter handlesType="Sitecore.Analytics.Model.ContactIdentificationLevel, Sitecore.Analytics.Model"  typeConverter="Sitecore.ContentSearch.Analytics.Converters.IndexFieldContactIdentificationLevelValueConverter, Sitecore.ContentSearch.Analytics" />
+                </converters>
+              </indexFieldStorageValueFormatter>
+
+            </configuration>
+            <schemaBuilder ref="contentSearch/searchServiceSchemaBuilder" />
+            <searchService type="Sitecore.ContentSearch.Azure.Http.CompositeSearchService, Sitecore.ContentSearch.Azure"/>
+            <strategies hint="list:AddStrategy">
+              <timed type="Sitecore.ContentSearch.Maintenance.Strategies.TimedIndexRefreshStrategy, Sitecore.ContentSearch">
+                <param desc="interval">00:01:00</param>
+              </timed>
+            </strategies>
+            <commitPolicyExecutor type="Sitecore.ContentSearch.CommitPolicyExecutor, Sitecore.ContentSearch">
+              <policies hint="list:AddCommitPolicy">
+                <policy type="Sitecore.ContentSearch.TimeIntervalCommitPolicy, Sitecore.ContentSearch" />
+              </policies>
+            </commitPolicyExecutor>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Visit Crawler</CrawlerName>
+                <ObservableName>VisitAggregationObservable</ObservableName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitPageCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Visit Page Crawler</CrawlerName>
+                <ObservableName>VisitPageAggregationObservable</ObservableName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitPageEventCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Visit Page Event Crawler</CrawlerName>
+                <ObservableName>VisitPageEventAggregationObservable</ObservableName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsContactCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Contact Crawler</CrawlerName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>ContactAggregationObservable</observable>
+                  <observable>ContactChangeObservable</observable>
+                </observables>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsContactTagCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Contact Tag Crawler</CrawlerName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>ContactTagAggregationObservable</observable>
+                  <observable>ContactTagChangeObservable</observable>
+                </observables>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsAddressCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Lucene Address Tag Crawler</CrawlerName>
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>False</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>AddressAggregationObservable</observable>
+                  <observable>AddressChangeObservable</observable>
+                </observables>
+              </crawler>
+            </locations>
+            <commitPolicyExecutor type="Sitecore.ContentSearch.CommitPolicyExecutor, Sitecore.ContentSearch">
+              <policies hint="list:AddCommitPolicy">
+                <policy type="Sitecore.ContentSearch.ModificationCountCommitPolicy, Sitecore.ContentSearch">
+                  <Limit>1000</Limit>
+                </policy>
+              </policies>
+            </commitPolicyExecutor>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

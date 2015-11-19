@@ -1,0 +1,19 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+  <sitecore>
+    <settings>
+      <!--  PIPELINE PROFILING ENABLED
+            Specifies whether or not pipeline profiling is enabled. When it is enabled, a profiling snapshot is available 
+            at /sitecore/admin/pipelines.aspx.
+            Default value: true
+      -->
+      <setting name="Pipelines.Profiling.Enabled" set:value="true" />
+
+      <!--  PIPELINE PROFILING MEASURE CPU TIME
+            Specifies whether or not the pipeline profiler measures CPU usage. Measuring CPU usage adds a performance overhead
+            to the pipeline but provides additional information about the behavior of the processors.
+            Default value: false
+      -->
+      <setting name="Pipelines.Profiling.MeasureCpuTime" set:value="false" />
+    </settings>
+  </sitecore>
+</configuration>

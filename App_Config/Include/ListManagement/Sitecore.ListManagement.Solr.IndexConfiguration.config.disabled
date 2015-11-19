@@ -1,0 +1,66 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+  <sitecore>
+    <!-- INDEXES -->
+    <listManagementSearch>
+      <indexConfigurations>
+        <listManagementSolrIndexConfiguration ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration">
+          <fieldMap ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldMap">
+            <fieldNames hint="raw:AddFieldByFieldName">
+              <field fieldName="name" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" />
+              <field fieldName="description" returnType="text" stored="true" indexed="true" termVectors="false" boost="1f" />
+              <field fieldName="owner" returnType="string" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.String" />
+              <field fieldName="recipients" returnType="int" storageType="YES" indexType="TOKENIZED" vectorType="NO" boost="1f" type="System.Int32"/>
+              <field fieldName="source.includedlistsources" returnType="stringCollection" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="source.excludedlistsources" returnType="stringCollection" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="source.predefinedsourcetype" returnType="string" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="source.predefinedsourceparameters" returnType="stringCollection" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="source.usealldatabase" returnType="bool" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="segmentation" returnType="string" stored="true" indexed="false" termVectors="false" boost="1f" />
+              <field fieldName="__fullcreateddate" returnType="string" storageType="YES"  indexType="TOKENIZED"   vectorType="NO" boost="1f" type="System.DateTime" format="yyyyMMddTHHmmss" />
+              <field fieldName="__fullupdateddate" returnType="string" storageType="YES"  indexType="TOKENIZED"   vectorType="NO" boost="1f" type="System.DateTime" format="yyyyMMddTHHmmss" />
+            </fieldNames>
+          </fieldMap>
+          <fields hint="raw:AddComputedIndexField">
+            <field fieldName="source.includedlistsources" itemFieldName="IncludedSources">Sitecore.ListManagement.ContentSearch.Fields.MappedListIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.excludedlistsources" itemFieldName="ExcludedSources">Sitecore.ListManagement.ContentSearch.Fields.MappedListIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.predefinedsourcetype" itemFieldName="PredefinedSourceType">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.predefinedsourceparameters" itemFieldName="PredefinedParameters">Sitecore.ListManagement.ContentSearch.Fields.MappedListIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="source.usealldatabase" itemFieldName="UseAllDatabase">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="segmentation" itemFieldName="Query">Sitecore.ListManagement.ContentSearch.Fields.MappedIndexField,Sitecore.ListManagement.ContentSearch</field>
+            <field fieldName="__fullcreateddate">Sitecore.ContentSearch.ComputedFields.CreatedDate,Sitecore.ContentSearch</field>
+            <field fieldName="__fullupdateddate">Sitecore.ContentSearch.ComputedFields.UpdatedDate,Sitecore.ContentSearch</field>
+          </fields>
+          <!-- INDEX DOCUMENT TO PROPERTY MAPPER
+               Maintains a collection of all the possible Convertors for the provider.
+          -->
+          <indexDocumentPropertyMapper type="Sitecore.ContentSearch.SolrProvider.Mapping.SolrDocumentPropertyMapper, Sitecore.ContentSearch.SolrProvider">
+            <!-- OBJECT FACTORY
+                 Constructs search result objects based on the type that is passed in .GetQueryable<T>() and the rules defined in this section.
+            -->
+            <objectFactory type="Sitecore.ContentSearch.DefaultDocumentMapperObjectFactory, Sitecore.ContentSearch">
+              <rules hint="list:AddRule">
+                <rule fieldName="_template" comparison="Equal" value="c0caf6988a424b669eaf7d442b46f722" valueType="System.String, mscorlib"
+                      creationType="Sitecore.ListManagement.ContentSearch.Model.SegmentedList, Sitecore.ListManagement.ContentSearch"
+                      baseType="Sitecore.ListManagement.ContentSearch.Model.ContactList, Sitecore.ListManagement.ContentSearch"
+                      type="Sitecore.ContentSearch.DefaultDocumentMapperFactorySimpleRule, Sitecore.ContentSearch">
+                  <param desc="fieldName">$(fieldName)</param>
+                  <param desc="comparison">$(comparison)</param>
+                  <param desc="value">$(value)</param>
+                  <param desc="type">$(valueType)</param>
+                  <param desc="creationType">$(creationType)</param>
+                  <param desc="baseType">$(baseType)</param>
+                </rule>
+              </rules>
+            </objectFactory>
+          </indexDocumentPropertyMapper>
+          <fieldReaders type="Sitecore.ContentSearch.FieldReaders.FieldReaderMap, Sitecore.ContentSearch">
+            <param desc="id">listManagerFieldReaderMap</param>
+            <fieldNames hint="raw:AddFieldReaderByFieldName">
+              <fieldReader fieldName="query" fieldReaderType="Sitecore.ContentSearch.FieldReaders.DefaultFieldReader, Sitecore.ContentSearch" />
+            </fieldNames>
+          </fieldReaders>
+        </listManagementSolrIndexConfiguration>
+      </indexConfigurations>
+    </listManagementSearch>
+  </sitecore>
+</configuration>

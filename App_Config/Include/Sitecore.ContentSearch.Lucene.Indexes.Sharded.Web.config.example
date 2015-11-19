@@ -1,0 +1,114 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <!-- Change this to Sitecore.ContentSearch.LuceneProvider.SwitchOnRebuildLuceneIndex, Sitecore.ContentSearch.LuceneProvider if you would like indexes to be
+               built in a temporary directory i.e. while rebuilding is happening, your old indexes work like normal until the rebuild is finished. -->
+          <index id="content_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore/content</Root>
+              </crawler>
+            </locations>
+          </index>
+          <index id="system_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore/system</Root>
+              </crawler>
+            </locations>
+          </index>
+          <index id="layouts_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore/layout</Root>
+              </crawler>
+            </locations>
+          </index>
+          <index id="medialibrary_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore/media library</Root>
+              </crawler>
+            </locations>            
+          </index>
+          <index id="templates_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore/templates</Root>
+              </crawler>
+            </locations>
+          </index>
+          <index id="sitecore_index_web" type="Sitecore.ContentSearch.LuceneProvider.LuceneIndex, Sitecore.ContentSearch.LuceneProvider">
+            <param desc="name">$(id)</param>
+            <param desc="folder">$(id)</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="contentSearch/indexConfigurations/defaultLuceneIndexConfiguration" />
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/onPublishEndAsync" />
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>web</Database>
+                <Root>/sitecore</Root>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

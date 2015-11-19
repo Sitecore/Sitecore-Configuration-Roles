@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file enable device detection initialization on instance initialize.
+
+-->
+<configuration xmlns:x="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <pipelines>
+      <initialize>
+        <processor type="Sitecore.CES.DeviceDetection.Pipelines.Initialize.CheckInitialization, Sitecore.CES.DeviceDetection" x:after="processor[position()=last()]" />
+      </initialize>
+    </pipelines>
+  </sitecore>
+</configuration>

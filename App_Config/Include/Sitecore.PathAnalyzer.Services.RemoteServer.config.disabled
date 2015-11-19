@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file contains the configuration settings that expose the Path Analyzer API on a remote reporting server.
+This is useful in environments where the reporting SQL Server is located in the cloud, behind a firewall, or where you want to
+use a separate reporting server.
+This file should be enabled on the remote server that will communicate with the reporting SQL Server.
+This file requires Sitecore.PathAnalyzer.Services.config to be present in the same Sitecore instance.
+
+To enable this include file, rename it so that is has a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <!-- SETTINGS -->
+    <settings>
+      <!-- PATH ANALYZER - REMOTE SERVICES - ENABLED
+            Specifies whether or not Path Analyzer remote services are enabled.
+      -->
+      <setting name="PathAnalyzer.Remote.Enabled" value="true" />
+    </settings>
+    <!-- PATH ANALYZER -->
+    <pathAnalyzer>
+      <remoteServices>
+        <!-- AUTHORIZED CLIENTS
+                Specifies a list of client apps that are allowed to communicate/authenticate with the services API.
+                Apps must use their specified ID and API Key to successfully authenticate via HMAC.
+                IMPORTANT: do not use the default ID and key. You should generate your own and ensure the client is configured to use the values you generate.
+          -->
+        <configuration type="Sitecore.PathAnalyzer.Services.Configuration.RemoteServicesConfiguration, Sitecore.PathAnalyzer.Services">
+          <authorizedClients hint="raw:AddClient">
+            <client desc="PA_RemoteClient" id="c241da4e6249fe8cd384be1ca4865bff" apiKey="`%L$2I4quWUZULm^Y6%|R2dQP\vM';B5bT2H0|z\G\q8" />
+          </authorizedClients>
+        </configuration>
+      </remoteServices>
+    </pathAnalyzer>
+    <!-- API -->
+    <api>
+      <services>
+        <configuration type="Sitecore.Services.Infrastructure.Configuration.ServicesConfiguration, Sitecore.Services.Infrastructure">
+          <allowedControllers hint="list:AddController">
+            <allowedController desc="PA_RemoteTreeController">Sitecore.PathAnalyzer.Services.Controllers.RemoteTreeController, Sitecore.PathAnalyzer.Services</allowedController>
+            <allowedController desc="PA_RemoteTreeDefinitionController">Sitecore.PathAnalyzer.Services.Controllers.RemoteTreeDefinitionController, Sitecore.PathAnalyzer.Services</allowedController>
+            <allowedController desc="PA_RemoteAdminController">Sitecore.PathAnalyzer.Services.Controllers.RemoteAdminController, Sitecore.PathAnalyzer.Services</allowedController>
+          </allowedControllers>
+        </configuration>
+      </services>
+    </api>
+    <!-- CONTROLLERS -->
+    <controllers>
+      <!-- REMOTE TREE CONTROLLER
+            A Web API controller with actions related to retrieving map data.
+      -->
+      <controller type="Sitecore.PathAnalyzer.Services.Controllers.RemoteTreeController, Sitecore.PathAnalyzer.Services">
+        <param desc="treeManager" ref="pathAnalyzer/treeManager" />
+        <param desc="treeDefinitionService" ref="pathAnalyzer/definitionService" />
+      </controller>
+      <!-- REMOTE TREE DEFINITION CONTOLLER
+            A Web API controller with actions related to retrieving map definition data.
+      -->
+      <controller type="Sitecore.PathAnalyzer.Services.Controllers.RemoteTreeDefinitionController, Sitecore.PathAnalyzer.Services">
+        <param desc="treeDefinitionService" ref="pathAnalyzer/definitionService" />
+      </controller>
+      <!-- REMOTE ADMIN CONTROLLER
+            A Web API controller with actions used by the /sitecore/admin/PathAnalyzer.aspx page
+      -->
+      <controller type="Sitecore.PathAnalyzer.Services.Controllers.RemoteAdminController, Sitecore.PathAnalyzer.Services">
+        <param desc="configuration" ref="pathAnalyzer/configuration" />
+        <param desc="treeDefinitionService" ref="pathAnalyzer/definitionService" />
+      </controller>
+    </controllers>
+
+  </sitecore>
+</configuration>

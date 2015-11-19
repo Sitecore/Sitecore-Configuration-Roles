@@ -1,0 +1,123 @@
+﻿<!--
+Purpose: This include file contains an example of how to configure a switch-on-rebuild index with SolrCloud.
+
+To enable a switch-on-rebuild index:
+1. Rename this file so that it has a ".config" extension.
+2. Add an index node to each of your indexes to change the type to SwitchOnRebuildSolrCloudSearchIndex.
+   For example, here are three defined indexes:
+   <index id="sitecore_master_index">
+   <index id="sitecore_web_index">
+   <index id="sitecore_core_index">
+3. Manually create the appropriate aliases or enable the EnforceAliasCreation setting.
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <solrOperationsFactory type="Sitecore.ContentSearch.SolrProvider.SolrOperations.SolrOperationsFactory, Sitecore.ContentSearch.SolrProvider" />
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <!-- MASTER INDEX configuration -->
+          <!-- Replaces the default SolrSearchIndex type which uses aliases with a swap command that allows Sitecore to start up even when a Solr connection is not available.
+               Once the Solr connection comes back, the patch restarts the application and initializes the Solr index.
+               A SwitchOnRebuild index expects 4 parameters to be passed to the constructor:
+                  mainalias:          The alias name for the primary index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  rebuildalias:       The alias name for the rebuild index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  collection:         The primary index collection name.
+                  rebuildcollection:            The rebuild index collection name.
+          -->
+          <index id="sitecore_master_index">
+            <patch:attribute name="type" value="Sitecore.ContentSearch.SolrProvider.SwitchOnRebuildSolrCloudSearchIndex, Sitecore.ContentSearch.SolrProvider" />
+            <param desc="core">
+              <patch:delete />
+            </param>
+            <param desc="rebuildcore">
+              <patch:delete />
+            </param>
+            <param patch:after="*[@desc='name']" desc="mainalias">$(id)MainAlias</param>
+            <param patch:after="*[@desc='mainalias']" desc="rebuildalias">$(id)RebuildAlias</param>
+            <param patch:after="*[@desc='rebuildalias']" desc="collection">$(id)</param>
+            <param patch:after="*[@desc='collection']" desc="rebuildcollection">$(id)_rebuild</param>
+            <param patch:after="*[@desc='rebuildcollection']" desc="solrOperationsFactory" ref="contentSearch/solrOperationsFactory" />
+          </index>
+          <!-- WEB INDEX configuration -->
+          <!-- Replaces the default SolrSearchIndex type which uses aliases with a swap command that allows Sitecore to start up even when a Solr connection is not available.
+               Once the Solr connection comes back, the patch restarts the application and initializes the Solr index.
+               A SwitchOnRebuild index expects 4 parameters to be passed to the constructor:
+                  mainalias:          The alias name for the primary index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  rebuildalias:       The alias name for the rebuild index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  collection:         The primary index collection name.
+                  rebuildcollection:            The rebuild index collection name.
+          -->
+          <index id="sitecore_web_index">
+            <patch:attribute name="type" value="Sitecore.ContentSearch.SolrProvider.SwitchOnRebuildSolrCloudSearchIndex, Sitecore.ContentSearch.SolrProvider" />
+            <param desc="core">
+              <patch:delete />
+            </param>
+            <param desc="rebuildcore">
+              <patch:delete />
+            </param>
+            <param patch:after="*[@desc='name']" desc="mainalias">$(id)MainAlias</param>
+            <param patch:after="*[@desc='mainalias']" desc="rebuildalias">$(id)RebuildAlias</param>
+            <param patch:after="*[@desc='rebuildalias']" desc="collection">$(id)</param>
+            <param patch:after="*[@desc='collection']" desc="rebuildcollection">$(id)_rebuild</param>
+            <param patch:after="*[@desc='rebuildcollection']" desc="solrOperationsFactory" ref="contentSearch/solrOperationsFactory" />
+          </index>
+          <!-- CORE INDEX configuration -->
+          <!-- Replaces the default SolrSearchIndex type which uses aliases with a swap command that allows Sitecore to start up even when a Solr connection is not available.
+               Once the Solr connection comes back, the patch restarts the application and initializes the Solr index.
+               A SwitchOnRebuild index expects 4 parameters to be passed to the constructor:
+                  mainalias:          The alias name for the primary index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  rebuildalias:       The alias name for the rebuild index operations. 
+                                      The ContentSearch.Solr.EnforceAliasCreation setting controls whether the alias should be created automatically. 
+                                      It must have only one collection assigned to it.
+                  collection:         The primary index collection name.
+                  rebuildcollection:            The rebuild index collection name.
+          -->
+          <index id="sitecore_core_index">
+            <patch:attribute name="type" value="Sitecore.ContentSearch.SolrProvider.SwitchOnRebuildSolrCloudSearchIndex, Sitecore.ContentSearch.SolrProvider" />
+            <param desc="core">
+              <patch:delete />
+            </param>
+            <param desc="rebuildcore">
+              <patch:delete />
+            </param>
+            <param patch:after="*[@desc='name']" desc="mainalias">$(id)MainAlias</param>
+            <param patch:after="*[@desc='mainalias']" desc="rebuildalias">$(id)RebuildAlias</param>
+            <param patch:after="*[@desc='rebuildalias']" desc="collection">$(id)</param>
+            <param patch:after="*[@desc='collection']" desc="rebuildcollection">$(id)_rebuild</param>
+            <param patch:after="*[@desc='rebuildcollection']" desc="solrOperationsFactory" ref="contentSearch/solrOperationsFactory" />
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+    <settings>
+      <setting name="ContentSearch.Solr.EnableHttpCache">
+        <patch:attribute name="value">false</patch:attribute>
+      </setting>
+
+      <!--  ENABLE OPTIMIZE ON REBUILD
+            If enabled, the index optimization command runs when the rebuild is completed.
+            It is recommended that this setting is disabled for Solr 5.x or later because the optimization command was deprecated. 
+            It can be enabled for Solr 4.x to optimize the indexes after they are rebuilt.
+            Default vaue: false
+      -->
+      <setting name="ContentSearch.Solr.OptimizeOnRebuild.Enabled" value="false" />
+     
+      <!--  ENFORCES ALIAS CREATION ON INDEX INITIALIZATION
+            If enabled, index aliases will be created on Solr during the index initialization process.
+            Default vaue: false
+      -->
+      <setting name="ContentSearch.Solr.EnforceAliasCreation" value="false" />
+    </settings>
+  </sitecore>
+</configuration>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Purpose: This include file enables the tracking subsystem of the Sitecore Experience Database
+to write to and read from the collection database via interaction registry in Content Management environments.
+
+-->
+
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+
+    <pipelines>
+
+      <commitSession>
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.CheckPreconditions, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.UpdateGeoIpData, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.EnsureClassification, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.UpdateContactBehaviorProfiles, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.IgnoreVisitsWithoutPages, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.UpdateContactSaveMode, Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.SubmitSessionCm, Sitecore.Analytics" >
+          <SessionContextManager ref="tracking/sessionContextManager" />
+        </processor>
+        <processor type="Sitecore.Analytics.Pipelines.CommitSession.ProcessSubscriptions, Sitecore.Analytics"/>
+      </commitSession>
+
+      <submitSessionContext>
+        <processor type="Sitecore.Analytics.Pipelines.SubmitSessionContext.SaveDevice, Sitecore.Analytics" patch:before="*" />
+        <processor type="Sitecore.Analytics.Pipelines.SubmitSessionContext.SaveClassificationsMap, Sitecore.Analytics" patch:after="*[1]" />
+        <processor type="Sitecore.Analytics.Pipelines.SubmitSessionContext.SaveVisit, Sitecore.Analytics" patch:after="*[2]" />
+        <processor type="Sitecore.Analytics.Pipelines.SubmitSessionContext.RenumberInteractions, Sitecore.Analytics" patch:after="processor[@type='Sitecore.Analytics.Pipelines.SubmitSessionContext.SaveVisit, Sitecore.Analytics']" />
+        <processor type="Sitecore.Analytics.Pipelines.SubmitSessionContext.UpdateKeyBehaviorCacheCm, Sitecore.Analytics" patch:after="processor[@type='Sitecore.Analytics.Pipelines.SubmitSessionContext.RenumberVisitIndexes, Sitecore.Analytics']" />
+      </submitSessionContext>
+
+      <initializeExternalSession>
+        <processor type="Sitecore.Analytics.Pipelines.InitializeExternalSession.EnsureContactCm, Sitecore.Analytics" patch:instead="processor[@type='Sitecore.Analytics.Pipelines.InitializeExternalSession.EnsureContact, Sitecore.Analytics']"/>
+      </initializeExternalSession>
+
+    </pipelines>
+    
+  </sitecore>
+</configuration>

@@ -1,0 +1,42 @@
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <index id="sitecore_marketingdefinitions_master" type="Sitecore.ContentSearch.Azure.CloudSearchProviderIndex, Sitecore.ContentSearch.Azure">
+            <param desc="name">$(id)</param>
+            <param desc="connectionStringName">cloud.search</param>
+            <param desc="totalParallelServices">5</param>
+            <!-- This initializes index property store. Id has to be set to the index id -->
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <configuration ref="marketingDefinitionSearch/indexConfigurations/marketingDefinitionCloudIndexConfiguration" />
+            <schemaBuilder ref="contentSearch/searchServiceSchemaBuilder" />
+            <searchService type="Sitecore.ContentSearch.Azure.Http.CompositeSearchService, Sitecore.ContentSearch.Azure"/>
+            <strategies hint="list:AddStrategy">
+              <!-- NOTE: order of these is controls the execution order -->
+              <strategy ref="contentSearch/indexConfigurations/indexUpdateStrategies/manual" />
+            </strategies>
+            <commitPolicyExecutor type="Sitecore.ContentSearch.CommitPolicyExecutor, Sitecore.ContentSearch">
+              <policies hint="list:AddCommitPolicy">
+                <policy type="Sitecore.ContentSearch.TimeIntervalCommitPolicy, Sitecore.ContentSearch" />
+                <policy type="Sitecore.ContentSearch.ModificationCountCommitPolicy, Sitecore.ContentSearch">
+                  <Limit>1000</Limit>
+                </policy>
+              </policies>
+            </commitPolicyExecutor>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>{EC095310-746F-4C1B-A73F-941863564DC2}</Root>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.SitecoreItemCrawler, Sitecore.ContentSearch">
+                <Database>master</Database>
+                <Root>{09CF9489-8F71-4A16-B707-4F013D8CDEFB}</Root>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

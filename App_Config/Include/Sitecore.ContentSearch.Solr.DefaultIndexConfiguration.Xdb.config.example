@@ -1,0 +1,17 @@
+﻿<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <indexConfigurations>
+        <defaultSolrIndexConfiguration>
+          <documentOptions>
+            <fields hint="raw:AddComputedIndexField">
+              <!-- Disabled for speed of indexing. Enable if you would like to query by the fields below -->
+              <!--<field fieldName="hasactivetest" returnType="bool">Sitecore.ContentSearch.Analytics.ComputedFields.IsBeingTested,Sitecore.ContentSearch.Analytics</field>-->
+              <!--<field fieldName="persona" returnType="string">Sitecore.ContentSearch.Analytics.ComputedFields.PersonaMatch, Sitecore.ContentSearch.Analytics</field>-->
+            </fields>
+          </documentOptions>
+        </defaultSolrIndexConfiguration>
+      </indexConfigurations>
+    </contentSearch>
+  </sitecore>
+</configuration>

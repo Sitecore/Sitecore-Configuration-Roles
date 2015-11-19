@@ -1,0 +1,29 @@
+﻿<!--
+
+Purpose: This include file configures the Cache containers for various cache instances
+
+To enable this file, rename it so that it has a ".config" extension.
+
+If no containers are specified for a cache, the default Sitecore.Caching.Generics.Cache<TKey> instance is used. 
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <!-- CACHE CONTAINER CONFIGURATION
+      Defines the configuration of the cache containers.
+      Supported attributes:
+          name:       the name of the cache instance.
+          type:       the cache container that is instantiated for the cache instance.
+      Supported child parameters:
+          name:       the name of the cache container.
+          maxSize     the maximum size of the cache container.
+    -->
+    <cacheContainerConfiguration>
+      <!-- Example -->
+      <!--<cacheContainer name="website[html]" type="Sitecore.Caching.MemoryCacheAdapter, Sitecore.Kernel">
+        <param desc="name">$(0)</param>
+        <param desc="maxSize">$(1)</param>
+        <cacheSizeCalculationStrategy type="Sitecore.Caching.DefaultCacheSizeCalculationStrategy, Sitecore.Kernel" />
+      </cacheContainer>-->
+    </cacheContainerConfiguration>
+  </sitecore>
+</configuration>

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <contentSearch>
+      <configuration type="Sitecore.ContentSearch.ContentSearchConfiguration, Sitecore.ContentSearch">
+        <indexes hint="list:AddIndex">
+          <index id="sitecore_analytics_index" type="Sitecore.ContentSearch.SolrProvider.SolrSearchIndex, Sitecore.ContentSearch.SolrProvider">
+            <param desc="name">$(id)</param>
+            <param desc="core">$(id)</param>
+            <param desc="propertyStore" ref="contentSearch/indexConfigurations/databasePropertyStore" param1="$(id)" />
+            <param desc="group">experience</param>
+
+            <configuration ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration">
+
+              <fieldMap ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldMap">
+                <fieldNames hint="raw:AddFieldByFieldName">
+                  <field fieldName="contact.identificationlevel" returnType="string" />
+                  <field fieldName="visit.startdatetime"   returnType="datetime" format="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+                  <field fieldName="visit.enddatetime"   returnType="datetime" format="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+                  
+                </fieldNames>
+              </fieldMap>
+
+              <documentOptions ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/documentOptions">
+                <fields hint="raw:AddComputedIndexField">
+                  <field fieldName="Contact.FullName" type="Sitecore.ContentSearch.ComputedFields.CompositeTextField, Sitecore.ContentSearch"
+                         matchField="type" matchValue="contact" separator=" ">
+                    <part>Contact.Title</part>
+                    <part>Contact.FirstName</part>
+                    <part>Contact.MiddleName</part>
+                    <part>Contact.Surname</part>
+                    <part>Contact.Suffix</part>
+                  </field>
+                </fields>
+              </documentOptions>
+
+              <fieldReaders ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/fieldReaders">
+                <fieldNames hint="raw:AddFieldReaderByType">
+                  <fieldReader fieldType="System.Byte[]"                                               fieldReaderType="Sitecore.ContentSearch.Analytics.FieldReaders.ByteArrayFieldReader, Sitecore.ContentSearch.Analytics"/>
+                  <fieldReader fieldType="Sitecore.Analytics.Model.UrlData, Sitecore.Analytics.Model"  fieldReaderType="Sitecore.ContentSearch.Analytics.FieldReaders.ToStringFieldReader, Sitecore.ContentSearch.Analytics"/>
+                </fieldNames>
+              </fieldReaders>
+
+              <indexFieldStorageValueFormatter ref="contentSearch/indexConfigurations/defaultSolrIndexConfiguration/indexFieldStorageValueFormatter">
+                <converters hint="raw:AddConverter">
+                  <converter handlesType="Sitecore.Analytics.Model.ContactIdentificationLevel, Sitecore.Analytics.Model"  typeConverter="Sitecore.ContentSearch.Analytics.Converters.IndexFieldContactIdentificationLevelValueConverter, Sitecore.ContentSearch.Analytics" />
+                </converters>
+              </indexFieldStorageValueFormatter>
+
+            </configuration>
+
+            <strategies hint="list:AddStrategy">
+              <timed type="Sitecore.ContentSearch.Maintenance.Strategies.TimedIndexRefreshStrategy, Sitecore.ContentSearch">
+                <param desc="interval">00:00:15</param>
+              </timed>
+            </strategies>
+            <locations hint="list:AddCrawler">
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Visit Crawler</CrawlerName>
+                <ObservableName>VisitAggregationObservable</ObservableName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitPageCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Visit Page Crawler</CrawlerName>
+                <ObservableName>VisitPageAggregationObservable</ObservableName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsVisitPageEventCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Visit Page Event Crawler</CrawlerName>
+                <ObservableName>VisitPageEventAggregationObservable</ObservableName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsContactCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Contact Crawler</CrawlerName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>ContactAggregationObservable</observable>
+                  <observable>ContactChangeObservable</observable>
+                </observables>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsContactTagCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Contact Tag Crawler</CrawlerName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>ContactTagAggregationObservable</observable>
+                  <observable>ContactTagChangeObservable</observable>
+                </observables>
+              </crawler>
+              <crawler type="Sitecore.ContentSearch.Analytics.Crawlers.AnalyticsAddressCrawler, Sitecore.ContentSearch.Analytics">
+                <CrawlerName>Solr Address Tag Crawler</CrawlerName>
+                <ObservableName>AddressObservable</ObservableName>
+                <!-- Obsolete: NumberOfSecondsToQueue and MinimumQueueSize are no longer in use and will be removed in the future -->
+                <NumberOfSecondsToQueue>60</NumberOfSecondsToQueue>
+                <MinimumQueueSize>500</MinimumQueueSize>
+                <MaximumQueueSize>50000</MaximumQueueSize>
+                <ThrottlingEnabled>True</ThrottlingEnabled>
+                <observables hint="list:AddObservable">
+                  <observable>AddressAggregationObservable</observable>
+                  <observable>AddressChangeObservable</observable>
+                </observables>
+              </crawler>
+            </locations>
+          </index>
+        </indexes>
+      </configuration>
+    </contentSearch>
+  </sitecore>
+</configuration>

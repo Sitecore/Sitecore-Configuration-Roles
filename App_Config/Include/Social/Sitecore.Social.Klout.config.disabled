@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Important: 
+
+When you register your app on Klout's web-site, you enter into an agreement with Klout, who is an independent third party. 
+Sitecore is not responsible for Klout's services or any losses arising from usage of these services.
+
+Purpose: This include file enables the Klout Score receiving feature; the metric that represents your influence in social networks.
+You can read more information about it at: https://klout.com/corp/score.
+
+Please read the Sitecore Social Connected documentation before changing the configuration.
+
+You must change the value for the Social.KloutScore.DaysBeforeExpiration setting to the one specified in the Klout Terms of Service.
+You must not disable the sheduling agent. The scheduling agent is the Social Connected feature that keeps the received Klout Scores up-to-date.
+
+To enable this include file, rename it to have a ".config" extension.
+    
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+
+      <!-- SOCIAL - KLOUT SCORE - DAYS BEFORE EXPIRATION
+           The number of days before the user's Klout Score expires.
+           Default value: 5 
+      -->
+      <setting name="Social.KloutScore.DaysBeforeExpiration" value="5" />
+
+    </settings>
+
+    <scheduling>
+
+      <!-- The agent that synchronizes data with Klout. -->
+      <agent type="Sitecore.Social.Klout.Client.Tasks.SynchronizeKloutScores, Sitecore.Social.Klout.Client" method="Run" interval="1.00:00:00" />
+
+    </scheduling>
+
+    <social>
+      <kloutUrlOptions>
+        <kloutIdRequestOptions>
+          <option>
+            <NetworkName>Twitter</NetworkName>
+            <UrlPattern>http://api.klout.com/v2/identity.json/tw/{accountId}?key={APIkey}</UrlPattern>
+          </option>
+          <option>
+            <NetworkName>Google</NetworkName>
+            <UrlPattern>http://api.klout.com/v2/identity.json/gp/{accountId}?key={APIkey}</UrlPattern>
+          </option>
+        </kloutIdRequestOptions>
+
+        <kloutScoreRequestUrlPattern>http://api.klout.com/v2/user.json/{kloutId}/score?key={APIkey}</kloutScoreRequestUrlPattern>
+      </kloutUrlOptions>
+    </social>
+
+    <events>
+      <event name="user:deleted">
+        <handler type="Sitecore.Social.Klout.Client.EventHandlers.UserDeletedHandler, Sitecore.Social.Klout.Client" method="OnUserDeleted"/>
+      </event>
+      <event name="social:connector:user:loggedin">
+        <handler type="Sitecore.Social.Klout.Client.EventHandlers.SocialNetworkUserLoggedInHandler, Sitecore.Social.Klout.Client" method="OnSocialNetworkUserLoggedIn"/>
+      </event>
+      <event name="social:connector:user:socialprofileattached">
+        <handler type="Sitecore.Social.Klout.Client.EventHandlers.SocialProfileAttachedHandler, Sitecore.Social.Klout.Client" method="OnSocialProfileAttached"/>
+      </event>
+    </events>
+
+    <model>
+      <elements>
+        <element interface="Sitecore.Social.Klout.Api.DataProviders.Facets.IKloutProfileFacet, Sitecore.Social.Klout.Api" implementation="Sitecore.Social.Klout.Api.DataProviders.Facets.KloutProfileFacet, Sitecore.Social.Klout.Api"/>
+        <element interface="Sitecore.Social.Klout.Api.DataProviders.Facets.ISourceNetworkIdentityElement, Sitecore.Social.Klout.Api" implementation="Sitecore.Social.Klout.Api.DataProviders.Facets.SourceNetworkIdentityElement, Sitecore.Social.Klout.Api"/>
+        <element interface="Sitecore.Social.Klout.Api.DataProviders.Facets.IKloutScoreElement, Sitecore.Social.Klout.Api" implementation="Sitecore.Social.Klout.Api.DataProviders.Facets.KloutScoreElement, Sitecore.Social.Klout.Api"/>
+      </elements>
+      <entities>
+        <contact>
+          <facets>
+            <facet name="SocialKloutProfile" contract="Sitecore.Social.Klout.Api.DataProviders.Facets.IKloutProfileFacet, Sitecore.Social.Klout.Api" />
+          </facets>
+        </contact>
+      </entities>
+    </model>
+
+    <pipelines>
+      <social.initializeApi>
+        <processor type="Sitecore.Social.Klout.Api.IoC.IoCInitialization, Sitecore.Social.Klout.Api" patch:after="processor[@type='Sitecore.Social.Infrastructure.IoC.IoCInitialization, Sitecore.Social.Infrastructure']">
+          <assemblies hint="list:AddAssembly">
+            <assembly>Sitecore.Social.Klout.Api.dll</assembly>
+            <assembly>Sitecore.Social.Klout.Client.dll</assembly>
+          </assemblies>
+        </processor>
+      </social.initializeApi>
+    </pipelines>
+
+  </sitecore>
+</configuration>

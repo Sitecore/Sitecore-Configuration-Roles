@@ -1,0 +1,23 @@
+﻿<!--
+
+Purpose: This include file replaces the standard EventProvider implementation with AsyncEventProvider.
+The only difference between the two implementations is that the AsyncEventProvider processes queued events from various databases asynchronously.
+
+When the system is busy, processing the event queue of one database can block event processing from all other databases. The AsyncEventProvider
+solves this problem. This problem can occur, for example, during large publishing operations when the Sitecore.Publishing.Parallel.config include
+file is enabled. This can result in significant delays in updating the processed items counter in the Publishing Wizard.
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <eventing>
+      <providers>
+        <add name="sitecore">
+          <patch:attribute name="type">Sitecore.Eventing.AsyncEventProvider, Sitecore.Kernel</patch:attribute>
+        </add>
+      </providers>
+    </eventing>
+  </sitecore>
+</configuration>

@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      <!--  ANALYTICS AUTO DETECT BOTS
+            Enable auto detection of bots.
+            Default: true
+      -->
+      <setting name="Analytics.AutoDetectBots" value="true" />
+
+      <!--  ANALYTICS BULK COPY BATCH SIZE
+            Defines the number of rows to batch in a bulk copy.
+            Default: 1000
+      -->
+      <setting name="Analytics.BulkCopyBatchSize" value="1000" />
+
+      <!--  ANALYTICS CAMPAIGN QUERY STRING KEY
+            Specifies the key for triggering campaigns on the query string.
+            Default: sc_camp
+      -->
+      <setting name="Analytics.CampaignQueryStringKey" value="sc_camp" />
+
+      <!--  ANALYTICS EMAIL FROM ADDRESS
+            Specifies the From address in emails that contain reports.
+            Default: <none>
+      -->
+      <setting name="Analytics.EMailFromAddress" value="" />
+
+      <!--  ANALYTICS EVENT QUERY STRING KEY
+            Specifies the key for triggering events on the query string.
+            Default: sc_trk
+      -->
+      <setting name="Analytics.EventQueryStringKey" value="sc_trk" />
+
+      <!--  ANALYTICS GEOIPS CACHESIZE
+            Determines the number of cached items in the GeoIp Lookup Manager.
+            Default: 1000
+      -->
+      <setting name="Analytics.GeoIps.CacheSize" value="1000" />
+
+      <!--  ANALYTICS FORWARDED REQUEST HTTP HEADER
+            Specifies the name of an HTTP header variable containing the IP address of the webclient.
+            Only for use behind load-balancers that mask web client IP addresses from webservers.
+            IMPORTANT: If this setting is used incorrectly, it allows IP address spoofing.
+            Typical values are "X-Forwarded-For" and "X-Real-IP".
+            Default value: "" (disabled)
+      -->
+      <setting name="Analytics.ForwardedRequestHttpHeader" value="" />
+
+      <!--  ANALYTICS LOG LEVEL
+            Determines which level of log errors are also logged in Analytics.
+            Possible values are: None, Debug, Information, Warning, Error, and Fatal.
+            Default: Error
+      -->
+      <setting name="Analytics.LogLevel" value="Error" />
+
+      <!--  ANALYTICS LONG RUNNING PAGE REQUEST
+            Defines the threshold for long running pages in milliseconds.
+            Default: 5000
+      -->
+      <setting name="Analytics.LongRunningRequest" value="5000" />
+
+      <!--  ANALYTICS MAX CACHED ROWS
+            For each of the definition tables: Browser, IpAddress, IpOwner, Keyword, OperatingSystem,
+            ReferringSite and Screen a number of rows are kept in memory. This setting specifies
+            how many rows per table. When exceeded, half of the rows are discarded.
+            Default: 4000
+      -->
+      <setting name="Analytics.MaxCachedRows" value="4000" />
+
+      <!--  ANALYTICS MAX QUEUE SIZE
+            Defines the max number of data rows in the insert queue. Additional requests are dropped.
+            Default: 10000
+      -->
+      <setting name="Analytics.MaxQueueSize" value="10000" />
+
+      <!--  ANALYTICS PERFORM LOOKUP
+            Determines if this server performs the lookups (DNS and URLs). Only one server should
+            be responsible for performning the lookup.
+            Default: true
+      -->
+      <setting name="Analytics.PerformLookup" value="true" />
+
+      <!--  ANALYTICS PERFORM LOOKUP INTERVAL
+            Specifies the interval (milliseconds) with which the DNS lookup task runs.
+            Default: 60000
+      -->
+      <setting name="Analytics.PerformLookup.Interval" value="60000" />
+      
+      <!-- ANALYTICS PERFORM LOOKUP VISIT UPDATE DELAY
+           Specifies the delay (timespan) after the last request in the visit before
+           the background worker will populate the GeoIp information in the visit
+           if it is missing.
+           Default: 00:01:00
+      -->
+      <setting name="Analytics.PerformLookup.VisitUpdateDelay" value="00:01:00" />
+      <!--  ANALYTICS REVERSE DNS LOOKUP TIMEOUT
+            Timeout in ms for reverse DNS lookups.
+            Default: 5000
+      -->
+      <setting name="Analytics.ReverseDnsLookupTimeout" value="5000" />
+
+      <!--  ANALYTICS ROBOTS IGNORE ROBOTS
+            Ignore requests and do not write information to the Analytics database when the visitor 
+            classification identifies the visitor as a robot.
+            Default: true
+      -->
+      <setting name="Analytics.Robots.IgnoreRobots" value="true" />
+
+      <!--  ANALYTICS ROBOTS IGNORE AUTO ROBOTS
+            Ignore requests where Sitecore's automatic robot detection identifies the visit as coming from a robot.
+            Default: true
+      -->
+      <setting name="Analytics.Robots.IgnoreAutoRobots" value="true" />
+
+      <!--  ANALYTICS ROBOTS SESSION TIMEOUT
+            The ASP.NET Session Timeout for auto detected robots. 
+            When the automatic robot detection identifies a session as being a robot, the ASP.NET
+            Session Timeout is set to this value (in minutes).
+            Default: 1
+      -->
+      <setting name="Analytics.Robots.SessionTimeout" value="1" />
+      
+      <!--  ANALYTICS SAMPLING PERCENTAGE
+            Specifies the percentage of sessions that analytics data should be collected for.
+            Default: 100 (collect data for all sessions)
+      -->
+      <setting name="Analytics.Sampling.Percentage" value="100" />
+   
+      <!--  ANALYTICS TRACKER CHANGES LONG OPERATION THRESHOLD
+            Defines the threshold value in milliseconds for logging long running Analytics Tracker operations, such as analytics insert operations. 
+            Default: 2500 (2.5 seconds)
+      -->
+      <setting name="Analytics.TrackerChanges.LongOperationThreshold" value="2500" />
+
+
+      <!--  ANALYTICS TRACKERCHANGES FLUSH INTERVAL
+            Defines the interval in milliseconds between tracker changes queue flushes.
+            Default: "10000" (10 seconds)
+      -->
+      <setting name="Analytics.TrackerChanges.FlushInterval" value="10000" />
+
+      <!--  ANALYTICS TRACKERCHANGES MAX ROWS
+            Defines the max number of rows in the tracker changes queue before the queue is flushed.
+            If this is more than 10000, performance will suffer.
+            Default: 1000
+      -->
+      <setting name="Analytics.TrackerChanges.MaxRows" value="1000" />
+
+      <!--  ANALYTICS TRACKERCHANGES SLEEP
+            Defines the inactive period of the tracker changes queue.
+            Default: "100" (0.1 seconds).
+      -->
+      <setting name="Analytics.TrackerChanges.Sleep" value="100" />
+
+      <!--  ANALYTICS UPDATE BATCH SIZE
+            Defines the number of SQL request to batch.
+            Default: 1000
+      -->
+      <setting name="Analytics.UpdateBatchSize" value="1000" />
+
+      <!--  ANALYTICS USE BULK COPY
+            Determines whether or not inserted rows should be inserted using Bulk Copy.
+            Default: true
+      -->
+      <setting name="Analytics.UseBulkCopy" value="true" />
+
+      <!--  MAXMIND ENCODING
+            Encoding of the information returned from MaxMind.
+            Default: "ISO-8859-1"
+      -->
+      <setting name="MaxMind.Encoding" value="ISO-8859-1" />
+
+      <!--  MAXMIND FORMAT
+            Format of the return value from MaxMind
+            Default: "Country,Region,City,PostalCode,Latitude,Longitude,MetroCode,AreaCode,Isp,Owner,Error"
+      -->
+      <setting name="MaxMind.Format" value="Country,Region,City,PostalCode,Latitude,Longitude,MetroCode,AreaCode,Isp,Owner,Error" />
+      <!--  MAXMIND SECURITY TOKEN
+            Security token from MaxMind.
+            Default: "00000000"
+      -->
+      <setting name="MaxMind.SecurityToken" value="00000000" />
+
+      <!--  MAXMIND URL
+            The URL of the MaxMind web service.
+            Default: http://sitecore1.maxmind.com/app/sc?i={0}&amp;l={1}
+      -->
+      <setting name="MaxMind.Url" value="http://sitecore1.maxmind.com/app/sc?i={0}&amp;l={1}" />
+
+      <!--  ANALYTICS VISIT END CHECK INTERVAL
+            Sitecore periodically runs a background job to check if there are any visits in the Analytics database that have expired and for
+            which the visitEnd pipeline has not yet been executed. The background job then executes the VisitEnd pipeline for these visits.
+            This setting specifies how often (in milliseconds) this background job is executed.
+            Default: 60000 (60 seconds)
+      -->
+      <setting name="Analytics.VisitEnd.CheckInterval" value="60000" />
+      
+      <!--  ANALYTICS VISIT END MAX ROWS
+            This setting defines the size of the batches that are read from the database when Sitecore processes the expired visits for which the
+            VisitEnd pipeline has not yet been executed.
+            We recommend that you set this setting should not exceed 10000 or performance could suffer.
+            Default: 1000
+      -->
+      <setting name="Analytics.VisitEnd.MaxRows" value="1000" />
+      
+      <!--  ANALYTICS VISIT END PROCESSING TIME OUT
+            When Sitecore processes expired visits, the background job marks the rows in the database that it is about to process. If 
+            the background job does not successfully process all the rows, the rows are processed again at a later time.
+            This can happen, for example, if the server restarts while the background job is running.
+            This setting specifies the minimum wait time (in minutes) before the rows can be selected for re-processing.
+            Default: 20 (20 minutes)
+      -->
+      <setting name="Analytics.VisitEnd.ProcessingTimeOut" value="20" />
+    </settings>
+
+    <!--
+    Analytics provider for Microsoft SQL Server:
+    <add name="default" type="Sitecore.Analytics.Data.DataAccess.DataAdapters.Sql.SqlServer.SqlServerDataAdapterProvider, Sitecore.Analytics"/>
+
+    Analytics provider for Oracle:
+    <add name="default" type="Sitecore.Analytics.Data.DataAccess.DataAdapters.OracleDataAdapterProvider, Sitecore.Oracle"/>
+    -->    
+    <dataAdapterManager defaultProvider="default">
+      <providers>
+        <clear/>
+        <add name="default" type="Sitecore.Data.Oracle.Analytics.OracleDataAdapterProvider, Sitecore.Oracle" />
+      </providers>
+    </dataAdapterManager>
+
+    <lookupManager defaultProvider="default">
+      <providers>
+        <clear/>
+        <add name="default" type="Sitecore.Analytics.Lookups.MaxMindProvider,Sitecore.Analytics"/>
+      </providers>
+    </lookupManager>
+
+    <reportManager defaultProvider="default">
+      <providers>
+        <clear/>
+        <add name="default" type="Sitecore.Data.Oracle.Analytics.Reports.OracleReportProvider, Sitecore.Oracle"/>
+      </providers>
+    </reportManager>
+
+    <events>
+      <event name="item:saved">
+        <handler type="Sitecore.Analytics.Data.Items.ItemEventHandler, Sitecore.Analytics" method="OnItemSaved"/>
+      </event>
+      <event name="item:deleted">
+      </event>
+      <event name="media:request">
+        <handler type="Sitecore.Analytics.Media.MediaRequestEventHandler, Sitecore.Analytics" method="OnMediaRequest"/>
+      </event>
+    </events>
+
+    <scheduling>
+      <agent type="Sitecore.Analytics.Tasks.EmailReportsTask, Sitecore.Analytics" method="Run" interval="1:00:00">
+        <DatabaseName>master</DatabaseName>
+      </agent>
+      <agent type="Sitecore.Analytics.Tasks.SubscriptionTask, Sitecore.Analytics" method="Run" interval="00:15:00">
+        <Minutes>15</Minutes>
+      </agent>
+      <agent type="Sitecore.Analytics.Tasks.UpdateReportsSummaryTask, Sitecore.Analytics" method="Run" interval="00:30:00">
+        <UpdateReportsSummaryAt>23:30:00</UpdateReportsSummaryAt>
+      </agent>
+    </scheduling>
+    
+    <pipelines>
+      <startAnalytics>
+        <processor type="Sitecore.Analytics.Pipelines.StartAnalytics.Init,Sitecore.Analytics" />
+      </startAnalytics>
+
+      <endAnalytics>
+        <processor type="Sitecore.Analytics.Pipelines.EndAnalytics.EndTracking,Sitecore.Analytics" />
+      </endAnalytics>
+
+      <initialize>
+        <processor type="Sitecore.Analytics.Pipelines.Loader.InitializeAnalytics,Sitecore.Analytics" />
+      </initialize>
+
+      <httpRequestBegin>
+        <processor type="Sitecore.Analytics.Pipelines.HttpRequest.StartDiagnostics,Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.HttpRequest.StartMeasurements, Sitecore.Kernel']" />
+        <processor type="Sitecore.Analytics.Pipelines.HttpRequest.PageLevelTestItemResolver,Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.HttpRequest.ItemResolver, Sitecore.Kernel']" />
+      </httpRequestBegin>
+      
+      <httpRequestProcessed>
+        <processor type="Sitecore.Analytics.Pipelines.HttpRequest.EndAnalytics,Sitecore.Analytics"/>
+      </httpRequestProcessed>
+      
+      <httpRequestEnd>
+        <processor type="Sitecore.Analytics.Pipelines.HttpRequest.EndAnalytics,Sitecore.Analytics" patch:before="processor[@type='Sitecore.Pipelines.PreprocessRequest.CheckIgnoreFlag, Sitecore.Kernel']"/>
+      </httpRequestEnd>
+      
+      <sessionEnd>
+        <processor type="Sitecore.Analytics.Pipelines.SessionEnd.RaiseVisitEnd,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.SessionEnd.AcceptChanges,Sitecore.Analytics"/>
+      </sessionEnd>
+
+      <visitEnd>
+        <processor type="Sitecore.Analytics.Pipelines.VisitEnd.RunRules,Sitecore.Analytics"/>
+      </visitEnd>
+      
+      <startTracking>
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.RaiseStartTracking,Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.InitializeTracker,Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.UpdateGeoIpData,Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.TrackerInitialized,Sitecore.Analytics" />
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.ProcessQueryString,Sitecore.Analytics">
+          <triggers hint="raw:AddTrigger">
+            <trigger querystring="sc_rss" eventname="RSS"/>
+          </triggers>
+        </processor>
+        <processor type="Sitecore.Analytics.Pipelines.StartTracking.ProcessItem,Sitecore.Analytics"/>
+      </startTracking>
+
+      <deployDefinition>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SavePageEvent,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SaveEngagementPlan,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SaveFunnel,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SaveCampaign,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SaveTestDefinition,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.DeployDefinition.SaveTrafficType,Sitecore.Analytics"/>
+      </deployDefinition>     
+
+      <executePageEditorAction>
+        <processor type="Sitecore.Analytics.Pipelines.ExecutePageEditorAction.ActivateCondition, Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.ExecutePageEditorAction.PreviewRendering, Sitecore.Kernel']"/>
+        <processor type="Sitecore.Analytics.Pipelines.ExecutePageEditorAction.ActivateTestVariation,Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.ExecutePageEditorAction.PreviewRendering, Sitecore.Kernel']" />        
+      </executePageEditorAction>
+
+      <initializeTracker>
+        <processor type="Sitecore.Analytics.Pipelines.InitializeTracker.Initialize,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.InitializeTracker.Robots,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.InitializeTracker.RunRules,Sitecore.Analytics"/>
+      </initializeTracker>
+
+      <insertRenderings>        
+        <processor type="Sitecore.Analytics.Pipelines.InsertRenderings.Testing,Sitecore.Analytics" patch:before="processor[@type='Sitecore.Pipelines.InsertRenderings.Processors.EvaluateConditions, Sitecore.Kernel']"/>
+        <processor type="Sitecore.Analytics.Pipelines.InsertRenderings.PageEditorTesting,Sitecore.Analytics" patch:before="processor[@type='Sitecore.Pipelines.InsertRenderings.Processors.EvaluateConditions, Sitecore.Kernel']"/>
+        <processor type="Sitecore.Analytics.Pipelines.InsertRenderings.Personalization,Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.InsertRenderings.Processors.EvaluateConditions, Sitecore.Kernel']"/>
+      </insertRenderings>
+      
+      <acceptChanges>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.DropCancelledPage,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.DoNotWrite,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.Robots,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.GeneratingCampaignEvents,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.AcceptSharedChanges,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.AcceptChanges.AcceptVisitorChanges,Sitecore.Analytics"/>
+      </acceptChanges>
+
+      <parseReferrer>
+        <processor type="Sitecore.Analytics.Pipelines.ParseReferrer.ParseGenericSearchEngine,Sitecore.Analytics">
+          <engines hint="raw:AddHostParameterName">
+            <engine hostname="www.google" parametername="q"/>
+            <engine hostname="search.yahoo" parametername="p"/>
+            <engine hostname="www.bing" parametername="q"/>
+            <engine hostname="search.lycos" parametername="query"/>
+            <engine hostname="www.baidu" parametername="wd"/>
+          </engines>
+        </processor>
+      </parseReferrer>
+
+      <renderLayout>
+        <processor type="Sitecore.Analytics.Pipelines.HttpRequest.StartAnalytics,Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.RenderLayout.SecurityCheck, Sitecore.Kernel']" />
+      </renderLayout>
+
+      <getChromeData>        
+        <processor type="Sitecore.Analytics.Pipelines.GetChromeData.GetRenderingTestVariations, Sitecore.Analytics" patch:after="processor[@type='Sitecore.Pipelines.GetChromeData.GetRenderingChromeData, Sitecore.Kernel']" />       
+      </getChromeData>
+
+      <getContentEditorWarnings>
+        <processor type="Sitecore.Pipelines.GetContentEditorWarnings.MissingMarketingProfiles, Sitecore.Kernel"/>
+        <processor type="Sitecore.Analytics.Pipelines.GetContentEditorWarnings.IsEngagementPlanDeployed, Sitecore.Analytics"  patch:after="processor[@type='Sitecore.Pipelines.GetContentEditorWarnings.HasNoFields, Sitecore.Kernel']"/>
+      </getContentEditorWarnings>
+      
+      <trafficTypes>
+        <processor type="Sitecore.Analytics.Pipelines.TrafficTypes.Initialize,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TrafficTypes.ReferringSite,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TrafficTypes.SearchKeywords,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TrafficTypes.OrganicBranded,Sitecore.Analytics"/>
+      </trafficTypes>
+
+      <createVisit>
+        <processor type="Sitecore.Analytics.Pipelines.CreateVisits.XForwardedFor,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.CreateVisits.UpdateGeoIpData,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.CreateVisits.ParseReferrer,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.CreateVisits.SetTrafficType,Sitecore.Analytics"/>
+      </createVisit>
+
+      <registerPageEvent>
+        <processor type="Sitecore.Analytics.Pipelines.RegisterPageEvent.RunPageEventRules,Sitecore.Analytics"/>
+      </registerPageEvent>
+
+      <triggerCampaign>
+        <processor type="Sitecore.Analytics.Pipelines.TriggerCampaign.ProcessTrackingField,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TriggerCampaign.HandleTrafficType,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TriggerCampaign.RunRules,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.TriggerCampaign.RegisterPageEvent,Sitecore.Analytics"/>
+      </triggerCampaign>
+
+      <processEmailMessage>
+      </processEmailMessage>
+      
+      <findVisitorEmailAddress>
+        <processor type="Sitecore.Analytics.Pipelines.GetVisitorEmailAddress.FindVisitorEmailAddress, Sitecore.Analytics" method="FindEmailInUserName" patch:before="processor[@type='Sitecore.Pipelines.GetVisitorEmailAddress.FindVisitorEmailAddress, Sitecore.Kernel']"/>
+        <processor type="Sitecore.Analytics.Pipelines.GetVisitorEmailAddress.FindVisitorEmailAddress, Sitecore.Analytics" method="FindEmailInTags" patch:after="processor[@type='Sitecore.Pipelines.GetVisitorEmailAddress.FindVisitorEmailAddress, Sitecore.Kernel']"/>
+      </findVisitorEmailAddress>
+
+      <loadVisitor>
+        <processor type="Sitecore.Analytics.Pipelines.LoadVisitor.OptimizeLoadOptions,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.LoadVisitor.LoadAnalytics,Sitecore.Analytics"/>
+      </loadVisitor>
+
+      <excludeRobots>
+        <processor type="Sitecore.Analytics.Pipelines.ExcludeRobots.TryObtainCachedResult,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.ExcludeRobots.CheckUserAgent,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.ExcludeRobots.CheckIpAddress,Sitecore.Analytics"/>
+        <processor type="Sitecore.Analytics.Pipelines.ExcludeRobots.AddResultToCache,Sitecore.Analytics"/>
+      </excludeRobots>
+      
+    </pipelines>
+
+    <customHandlers>
+      <handler trigger="/~/analytics/reports" type="Sitecore.Analytics.Reports.ReportDataHandler, Sitecore.Analytics" />
+    </customHandlers>
+
+    <commands>
+      <command name="analytics:authoringfeedback" type="Sitecore.Shell.Applications.Analytics.AuthoringFeedback.AuthoringFeedback,Sitecore.Xdb.Client"/>
+      <command name="analytics:emailreport" type="Sitecore.Shell.Applications.Analytics.ReportRunner.EmailReport,Sitecore.Xdb.Client"/>
+      <command name="analytics:opengoals" type="Sitecore.Shell.Applications.Analytics.TrackingField.OpenGoals,Sitecore.Xdb.Client"/>
+      <command name="analytics:opentrackingfield" type="Sitecore.Shell.Applications.Analytics.TrackingField.OpenTrackingField,Sitecore.Xdb.Client"/>
+      <command name="analytics:viewtrackingdetails" type="Sitecore.Shell.Applications.Analytics.TrackingField.ViewTrackingDetails,Sitecore.Xdb.Client"/>
+    </commands>
+
+  </sitecore>
+</configuration>

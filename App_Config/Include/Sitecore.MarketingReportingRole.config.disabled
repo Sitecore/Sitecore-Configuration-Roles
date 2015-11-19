@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Purpose: Sitecore.Marketing.config patch for the reporting server roles. -->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <marketingDefinitions>
+      <sc.variable name="marketingDefinitions.isReadOnly">
+        <patch:attribute name="value">true</patch:attribute>
+      </sc.variable>
+      <sc.variable name="marketingDefinitions.repository">
+        <patch:attribute name="value">rdb</patch:attribute>
+      </sc.variable>
+      <campaign>
+        <definitionManager>
+          <param desc="searchProvider">
+            <patch:attribute name="ref">marketingDefinitions/campaign/searchProviders/notSupported</patch:attribute>
+          </param>
+          <config>
+            <activationFeed>
+              <patch:delete/>
+            </activationFeed>
+            <activationFeed />
+          </config>
+        </definitionManager>
+      </campaign>
+      <asset>
+        <definitionManager>
+          <param desc="searchProvider">
+            <patch:attribute name="ref">marketingDefinitions/asset/searchProviders/notSupported</patch:attribute>
+          </param>
+          <config>
+            <activationFeed>
+              <patch:delete/>
+            </activationFeed>
+            <activationFeed />
+          </config>
+        </definitionManager>
+      </asset>
+      <goal>
+        <definitionManager>
+          <param desc="searchProvider">
+            <patch:attribute name="ref">marketingDefinitions/goal/searchProviders/notSupported</patch:attribute>
+          </param>
+          <config>
+            <activationFeed>
+              <patch:delete/>
+            </activationFeed>
+            <activationFeed />
+          </config>
+        </definitionManager>
+      </goal>
+      <outcome>
+        <definitionManager>
+          <param desc="searchProvider">
+            <patch:attribute name="ref">marketingDefinitions/outcome/searchProviders/notSupported</patch:attribute>
+          </param>
+          <config>
+            <activationFeed>
+              <patch:delete/>
+            </activationFeed>
+            <activationFeed />
+          </config>
+        </definitionManager>
+      </outcome>
+      <funnel>
+        <definitionManager>
+          <param desc="searchProvider">
+            <patch:attribute name="ref">marketingDefinitions/funnel/searchProviders/notSupported</patch:attribute>
+          </param>
+          <config>
+            <activationFeed>
+              <patch:delete/>
+            </activationFeed>
+            <activationFeed />
+          </config>
+        </definitionManager>
+      </funnel>
+    </marketingDefinitions>
+    <taxonomy>
+      <cacheExpirationInSeconds>10</cacheExpirationInSeconds>
+      <sc.variable name="taxonomy.repository">
+        <patch:attribute name="value">rdbTaxonomyRepository</patch:attribute>
+      </sc.variable>
+    </taxonomy>
+  </sitecore>
+</configuration>

@@ -1,0 +1,87 @@
+<!--
+
+Important: The publishing recovery feature is currently released as an experimental feature. 
+
+Purpose: This include file enables publishing recovery so that the system can restart interrupted publish operations after a system
+failure, such as a server restart. 
+
+When this feature is enabled, the publishRecovery pipeline is executed during initialization.
+
+Please consult your Sitecore partner before enabling this include file.
+Enabling this include file without taking into account the specifics of your solution can have unexpected consequences. 
+
+To enable this include file, rename it to have a ".config" extension.
+
+-->
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/">
+  <sitecore>
+    <settings>
+      <!--  Enables the publishing recovery feature. 
+      -->
+      <setting name="Publishing.Recovery.Enabled">
+        <patch:attribute name="value" value="true"/>
+      </setting>
+      <!--  PUBLISHING - RECOVERY - PUBLISH MANAGER PERFORMS DUMP
+            Specifies whether the PublishManager class triggers
+            a recovery dump. The PublishManager class is used by the system to perform publishing operations, and can dump all the 
+            publishing options at once. 
+            If true, the PublishManager class triggers a recovery dump every time it performs a publishing operation.
+            Default value: true
+      -->
+      <setting name="Publishing.Recovery.PublishManagerPerformsDump" value="true" />
+      <!--  PUBLISHING - RECOVERY - PUBLISHER PERFORMS DUMP
+            Specifies whether the Publisher class triggers a recovery dump. The Publisher class can only dump the publishing options that
+            are being processed. Enable this setting if the Publisher class is used to initiate every publish operation directly in your
+            code or modules instead of the PublishManager class.
+            If true, the Publisher class triggers a recovery dump every time it performs a publishing operation. 
+            When you set this to true, you should also set Publishing.Recovery.PublishManagerPerformsDump to true. This ensures that 
+            publishing operations can be recovered when they are initiated by the Publisher class or by the PublishManager class. 
+            Default value: false
+      -->
+      <setting name="Publishing.Recovery.PublisherPerformsDump" value="false" />
+    </settings>
+    <pipelines>
+      <initialize>
+        <!-- Extending the initialize pipeline to run the publishRecovery pipeline. -->
+        <processor type="Sitecore.Publishing.Recovery.Pipelines.PublishRecoveryPipeline, Sitecore.Kernel" method="InitializeFromPipeline" />
+      </initialize>
+      <!--  PUBLISH RECOVERY
+            Executed during initialization. When Publishing.Recovery.Enabled is set to true, this pipeline restarts any publishing
+            operations that started earlier but have not been completed.
+      -->
+      <publishRecovery help="Processors should derive from Sitecore.Publishing.Recovery.Pipelines.PublishRecoveryPipelineProcessor">
+        <processor type="Sitecore.Publishing.Recovery.Pipelines.IsPublishRecoveryEnabled, Sitecore.Kernel"/>
+        <processor type="Sitecore.Publishing.Recovery.Pipelines.CollectRecoveryData, Sitecore.Kernel"/>
+        <processor type="Sitecore.Publishing.Recovery.Pipelines.PerformPublishOperations, Sitecore.Kernel"/>
+      </publishRecovery>
+    </pipelines>
+    <publishManager>
+      <!--  RECOVERY STRATEGY
+            Defines the recovery strategy used by the PublishManager class and the Publisher class when storing or retrieving publishing
+            options.
+      -->
+      <!--
+          FILE SYSTEM PUBLISH RECOVERY STRATEGY
+          This strategy stores publishing details in a log file in $(dumpLocation).
+          During a recovery the log file is used to restart the publishing operation.
+      -->
+      <!--
+      <recoveryStrategy type="Sitecore.Publishing.Recovery.FileSystemPublishRecoveryStrategy, Sitecore.Kernel">
+        <dumpLocation>$(dataFolder)/publishrecovery</dumpLocation>
+      </recoveryStrategy>
+      -->
+
+      <!--
+          DATABASE PUBLISH RECOVERY STRATEGY
+          This strategy stores publishing details in the Properties table of the given database with the specified propertyPrefix as a
+          prefix for the property name.
+          If you have multiple publishers, you can use the propertyPrefix to ensure that the publishing operations are restarted on the
+          correct instance during recovery.
+      -->
+      <recoveryStrategy type="Sitecore.Publishing.Recovery.DatabasePublishRecoveryStrategy, Sitecore.Kernel">
+        <databaseName>core</databaseName>
+        <propertyPrefix>core-</propertyPrefix>
+      </recoveryStrategy>
+    </publishManager>
+  </sitecore>
+</configuration>
