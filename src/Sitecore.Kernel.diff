@@ -1,0 +1,319 @@
+From 1e919fc9b9818fc395167af46f7b60b201a831e3 Mon Sep 17 00:00:00 2001
+From: AlenPelin <AlenPelin@sitecore.net>
+Date: Wed, 18 Nov 2015 17:10:25 +1100
+Subject: [PATCH] Implemented #447737
+
+---
+ Configuration/ConfigPatcher.cs          |   3 +-
+ Configuration/Factory.cs                |   1 +
+ Data/Fields/XmlDeltas.cs                |   2 +-
+ SecurityModel/License/LicenseManager.cs |  10 +++
+ Xml/Patch/Framework.cs                  |   7 ++
+ Xml/Patch/XmlPatchUtils.cs              | 123 ++++++++++++++++++++++++++++----
+ Xml/Patch/XmlPatcher.cs                 |   4 +-
+ 7 files changed, 134 insertions(+), 16 deletions(-)
+
+diff --git a/Configuration/ConfigPatcher.cs b/Configuration/ConfigPatcher.cs
+index a960b5d..5df6e36 100644
+--- a/Configuration/ConfigPatcher.cs
++++ b/Configuration/ConfigPatcher.cs
+@@ -19,9 +19,10 @@ namespace Sitecore.Configuration
+     /// </summary>
+     public const string ConfigurationNamespace = "http://www.sitecore.net/xmlconfig/";
+     public const string SetNamespace = "http://www.sitecore.net/xmlconfig/set/";
++    public const string RoleNamespace = "http://www.sitecore.net/xmlconfig/role/";
+ 
+     XmlNode _root;
+-    XmlPatcher _patcher = new XmlPatcher(SetNamespace, ConfigurationNamespace);
++    XmlPatcher _patcher = new XmlPatcher(RoleNamespace, SetNamespace, ConfigurationNamespace);
+ 
+     /// <summary>
+     /// Initializes a new instance of the <see cref="ConfigPatcher"/> class.
+diff --git a/Configuration/Factory.cs b/Configuration/Factory.cs
+index 73b16ac..7d5b55f 100644
+--- a/Configuration/Factory.cs
++++ b/Configuration/Factory.cs
+@@ -37,6 +37,7 @@ namespace Sitecore.Configuration
+     using Sitecore.Web;
+     using Sitecore.Web.UI.WebControls;
+     using Sitecore.Xml;
++    using Sitecore.Xml.Patch;
+     using Sitecore.Xml.XPath;
+ 
+     /// <summary>
+diff --git a/Data/Fields/XmlDeltas.cs b/Data/Fields/XmlDeltas.cs
+index 6831c1c..4414bc2 100644
+--- a/Data/Fields/XmlDeltas.cs
++++ b/Data/Fields/XmlDeltas.cs
+@@ -110,7 +110,7 @@ namespace Sitecore.Data.Fields
+       XmlNode baseRoot = baseDocument.DocumentElement;
+       Assert.IsNotNull(baseRoot, "Xml document root element is missing (base)");
+ 
+-      new XmlPatcher("s", "p").Merge(baseRoot, patchRoot);
++      new XmlPatcher("r", "s", "p").Merge(baseRoot, patchRoot);
+       return baseRoot.OuterXml;
+     }
+ 
+diff --git a/SecurityModel/License/LicenseManager.cs b/SecurityModel/License/LicenseManager.cs
+index c9ffcd5..49f8644 100644
+--- a/SecurityModel/License/LicenseManager.cs
++++ b/SecurityModel/License/LicenseManager.cs
+@@ -16,6 +16,11 @@ using Sitecore.Web;
+ using Sitecore.Xml;
+ 
+ namespace Sitecore.SecurityModel.License {
++  using System.Configuration;
++  using System.Linq;
++  using Sitecore.StringExtensions;
++  using Sitecore.Xml.Patch;
++
+   /// <summary>
+   /// LicenseManager class
+   /// </summary>
+@@ -185,6 +190,11 @@ namespace Sitecore.SecurityModel.License {
+ 
+       if (HasRuntime || (acceptExpress && HasExpress))
+       {
++        if (!string.IsNullOrEmpty(XmlPatchUtils.DefinedRolesErrorSource))
++        {
++          throw new ConfigurationErrorsException("Current set of roles defined in the \"{0}\" file was attempted to be modified in the \"{1}\" file. This is not allowed to prevent unintended configuration changes. If roles from both files are valid, they need to be merged into a single file.".FormatWith(XmlPatchUtils.DefinedRolesSource, XmlPatchUtils.DefinedRolesErrorSource), XmlPatchUtils.DefinedRolesErrorSource, 0);
++        }
++
+         return;
+       }
+ 
+diff --git a/Xml/Patch/Framework.cs b/Xml/Patch/Framework.cs
+index a292d58..796428b 100644
+--- a/Xml/Patch/Framework.cs
++++ b/Xml/Patch/Framework.cs
+@@ -23,6 +23,13 @@ namespace Sitecore.Xml.Patch
+     /// </summary>
+     /// <value>The set namespace.</value>
+     public string SetNamespace { get; set; }
++
++    /// <summary>
++    /// Gets or sets the role namespace.
++    /// </summary>
++    /// <value>The role namespace.</value>
++    [NotNull]
++    public string RoleNamespace { get; set; }
+   }
+ 
+   /// <summary>
+diff --git a/Xml/Patch/XmlPatchUtils.cs b/Xml/Patch/XmlPatchUtils.cs
+index 4f4eb71..6923d81 100644
+--- a/Xml/Patch/XmlPatchUtils.cs
++++ b/Xml/Patch/XmlPatchUtils.cs
+@@ -8,16 +8,45 @@ namespace Sitecore.Xml.Patch
+ {
+   using System;
+   using System.Collections.Generic;
++  using System.Configuration;
+   using System.Linq;
+   using System.Text;
+   using System.Xml;
+   using Sitecore.Diagnostics;
++  using Sitecore.StringExtensions;
+ 
+   /// <summary>
+   /// A set of utility functions to apply XML patches.
+   /// </summary>
+   public static class XmlPatchUtils
+   {
++    [NotNull]
++    private static readonly object SyncRoot = new object();
++
++    [CanBeNull]
++    private static string[] definedRoles;
++
++    [CanBeNull]
++    public static string DefinedRolesSource { get; private set; }
++
++    [CanBeNull]
++    public static string DefinedRolesErrorSource { get; private set; }
++
++    /// <summary>
++    /// List of defined roles.
++    /// </summary>
++    /// <value>
++    /// The defined roles.
++    /// </value>
++    [NotNull]
++    public static IEnumerable<string> DefinedRoles
++    {
++      get
++      {
++        return XmlPatchUtils.definedRoles ?? new string[0];
++      }
++    }
++
+     #region Public Methods
+ 
+     /// <summary>
+@@ -101,16 +130,16 @@ namespace Sitecore.Xml.Patch
+       Assert.ArgumentNotNull(patch, "patch");
+       Assert.ArgumentNotNull(ns, "ns");
+ 
+-      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
++      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && a.NamespaceURI != ns.RoleNamespace && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
+       IEnumerable<IXmlNode> values = attributes.Select(a =>
+       {
+         string targetNamespace = a.NamespaceURI == ns.SetNamespace ? string.Empty : a.NamespaceURI;
+         return new XmlNodeInfo
+         {
+-          NodeType = a.NodeType, 
+-          NamespaceURI = targetNamespace, 
+-          LocalName = a.LocalName, 
+-          Value = a.Value, 
++          NodeType = a.NodeType,
++          NamespaceURI = targetNamespace,
++          LocalName = a.LocalName,
++          Value = a.Value,
+           Prefix = a.Prefix
+         } as IXmlNode;
+       });
+@@ -150,6 +179,19 @@ namespace Sitecore.Xml.Patch
+       Assert.ArgumentNotNull(patch, "patch");
+       Assert.ArgumentNotNull(ns, "ns");
+ 
++      foreach (var node in patch.GetAttributes())
++      {
++        if (node.NamespaceURI != ns.RoleNamespace)
++        {
++          continue;
++        }
++
++        if (!ProcessRolesNamespace(patch))
++        {
++          return;
++        }
++      }
++
+       if (target.NamespaceURI != patch.NamespaceURI || target.LocalName != patch.LocalName)
+       {
+         return;
+@@ -164,6 +206,51 @@ namespace Sitecore.Xml.Patch
+ 
+     #region Methods
+ 
++    private static bool ProcessRolesNamespace([NotNull] IXmlNode node)
++    {
++      Assert.ArgumentNotNull(node, "node");
++
++      var name = node.LocalName;
++      var value = node.Value;
++      switch (name)
++      {
++        case "d":
++        case "define":
++          if (!string.IsNullOrEmpty(value))
++          {
++            var roles = value.Split("|,;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).Distinct().ToArray();
++            lock (SyncRoot)
++            {
++              var source = (IXmlSource)node;
++              var sourceName = source.SourceName;
++              if (XmlPatchUtils.definedRoles != null)
++              {
++                XmlPatchUtils.DefinedRolesErrorSource = sourceName;
++              }
++              else
++              {
++                XmlPatchUtils.definedRoles = roles;
++                XmlPatchUtils.DefinedRolesSource = sourceName;
++              }
++            }
++          }
++
++          break;
++
++        case "r":
++        case "require":
++          if (!string.IsNullOrEmpty(value) && DefinedRoles.All(x => !value.Equals(x, StringComparison.OrdinalIgnoreCase)))
++          {
++            return false;
++          }
++
++          break;
++      }
++
++      return true;
++    }
++
++
+     /// <summary>
+     /// Inserts the child.
+     /// </summary>
+@@ -282,7 +369,7 @@ namespace Sitecore.Xml.Patch
+               case "instead":
+                 operation = new InsertOperation
+                 {
+-                  Reference = attribute.Value, 
++                  Reference = attribute.Value,
+                   Disposition = attribute.LocalName[0]
+                 };
+                 break;
+@@ -295,23 +382,33 @@ namespace Sitecore.Xml.Patch
+           {
+             setAttributes.Add(new XmlNodeInfo
+             {
+-              NodeType = attribute.NodeType, 
++              NodeType = attribute.NodeType,
+               NamespaceURI = string.Empty, // "set" NS translates into an empty NS
+-              LocalName = attribute.LocalName, 
+-              Prefix = string.Empty, 
++              LocalName = attribute.LocalName,
++              Prefix = string.Empty,
+               Value = attribute.Value
+             });
+             continue;
+           }
+ 
++          if (node.NamespaceURI == ns.RoleNamespace)
++          {
++            if (!ProcessRolesNamespace(node))
++            {
++              return;
++            }
++
++            continue;
++          }
++
+           if (attribute.Prefix != "xmlns")
+           {
+             queryAttributes.Add(new XmlNodeInfo
+             {
+-              NodeType = attribute.NodeType, 
+-              NamespaceURI = attribute.NamespaceURI, 
+-              LocalName = attribute.LocalName, 
+-              Prefix = attribute.Prefix, 
++              NodeType = attribute.NodeType,
++              NamespaceURI = attribute.NamespaceURI,
++              LocalName = attribute.LocalName,
++              Prefix = attribute.Prefix,
+               Value = attribute.Value
+             });
+           }
+diff --git a/Xml/Patch/XmlPatcher.cs b/Xml/Patch/XmlPatcher.cs
+index 3122130..1530b8e 100644
+--- a/Xml/Patch/XmlPatcher.cs
++++ b/Xml/Patch/XmlPatcher.cs
+@@ -16,12 +16,14 @@ namespace Sitecore.Xml.Patch
+     /// <summary>
+     /// Initializes a new instance of the <see cref="XmlPatcher"/> class.
+     /// </summary>
++    /// <param name="roleNamespace">The role namespace.</param>
+     /// <param name="setNamespace">The set namespace.</param>
+     /// <param name="patchNamespace">The config namespace.</param>
+-    public XmlPatcher(string setNamespace, string patchNamespace)
++    public XmlPatcher(string roleNamespace, string setNamespace, string patchNamespace)
+     {
+       this.ns = new XmlPatchNamespaces
+       {
++        RoleNamespace = roleNamespace,
+         SetNamespace = setNamespace,
+         PatchNamespace = patchNamespace
+       };
+-- 
+2.5.0.windows.1
+
