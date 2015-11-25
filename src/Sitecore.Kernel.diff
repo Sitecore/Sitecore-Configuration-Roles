@@ -1,17 +1,98 @@
-From 1e919fc9b9818fc395167af46f7b60b201a831e3 Mon Sep 17 00:00:00 2001
+From a2ac93eb2f0ebc4cd7e399affefc46a73fe89c05 Mon Sep 17 00:00:00 2001
 From: AlenPelin <AlenPelin@sitecore.net>
-Date: Wed, 18 Nov 2015 17:10:25 +1100
-Subject: [PATCH] Implemented #447737
+Date: Wed, 25 Nov 2015 18:36:54 +1100
+Subject: [PATCH] Added delivery role enforcing..
 
 ---
- Configuration/ConfigPatcher.cs          |   3 +-
- Configuration/Factory.cs                |   1 +
- Data/Fields/XmlDeltas.cs                |   2 +-
- SecurityModel/License/LicenseManager.cs |  10 +++
- Xml/Patch/Framework.cs                  |   7 ++
- Xml/Patch/XmlPatchUtils.cs              | 123 ++++++++++++++++++++++++++++----
- Xml/Patch/XmlPatcher.cs                 |   4 +-
- 7 files changed, 134 insertions(+), 16 deletions(-)
+ Configuration/ConfigurationRoles.cs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Configuration/ConfigurationRoles.cs b/Configuration/ConfigurationRoles.cs
+index a23a826..971ba99 100644
+--- a/Configuration/ConfigurationRoles.cs
++++ b/Configuration/ConfigurationRoles.cs
+@@ -160,6 +160,18 @@ namespace Sitecore.Configuration
+         }
+       }
+ 
++      if (roles.Contains("delivery"))
++      {
++        var incompatibleRole = roles.FirstOrDefault(x => x != "delivery" || !x.StartsWith("delivery-"));
++        if (incompatibleRole != null)
++        {
++          DefinedRolesErrorSource = sourceName;
++          DefinedRolesErrorMessage = string.Format("The delivery role is specified alongside with {0} which is not supported.", incompatibleRole);
++
++          return;
++        }
++      }
++
+       definedRoles = roles.ToArray();
+       DefinedRolesSource = sourceName;
+     }
+-- 
+2.5.0.windows.1
+
+From a33c4d0de241016a162a977b7dfb1e6636490f02 Mon Sep 17 00:00:00 2001
+From: AlenPelin <AlenPelin@sitecore.net>
+Date: Wed, 25 Nov 2015 14:56:56 +1100
+Subject: [PATCH] Implemented
+
+---
+ .vs/Sitecore.Kernel/v14/.suo        | Bin 0 -> 10240 bytes
+ Configuration/ConfigPatcher.cs      |   3 +-
+ Configuration/ConfigurationRoles.cs | 167 ++++++++++++++++++++++++++++++++++++
+ Configuration/Factory.cs            |   4 +
+ Data/Fields/XmlDeltas.cs            |   2 +-
+ Sitecore.Kernel.csproj              |   6 +-
+ Sitecore.Kernel.v12.suo             | Bin 0 -> 13312 bytes
+ Xml/Patch/Framework.cs              |   7 ++
+ Xml/Patch/XmlPatchUtils.cs          |  27 +++++-
+ Xml/Patch/XmlPatcher.cs             |   4 +-
+ 10 files changed, 213 insertions(+), 7 deletions(-)
+ create mode 100644 .vs/Sitecore.Kernel/v14/.suo
+ create mode 100644 Configuration/ConfigurationRoles.cs
+ create mode 100644 Sitecore.Kernel.v12.suo
+
+diff --git a/.vs/Sitecore.Kernel/v14/.suo b/.vs/Sitecore.Kernel/v14/.suo
+new file mode 100644
+index 0000000000000000000000000000000000000000..43f1ee9fe05fc069cf79d5bae6057f41ae182498
+GIT binary patch
+literal 10240
+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
+bg{I7V`rUJ_ucxOLnO@G@CZuX7yR&})nI;6k
+
+literal 0
+HcmV?d00001
 
 diff --git a/Configuration/ConfigPatcher.cs b/Configuration/ConfigPatcher.cs
 index a960b5d..5df6e36 100644
@@ -29,18 +110,202 @@ index a960b5d..5df6e36 100644
  
      /// <summary>
      /// Initializes a new instance of the <see cref="ConfigPatcher"/> class.
+diff --git a/Configuration/ConfigurationRoles.cs b/Configuration/ConfigurationRoles.cs
+new file mode 100644
+index 0000000..a23a826
+--- /dev/null
++++ b/Configuration/ConfigurationRoles.cs
+@@ -0,0 +1,167 @@
++namespace Sitecore.Configuration
++{
++  using System;
++  using System.Collections.Generic;
++  using System.Configuration;
++  using System.Linq;
++  using System.Text.RegularExpressions;
++  using System.Threading;
++  using System.Xml;
++  using Sitecore.Diagnostics;
++  using Sitecore.Xml.Patch;
++
++  /// <summary>
++  /// The configuration roles.
++  /// </summary>
++  public static class ConfigurationRoles
++  {
++    [CanBeNull]
++    private static string[] definedRoles;
++
++    /// <summary>
++    /// List of defined roles.
++    /// </summary>
++    /// <value>
++    /// The defined roles.
++    /// </value>
++    [NotNull]
++    public static IEnumerable<string> DefinedRoles
++    {
++      get
++      {
++        return (definedRoles ?? new string[0]).ToArray();
++      }
++    }
++
++    [CanBeNull]
++    internal static string DefinedRolesSource { get; private set; }
++
++    [CanBeNull]
++    internal static string DefinedRolesErrorSource { get; private set; }
++
++    [CanBeNull]
++    private static string DefinedRolesErrorMessage { get; set; }
++
++    internal static void LoadAppSetting()
++    {
++      var roleDefine = System.Configuration.ConfigurationManager.AppSettings["role:define"];
++      if (!string.IsNullOrEmpty(roleDefine))
++      {
++        ConfigurationRoles.DefineRolesOnce(roleDefine, "web.config");
++      }
++    }
++
++    internal static void Validate()
++    {
++      if (string.IsNullOrEmpty(DefinedRolesErrorSource) && string.IsNullOrEmpty(DefinedRolesErrorMessage))
++      {
++        return;
++      }
++
++      throw new ConfigurationErrorsException(DefinedRolesErrorMessage, DefinedRolesErrorSource, 0);
++    }
++
++    public static bool ProcessRolesNamespace([NotNull] IXmlNode attribute)
++    {
++      Assert.ArgumentNotNull(attribute, "node");
++      Assert.ArgumentCondition(attribute.NodeType == XmlNodeType.Attribute, "attribute", "The attribute node is not an XmlNodeType.Attribute");
++
++      var name = attribute.LocalName;
++      var value = attribute.Value;
++      switch (name)
++      {
++        case "d":
++        case "define":
++          if (!string.IsNullOrEmpty(value))
++          {
++            Sitecore.Configuration.ConfigurationRoles.DefineRolesOnce(value, attribute);
++
++            return false;
++          }
++
++          break;
++
++        case "r":
++        case "require":
++          if (!string.IsNullOrEmpty(value))
++          {
++            var words = value.Split("|;,".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
++
++            return words.Any(word => Sitecore.Configuration.ConfigurationRoles.DefinedRoles.Contains(word));
++          }
++
++          break;
++      }
++
++      return true;
++    }
++
++    private static void DefineRolesOnce([NotNull] string value, [NotNull] IXmlNode node)
++    {
++      Assert.ArgumentNotNull(value, "value");
++      Assert.ArgumentNotNull(node, "node");
++
++      var source = (IXmlSource)node;
++      var sourceName = source.SourceName;
++
++      DefineRolesOnce(value, sourceName);
++    }
++
++    private static void DefineRolesOnce([NotNull] string value, [NotNull] string sourceName)
++    {
++      Assert.ArgumentNotNull(value, "value");
++      Assert.ArgumentNotNull(sourceName, "sourceName");
++
++      if (definedRoles != null && DefinedRolesSource != sourceName)
++      {
++        DefinedRolesErrorSource = sourceName;
++        DefinedRolesErrorMessage = string.Format(
++          "Current set of roles defined in the \"{0}\" file was attempted to be modified in the \"{1}\" file. " +
++          "This is not allowed to prevent unintended configuration changes. " +
++          "If roles from both files are valid, they need to be merged into a single file.",
++          DefinedRolesSource,
++          DefinedRolesErrorSource);
++
++        return;
++      }
++
++      var roles = value.Split("|,;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
++        .Select(x => x.ToLowerInvariant())
++        .Distinct()
++        .ToList();
++
++      // expand some-role-1 into "some-role|some-role-1" and "dedicated-publishing" to "publishing|publishing-1|dedicated-publishing"
++      var regex = new Regex(@"([^|;,]+)\-(\d+)$");
++      var rolesCopy = roles.ToArray();
++      var shift = 0;
++      for (var i = 0; i < rolesCopy.Length; i++)
++      {
++        var role = rolesCopy[i];
++        var match = regex.Match(role);
++        if (match.Success && match.Groups.Count >= 1)
++        {
++          var newRole = match.Groups[1].Value;
++          if (!roles.Contains(newRole))
++          {
++            roles.Insert(i + shift++, newRole);
++          }
++        }
++        else if (role == "dedicated-publishing")
++        {
++          if (!roles.Contains("publishing"))
++          {
++            roles.Insert(i + shift++, "publishing");
++          }
++
++          if (!roles.Contains("publishing-1"))
++          {
++            roles.Insert(i + shift++, "publishing-1");
++          }
++        }
++      }
++
++      definedRoles = roles.ToArray();
++      DefinedRolesSource = sourceName;
++    }
++  }
++}
+\ No newline at end of file
 diff --git a/Configuration/Factory.cs b/Configuration/Factory.cs
-index 73b16ac..7d5b55f 100644
+index 73b16ac..61f91a7 100644
 --- a/Configuration/Factory.cs
 +++ b/Configuration/Factory.cs
-@@ -37,6 +37,7 @@ namespace Sitecore.Configuration
-     using Sitecore.Web;
-     using Sitecore.Web.UI.WebControls;
-     using Sitecore.Xml;
-+    using Sitecore.Xml.Patch;
-     using Sitecore.Xml.XPath;
+@@ -1583,6 +1583,8 @@ namespace Sitecore.Configuration
  
-     /// <summary>
+                 config.AppendChild(config.ImportNode(root, true));
+ 
++                ConfigurationRoles.LoadAppSetting();
++
+                 ExpandIncludeFiles(config.DocumentElement, new Hashtable());
+ 
+                 LoadAutoIncludeFiles(config.DocumentElement);
+@@ -1591,6 +1593,8 @@ namespace Sitecore.Configuration
+ 
+                 Factory.configuration = config;
+ 
++                ConfigurationRoles.Validate();
++
+                 return Factory.configuration;
+             }
+         }
 diff --git a/Data/Fields/XmlDeltas.cs b/Data/Fields/XmlDeltas.cs
 index 6831c1c..4414bc2 100644
 --- a/Data/Fields/XmlDeltas.cs
@@ -54,34 +319,91 @@ index 6831c1c..4414bc2 100644
        return baseRoot.OuterXml;
      }
  
-diff --git a/SecurityModel/License/LicenseManager.cs b/SecurityModel/License/LicenseManager.cs
-index c9ffcd5..49f8644 100644
---- a/SecurityModel/License/LicenseManager.cs
-+++ b/SecurityModel/License/LicenseManager.cs
-@@ -16,6 +16,11 @@ using Sitecore.Web;
- using Sitecore.Xml;
- 
- namespace Sitecore.SecurityModel.License {
-+  using System.Configuration;
-+  using System.Linq;
-+  using Sitecore.StringExtensions;
-+  using Sitecore.Xml.Patch;
-+
-   /// <summary>
-   /// LicenseManager class
-   /// </summary>
-@@ -185,6 +190,11 @@ namespace Sitecore.SecurityModel.License {
- 
-       if (HasRuntime || (acceptExpress && HasExpress))
-       {
-+        if (!string.IsNullOrEmpty(XmlPatchUtils.DefinedRolesErrorSource))
-+        {
-+          throw new ConfigurationErrorsException("Current set of roles defined in the \"{0}\" file was attempted to be modified in the \"{1}\" file. This is not allowed to prevent unintended configuration changes. If roles from both files are valid, they need to be merged into a single file.".FormatWith(XmlPatchUtils.DefinedRolesSource, XmlPatchUtils.DefinedRolesErrorSource), XmlPatchUtils.DefinedRolesErrorSource, 0);
-+        }
-+
-         return;
-       }
- 
+diff --git a/Sitecore.Kernel.csproj b/Sitecore.Kernel.csproj
+index 44a9a84..1daa81a 100644
+--- a/Sitecore.Kernel.csproj
++++ b/Sitecore.Kernel.csproj
+@@ -59,14 +59,15 @@
+     <TargetFrameworkProfile />
+   </PropertyGroup>
+   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+-    <OutputPath>bin\</OutputPath>
++    <OutputPath>..\..\..\..\..\inetpub\wwwroot\poc447737-cd\Website\bin\</OutputPath>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <BaseAddress>285212672</BaseAddress>
+     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+     <ConfigurationOverrideFile>
+     </ConfigurationOverrideFile>
+     <DefineConstants>TRACE;DEBUG;ASSERTIONS</DefineConstants>
+-    <DocumentationFile>bin\Sitecore.Kernel.XML</DocumentationFile>
++    <DocumentationFile>
++    </DocumentationFile>
+     <DebugSymbols>true</DebugSymbols>
+     <FileAlignment>4096</FileAlignment>
+     <NoStdLib>false</NoStdLib>
+@@ -5012,6 +5013,7 @@
+       <SubType>Code</SubType>
+     </Compile>
+     <Compile Include="Workflows\WorkflowUIHelper.cs" />
++    <Compile Include="Configuration\ConfigurationRoles.cs" />
+     <Compile Include="Xml\Patch\ElementIdentification.cs" />
+     <Compile Include="Xml\Patch\XmlDiffUtils.cs" />
+     <Compile Include="Xml\Patch\XmlElementContext.cs" />
+diff --git a/Sitecore.Kernel.v12.suo b/Sitecore.Kernel.v12.suo
+new file mode 100644
+index 0000000000000000000000000000000000000000..0877d28633d7902ebac05f061a556bec8044613f
+GIT binary patch
+literal 13312
+zcmeHN3v5(H7e2df<t4O5EKq!`S}Z<jX(=G+54KRSrDzoa#r09PTU_kRQh^$OAu583
+zCZI-wfRLc^g|YP+K@mlSC{HDt7$ZIqK`};={67ly`|h3T?v}fIZy~IpJDb^=IWu?8
+zJ!j^;X71K4sXLc9rhhH1(oji|!_6J!ln}Tpq%J99^bvNrxw)BLtfLxFClLp(ksAE!
+z#Uq7Mjj~P}xRj1lnk2QXd8*A*DNBC3H$8Kks~yJ8>S_)y1;!egB1OPnfm)%=u$d*i
+zJ5Agz_{sM0Uh7s7z}UV<x=QW<)s+$ee&)$C7VR=*zws{p)woDShPYkCOF40hpL4ZW
+z!eoa(FA`z}*Z7H>$!56GorM24)xb_D51EgK{Zpp9psxcm>&YlPB6Co8l%0{=t2URi
+zo2vIfnTE_~xF1eea6T7LCmsi4DgVnFyY=i5mw!mai6j4dM^YbB4^VC?^Ms$ON-h6{
+zQSK@KtW%FrCusTSILiNNsy{CO<kE?qXolR#3CM}aTtnJ2+GxEOxW=>-Y;*l-7ibUI
+z<{ESTS*H!4zSsJnd!eW5>xJ?RRUeA-Y-EpWpNsN5<P6n5A7v(TALI)Z>>`vGBllJ9
+zY?S?wb5xslnznL)Y7atr3G!goz7*wU$p2C8VJI(G^#YW`kw>WZNR*?HuTX8$_D@ZA
+z{zs1Ff(wz;`S5?JFSM?RJTllb5Y_dnX^%hnoK=nf5BD(lCD+JmOl#N>05&L~9sXPg
+z^b@c4e_G?RYM%+<cE|X+!y_l~-;hVjpi}zuG4@k6WnBK7oBz%7-{cxDL&S@yCt$=p
+zKEz;kh<%QPc%V<Spl`i06(f8oIkwz#Y?h1$ybke{AF&nZ@?-QJfDlWAj8RXruLLk3
+z`l~T7@rJj@AQr1eo{YXa;P+wFqrS&?ZdvH5d4GR$zxJ=+IGS6Td!K1A4B59ZU>Pu4
+z-QCdZP)vPb*q-byvJmB^7m9p|J`W7VECev-Q_l2;5}B}Kfh!jLyH2VMK9(AhsZVYN
+zpG;T~66DXyl_fix4$dk4VPDeX<lTd*np)^=O|PB)i|c=T`$wLhtoq+>{c|Py2?*_v
+z-cu~Ygd;+u5by&L`i=(NR{TeUBib`3Gk&}E&oR90$kfySW30gV(dqg#etbhsX^-FD
+z|7k1#(}8=nWBiOLA}7+{R{UpSy64oC_VnjPMvflJAIz8$k2&T4IT-)Fn$-?}bm|$i
+zxm}DMc^2RlKi}7>|Ib(<S_1wy>mSA{zp6>?=w}=mEs=h>6-IpQlzz&}vuaX1{ET0t
+zCE{=E{^R+~duq~UG4Wr9!{6iiegJ+Py+EF?2Mm}Ok$14q%A47^XT|Q1H%MxJYRcx-
+z>l&N*;-M5f<+>ucRq@#0PX9=7!v}uQ?`}{Y?iG6%tsK<n`foNJ@O3*i;jBkPY5owR
+z_5?iKDcHu>LG(7`DCWL8k?gfNvA}W6s_o`U$!+@qs}*^s+$G!ajOJN51MWF4^m`>A
+zemed6Dwzb&wL!)k{`*w5>iV|F^yhnb+H`Y6*QH-%e&SxUwkUB?D7Dsa9i(CLae4pN
+z@k?a?`x?+yW<)`Ch;nL--OXsmq-@DsW2SVP`E$3-DH+9AZTaGbwon$NF<R};V+=py
+z@_&pB#9AL2E4SW1p*pU${<D(*;VF+#xbTdL%OCFdqHj(~W@YHUNr3EA{-06u-x20y
+z9pwL3sC3Hz{!dK#U-7#s|6lo|$-kZb$vF=Ge{Yb}kq1vmcKCD6VG;ke{X?kl*#E#0
+zfMfq7N1}TGN8|rx0smG-ksbXx65RtLejI1C+_|V}qZZ^TjDwNv@W=f>#i$6y$?pH%
+zQ}jdTbke2`?JK_|$~#>}8WNJELs}5dk0ZtzZd;`?ZpnZC>7E@M`!T}s7|Wn(3uPKK
+zF27VUzt*7cy&WD#5Pmgmu;0k04PG<q;r#h;7pz`-Q|Hp`z*YudEyVr;wb2Wj=rp+S
+zmmyC;X!0TYhk@`6s42}9K4YC?<9`I{&xe=D^S=Q25YB<n9_@epQMK#cdneENaq{v-
+zGZwG!zzew+nw|u`WuQF~w&YIm;eOCwg!X5+&dI^mSxNzTvK=>ZD6hwL-P|&frY4c^
+zJTCb!uHgb#y5w6tXU`*R&Y94Kf3yD<j5ze>o~pKY>e>T8^_=tn@*xWjrIi$9&EorN
+zTA$8`jXh@CIpgy&p+B<!5$eC1@^ZCrz9&6z-$y&{8tb|s{Z;IUAl;gN!pt<N{^gFV
+zrrj{_fBshzN{W}#wArSAnEh|r737XB@fdJC>_6}1o#GF*|Kag>xNpjDgDRm*wM6WA
+zaMt|;*X$a7?Y^CN2m0Ul8)?-$LYIWKC9RLi{x5~DtOX_JcYdUZcB9O&C0;SVL1fg%
+zn3Zuj`}^VMcYt{C#eoOWYnkzExnYO=G7|G~wsMR#r6#%Lg}JvZxM|$sONIu1oWAQR
+z@<8)sDKy0<Xj|P5<<H!h&_4q2%R97cP&d`EoxDfmU7N@jxS~afC9K{q^i8enFU92j
+zt=6vuwCKp2tHt#)S8FWnV~tG5_ZtC&+R&4gbrV;dJ!;#*1*7`5t4{3VUqY%h<+`+{
+z)Ec@~(LWBDcmqeS^2V|jWj_9E@l^>=yXd>{jeV%`*7I77t};dyqgF2kc(x4h%Ue({
+zp5c9IjWHsC@toO<``1A@L#sfm96NI$cIE)oDnNH%eEZ@xP9ctbsy{g6MHH8Z`ExNx
+z9_o_-G0!yO`ak;jzYgNRu>E7bOTwWilK#hLvOm7yC42<`fAq=$&2#S_)4j*-#UxUT
+z(3Nm1AA#Ci1!vNa`fJ&4*^9$U-QU8HM`EHsBI!SUN?8X9H1+s0Z<k^3PMY_6VpGwE
+z6{mNd9ZJ;ZiMTfj@%l*2vHJh@u{eIBvY7!AwXs^WvAA;nxbpE6de+y#DwvdyKlJ&~
+z&%68f7Co_ep6iXB(?Ti#0AAoS06qfs51{m7DQ`})SWZ6FrWBj+C-R|9wSA{v4z^6s
+zm|y#oK_(|=7guyS<=m$`H-7DZXlA=fUy&faaT`%DL_UmM3$AE5nn#tKeLq7jU18V(
+r-W2GY6Dz2WVoXZ*9Nhli>e7wwgqeGKt<TEd%~#ZKJaMB)RlC0cub%l#
+
+literal 0
+HcmV?d00001
+
 diff --git a/Xml/Patch/Framework.cs b/Xml/Patch/Framework.cs
 index a292d58..796428b 100644
 --- a/Xml/Patch/Framework.cs
@@ -101,199 +423,69 @@ index a292d58..796428b 100644
  
    /// <summary>
 diff --git a/Xml/Patch/XmlPatchUtils.cs b/Xml/Patch/XmlPatchUtils.cs
-index 4f4eb71..6923d81 100644
+index 4f4eb71..3d8fbcd 100644
 --- a/Xml/Patch/XmlPatchUtils.cs
 +++ b/Xml/Patch/XmlPatchUtils.cs
-@@ -8,16 +8,45 @@ namespace Sitecore.Xml.Patch
- {
-   using System;
-   using System.Collections.Generic;
-+  using System.Configuration;
-   using System.Linq;
-   using System.Text;
-   using System.Xml;
-   using Sitecore.Diagnostics;
-+  using Sitecore.StringExtensions;
- 
-   /// <summary>
-   /// A set of utility functions to apply XML patches.
-   /// </summary>
-   public static class XmlPatchUtils
-   {
-+    [NotNull]
-+    private static readonly object SyncRoot = new object();
-+
-+    [CanBeNull]
-+    private static string[] definedRoles;
-+
-+    [CanBeNull]
-+    public static string DefinedRolesSource { get; private set; }
-+
-+    [CanBeNull]
-+    public static string DefinedRolesErrorSource { get; private set; }
-+
-+    /// <summary>
-+    /// List of defined roles.
-+    /// </summary>
-+    /// <value>
-+    /// The defined roles.
-+    /// </value>
-+    [NotNull]
-+    public static IEnumerable<string> DefinedRoles
-+    {
-+      get
-+      {
-+        return XmlPatchUtils.definedRoles ?? new string[0];
-+      }
-+    }
-+
-     #region Public Methods
- 
-     /// <summary>
-@@ -101,16 +130,16 @@ namespace Sitecore.Xml.Patch
+@@ -101,7 +101,7 @@ namespace Sitecore.Xml.Patch
        Assert.ArgumentNotNull(patch, "patch");
        Assert.ArgumentNotNull(ns, "ns");
  
 -      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
-+      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && a.NamespaceURI != ns.RoleNamespace && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
++      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && (a.NamespaceURI != ns.RoleNamespace || a.LocalName == "define") && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
        IEnumerable<IXmlNode> values = attributes.Select(a =>
        {
          string targetNamespace = a.NamespaceURI == ns.SetNamespace ? string.Empty : a.NamespaceURI;
-         return new XmlNodeInfo
-         {
--          NodeType = a.NodeType, 
--          NamespaceURI = targetNamespace, 
--          LocalName = a.LocalName, 
--          Value = a.Value, 
-+          NodeType = a.NodeType,
-+          NamespaceURI = targetNamespace,
-+          LocalName = a.LocalName,
-+          Value = a.Value,
-           Prefix = a.Prefix
-         } as IXmlNode;
-       });
-@@ -150,6 +179,19 @@ namespace Sitecore.Xml.Patch
+@@ -234,12 +234,18 @@ namespace Sitecore.Xml.Patch
        Assert.ArgumentNotNull(patch, "patch");
        Assert.ArgumentNotNull(ns, "ns");
  
-+      foreach (var node in patch.GetAttributes())
-+      {
-+        if (node.NamespaceURI != ns.RoleNamespace)
++      var exit = false;
+       string savedComment = null;
+       var pendingOperations = new Stack<InsertOperation>();
+ 
+       // copy child nodes
+       foreach (IXmlElement node in patch.GetChildren())
+-      {
++      {      
++        if(exit)
 +        {
 +          continue;
 +        }
 +
-+        if (!ProcessRolesNamespace(patch))
-+        {
-+          return;
-+        }
-+      }
-+
-       if (target.NamespaceURI != patch.NamespaceURI || target.LocalName != patch.LocalName)
-       {
-         return;
-@@ -164,6 +206,51 @@ namespace Sitecore.Xml.Patch
+         if (node.NodeType == XmlNodeType.Text)
+         {
+           target.InnerText = node.Value;
+@@ -270,6 +276,18 @@ namespace Sitecore.Xml.Patch
  
-     #region Methods
- 
-+    private static bool ProcessRolesNamespace([NotNull] IXmlNode node)
-+    {
-+      Assert.ArgumentNotNull(node, "node");
-+
-+      var name = node.LocalName;
-+      var value = node.Value;
-+      switch (name)
-+      {
-+        case "d":
-+        case "define":
-+          if (!string.IsNullOrEmpty(value))
+         foreach (IXmlNode attribute in node.GetAttributes())
+         {
++          if (exit)
 +          {
-+            var roles = value.Split("|,;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).Distinct().ToArray();
-+            lock (SyncRoot)
-+            {
-+              var source = (IXmlSource)node;
-+              var sourceName = source.SourceName;
-+              if (XmlPatchUtils.definedRoles != null)
-+              {
-+                XmlPatchUtils.DefinedRolesErrorSource = sourceName;
-+              }
-+              else
-+              {
-+                XmlPatchUtils.definedRoles = roles;
-+                XmlPatchUtils.DefinedRolesSource = sourceName;
-+              }
-+            }
-+          }
-+
-+          break;
-+
-+        case "r":
-+        case "require":
-+          if (!string.IsNullOrEmpty(value) && DefinedRoles.All(x => !value.Equals(x, StringComparison.OrdinalIgnoreCase)))
-+          {
-+            return false;
-+          }
-+
-+          break;
-+      }
-+
-+      return true;
-+    }
-+
-+
-     /// <summary>
-     /// Inserts the child.
-     /// </summary>
-@@ -282,7 +369,7 @@ namespace Sitecore.Xml.Patch
-               case "instead":
-                 operation = new InsertOperation
-                 {
--                  Reference = attribute.Value, 
-+                  Reference = attribute.Value,
-                   Disposition = attribute.LocalName[0]
-                 };
-                 break;
-@@ -295,23 +382,33 @@ namespace Sitecore.Xml.Patch
-           {
-             setAttributes.Add(new XmlNodeInfo
-             {
--              NodeType = attribute.NodeType, 
-+              NodeType = attribute.NodeType,
-               NamespaceURI = string.Empty, // "set" NS translates into an empty NS
--              LocalName = attribute.LocalName, 
--              Prefix = string.Empty, 
-+              LocalName = attribute.LocalName,
-+              Prefix = string.Empty,
-               Value = attribute.Value
-             });
-             continue;
-           }
- 
-+          if (node.NamespaceURI == ns.RoleNamespace)
-+          {
-+            if (!ProcessRolesNamespace(node))
-+            {
-+              return;
-+            }
-+
 +            continue;
 +          }
 +
-           if (attribute.Prefix != "xmlns")
++          if (attribute.NamespaceURI == ns.RoleNamespace && !Configuration.ConfigurationRoles.ProcessRolesNamespace(node))
++          {            
++            exit = true;
++            pendingOperations.Clear();
++            continue;            
++          }
++
+           if (attribute.NamespaceURI == ns.PatchNamespace)
            {
-             queryAttributes.Add(new XmlNodeInfo
-             {
--              NodeType = attribute.NodeType, 
--              NamespaceURI = attribute.NamespaceURI, 
--              LocalName = attribute.LocalName, 
--              Prefix = attribute.Prefix, 
-+              NodeType = attribute.NodeType,
-+              NamespaceURI = attribute.NamespaceURI,
-+              LocalName = attribute.LocalName,
-+              Prefix = attribute.Prefix,
-               Value = attribute.Value
-             });
+             switch (attribute.LocalName)
+@@ -317,6 +335,11 @@ namespace Sitecore.Xml.Patch
            }
+         }
+ 
++        if (exit)
++        {
++          continue;
++        }
++
+         var nsManager = new XmlNamespaceManager(new NameTable());
+ 
+         var predicateBuilder = new StringBuilder();
 diff --git a/Xml/Patch/XmlPatcher.cs b/Xml/Patch/XmlPatcher.cs
 index 3122130..1530b8e 100644
 --- a/Xml/Patch/XmlPatcher.cs
