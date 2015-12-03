@@ -96,7 +96,7 @@ namespace Sitecore.Configuration.Roles
       Assert.ArgumentNotNull(patch, "patch");
       Assert.ArgumentNotNull(ns, "ns");
 
-      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
+      IEnumerable<IXmlNode> attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && (a.NamespaceURI != ns.RoleNamespace || a.LocalName == "define") && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
       IEnumerable<IXmlNode> values = attributes.Select(a =>
       {
         string targetNamespace = a.NamespaceURI == ns.SetNamespace ? string.Empty : a.NamespaceURI;
@@ -147,6 +147,31 @@ namespace Sitecore.Configuration.Roles
 
       if (target.NamespaceURI != patch.NamespaceURI || target.LocalName != patch.LocalName)
       {
+        return;
+      }
+ 
+      var exit = false;
+      foreach (var attribute in patch.GetAttributes())
+      {
+        if (exit)
+        {
+          continue;
+        }
+
+        if (attribute.NamespaceURI == ns.RoleNamespace && !RoleConfigurationHelper.ProcessRolesNamespace(attribute))
+        {
+          // we need to finish enumerating attributes to avoid reader problem
+          exit = true;
+        }
+      }
+
+      if (exit)
+      {
+        foreach(var node in patch.GetChildren())
+        {
+          // we need to get children to avoid reader problem
+        }
+
         return;
       }
 
@@ -229,12 +254,18 @@ namespace Sitecore.Configuration.Roles
       Assert.ArgumentNotNull(patch, "patch");
       Assert.ArgumentNotNull(ns, "ns");
 
+      var exit = false;
       string savedComment = null;
       var pendingOperations = new Stack<InsertOperation>();
 
       // copy child nodes
       foreach (IXmlElement node in patch.GetChildren())
       {
+        if(exit)
+        {
+          continue;
+        }
+
         if (node.NodeType == XmlNodeType.Text)
         {
           target.InnerText = node.Value;
@@ -265,6 +296,23 @@ namespace Sitecore.Configuration.Roles
 
         foreach (IXmlNode attribute in node.GetAttributes())
         {
+          if (exit)
+          {
+            continue;
+          }
+
+          if (attribute.NamespaceURI == ns.RoleNamespace)
+          {
+            if(!RoleConfigurationHelper.ProcessRolesNamespace(node))
+            {
+              // we need to finish enumerating attributes to avoid reader problem
+              exit = true;
+              pendingOperations.Clear();
+            }
+
+            continue;
+          }
+
           if (attribute.NamespaceURI == ns.PatchNamespace)
           {
             switch (attribute.LocalName)
@@ -310,6 +358,11 @@ namespace Sitecore.Configuration.Roles
               Value = attribute.Value
             });
           }
+        }
+
+        if (exit)
+        {
+          continue;
         }
 
         var nsManager = new XmlNamespaceManager(new NameTable());

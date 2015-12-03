@@ -13,12 +13,14 @@ namespace Sitecore.Configuration.Roles
     /// <summary>
     /// Initializes a new instance of the <see cref="XmlPatcher"/> class.
     /// </summary>
+    /// <param name="roleNamespace">The role namespace.</param>
     /// <param name="setNamespace">The set namespace.</param>
     /// <param name="patchNamespace">The config namespace.</param>
-    public XmlPatcher(string setNamespace, string patchNamespace)
+    public XmlPatcher(string roleNamespace, string setNamespace, string patchNamespace)
     {
       this.ns = new XmlPatchNamespaces
       {
+        RoleNamespace = roleNamespace,
         SetNamespace = setNamespace,
         PatchNamespace = patchNamespace
       };

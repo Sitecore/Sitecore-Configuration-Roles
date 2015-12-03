@@ -17,8 +17,10 @@ namespace Sitecore.Configuration.Roles
 
     public const string SetNamespace = "http://www.sitecore.net/xmlconfig/set/";
 
+    public const string RoleNamespace = "http://www.sitecore.net/xmlconfig/role/";
+
     XmlNode _root;
-    XmlPatcher _patcher = new XmlPatcher(SetNamespace, ConfigurationNamespace);
+    XmlPatcher _patcher = new XmlPatcher(RoleNamespace, SetNamespace, ConfigurationNamespace);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Sitecore.Configuration.Roles.ConfigPatcher"/> class.

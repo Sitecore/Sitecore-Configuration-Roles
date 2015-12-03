@@ -24,11 +24,15 @@ namespace Sitecore.Configuration.Roles
 
       config.AppendChild(config.ImportNode(root, true));
 
+      RoleConfigurationHelper.LoadAppSetting();
+
       ExpandIncludeFiles(config.DocumentElement, new Hashtable());
 
       LoadAutoIncludeFiles(config.DocumentElement);
 
       ReplaceGlobalVariables(config.DocumentElement);
+
+      RoleConfigurationHelper.Validate();
 
       return config;
     }

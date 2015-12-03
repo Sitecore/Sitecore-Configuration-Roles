@@ -13,5 +13,12 @@ namespace Sitecore.Configuration.Roles
     /// </summary>
     /// <value>The set namespace.</value>
     public string SetNamespace { get; set; }
+
+    /// <summary>
+    /// Gets or sets the role namespace.
+    /// </summary>
+    /// <value>The role namespace.</value>
+    [NotNull]
+    public string RoleNamespace { get; set; }
   }
 }
