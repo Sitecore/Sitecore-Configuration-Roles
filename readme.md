@@ -4,11 +4,11 @@ The aim of this project to make Sitecore pre-configured for one of pre-defined
 configuration roles, so after installing a Sitecore instance the only setting 
 should be changes: the roles the instance should have.
 
-## Sitecore CMS 8.1 rev. 151003 POC 447737-2
+## Sitecore CMS 8.1 rev. 151003 POC 451602
 
-In this POC Sitecore configuration engine was extended with two simple commands
-and modified configuration files that use them. It is distributed as custom version
-of `Sitecore.Kernel.dll` as the logic is hard-coded into it. 
+In this project Sitecore configuration engine was extended with two simple commands
+and modified configuration files that use them. It is distributed as a module which
+is based on custom version of `Sitecore.Kernel.dll` that allows changing Factory.GetConfiguration()
 
 Since this is POC it represents our idea how this feature should be implemented - 
 you are welcome to critisize our idea or implementation or both. 
