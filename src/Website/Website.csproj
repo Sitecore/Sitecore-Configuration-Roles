@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Include\!-Role-Define.config" />
-    <Content Include="App_Config\Include\!-Role-Require-Delivery.config" />
+    <Content Include="App_Config\Include\!-Role-Roles-Delivery.config" />
     <Content Include="App_Config\Include\001.Sitecore.Speak.Important.config" />
     <Content Include="App_Config\Include\CES\Sitecore.CES.config" />
     <Content Include="App_Config\Include\CES\Sitecore.CES.DeviceDetection.config" />
