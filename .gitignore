@@ -2,3 +2,7 @@ src/Sitecore.Configuration.Roles/bin/
 src/Sitecore.Configuration.Roles/obj/
 *.suo
 src/packages/
+*.user
+src/Website/bin/
+src/Website/obj/
+*.pubxml
