@@ -5,7 +5,6 @@ namespace Sitecore.Configuration.Roles
   using System.Configuration;
   using System.Linq;
   using System.Text.RegularExpressions;
-  using System.Threading;
   using System.Xml;
   using Sitecore.Diagnostics;
   using Sitecore.Xml.Patch;
@@ -15,7 +14,6 @@ namespace Sitecore.Configuration.Roles
   /// </summary>
   public static class RoleConfigurationHelper
   {
-
     [CanBeNull]
     private static string[] definedRoles;
 

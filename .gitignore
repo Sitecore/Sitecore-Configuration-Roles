@@ -1,3 +1,4 @@
 src/Sitecore.Configuration.Roles/bin/
 src/Sitecore.Configuration.Roles/obj/
 *.suo
+src/packages/
