@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Sitecore.Configuration.Roles</id>
+    <version>1.0.0</version>
+    <authors>Alen Pelin</authors>
+    <owners>Sitecore</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Configuration Role Engine for Sitecore.</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\Sitecore.Configuration.Roles.dll" target="lib\Sitecore.Configuration.Roles.dll" />
+    <file src="bin\Release\Sitecore.Configuration.Roles.pdb" target="lib\Sitecore.Configuration.Roles.pdb" />
+  </files>
+</package>
