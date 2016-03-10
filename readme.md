@@ -4,23 +4,23 @@ The aim of this project to make Sitecore pre-configured for one of pre-defined
 configuration roles, so after installing a Sitecore instance the only setting 
 should be changes: the roles the instance should have.
 
-## Index
+### Index
 
-[Prerequsites](https://github.com/Sitecore/Sitecore-Configuration-Roles#prerequsites)  
-[1. Sitecore CMS 8.1 rev. 160302 (Update-2)](https://github.com/Sitecore/Sitecore-Configuration-Roles#sitecore-cms-81-rev-160302-update-2)  
+##### [Prerequsites](https://github.com/Sitecore/Sitecore-Configuration-Roles#prerequsites)  
+1. [Sitecore CMS 8.1 rev. 160302 (Update-2)](https://github.com/Sitecore/Sitecore-Configuration-Roles#sitecore-cms-81-rev-160302-update-2)  
 
-[How To](https://github.com/Sitecore/Sitecore-Configuration-Roles#how-to)  
-[1. Install NuGet Package](https://github.com/Sitecore/Sitecore-Configuration-Roles#1-install-nuget-package)  
-[2. Modify web.config file](https://github.com/Sitecore/Sitecore-Configuration-Roles#2-modify-webconfig-file)  
-[3. Modify Include *.config files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3-modify-include-config-files)  
-[4. Deploy](https://github.com/Sitecore/Sitecore-Configuration-Roles#4-deploy)  
-[5. Update instances roles](https://github.com/Sitecore/Sitecore-Configuration-Roles#5-update-instances-roles)  
-[6. Verify if it works](https://github.com/Sitecore/Sitecore-Configuration-Roles#6-verify-if-it-works)  
+##### [How To](https://github.com/Sitecore/Sitecore-Configuration-Roles#how-to)  
+1. [Install NuGet Package](https://github.com/Sitecore/Sitecore-Configuration-Roles#1-install-nuget-package)  
+2. [Modify web.config file](https://github.com/Sitecore/Sitecore-Configuration-Roles#2-modify-webconfig-file)  
+3. [Modify Include *.config files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3-modify-include-config-files)  
+4. [Deploy](https://github.com/Sitecore/Sitecore-Configuration-Roles#4-deploy)  
+5. [Update instances roles](https://github.com/Sitecore/Sitecore-Configuration-Roles#5-update-instances-roles)  
+6. [Verify if it works](https://github.com/Sitecore/Sitecore-Configuration-Roles#6-verify-if-it-works)  
 
-[Details](https://github.com/Sitecore/Sitecore-Configuration-Roles#details)  
-[1. Define Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#1--define-role-command)  
-[2. Require Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#2--require-role-command)  
-[3. Modified configuration files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3--modified-configuration-files)  
+##### [Details](https://github.com/Sitecore/Sitecore-Configuration-Roles#details)  
+1. [Define Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#1--define-role-command)  
+2. [Require Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#2--require-role-command)  
+3. [Modified configuration files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3--modified-configuration-files)  
 
 ## Prerequsites
 
