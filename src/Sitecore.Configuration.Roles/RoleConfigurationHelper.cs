@@ -6,6 +6,7 @@ namespace Sitecore.Configuration.Roles
   using System.Linq;
   using System.Text.RegularExpressions;
   using System.Xml;
+  using BooleanLogic;
   using Sitecore.Diagnostics;
   using Sitecore.Xml.Patch;
 
@@ -84,9 +85,10 @@ namespace Sitecore.Configuration.Roles
         case "require":
           if (!string.IsNullOrEmpty(value))
           {
-            var words = value.Split("|;,".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var tokens = new Tokenizer(value, RoleConfigurationHelper.DefinedRoles.ToArray()).Tokenize();
+            var ret = new Parser(tokens).Parse();
 
-            return words.Any(word => RoleConfigurationHelper.DefinedRoles.Contains(word));
+            return ret;
           }
 
           break;

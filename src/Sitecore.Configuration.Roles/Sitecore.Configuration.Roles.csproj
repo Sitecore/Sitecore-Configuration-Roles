@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleanLogicParser\Parser.cs" />
+    <Compile Include="BooleanLogicParser\Tokenizer.cs" />
+    <Compile Include="BooleanLogicParser\Tokens.cs" />
     <Compile Include="RoleConfigReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleConfigurationHelper.cs" />
