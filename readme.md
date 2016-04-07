@@ -75,13 +75,13 @@ bin/Sitecore.Configuration.Roles.dll
 Last step is to change `web.config` files of both `authoring` and `delivery` Sitecore instances so they are aware of their role. So for `authoring` instance it should be:
 ```xml
   <appSettings>
-    <add name="role:require" value="authoring" />
+    <add name="role:define" value="authoring" />
   </appSettings>
 ```
 and this one for `delivery`:
 ```xml
   <appSettings>
-    <add name="role:require" value="delivery" />
+    <add name="role:define" value="delivery" />
   </appSettings>
 ```
 
