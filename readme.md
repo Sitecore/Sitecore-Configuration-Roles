@@ -11,7 +11,7 @@ it in non-production environment - please let us know if you have any comments.
 
 ##### [Prerequsites](https://github.com/Sitecore/Sitecore-Configuration-Roles#prerequsites)  
 
-##### [How To](https://github.com/Sitecore/Sitecore-Configuration-Roles#how-to)  
+##### [How To](https://github.com/Sitecore/Sitecore-Configuration-Roles#how-to-1)  
 1. [Install NuGet Package](https://github.com/Sitecore/Sitecore-Configuration-Roles#1-install-nuget-package)  
 2. [Modify web.config file](https://github.com/Sitecore/Sitecore-Configuration-Roles#2-modify-webconfig-file)  
 3. [Modify Include *.config files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3-modify-include-config-files)  
@@ -19,12 +19,12 @@ it in non-production environment - please let us know if you have any comments.
 5. [Update instances roles](https://github.com/Sitecore/Sitecore-Configuration-Roles#5-update-instances-roles)  
 6. [Verify if it works](https://github.com/Sitecore/Sitecore-Configuration-Roles#6-verify-if-it-works)  
 
-##### [Details](https://github.com/Sitecore/Sitecore-Configuration-Roles#details)  
+##### [Details](https://github.com/Sitecore/Sitecore-Configuration-Roles#details-1)  
 1. [Define Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#1--define-role-command)  
 2. [Require Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#2--require-role-command)  
 3. [Modified configuration files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3--modified-configuration-files)  
 
-##### [Comments](#comments)
+##### [Comments](#comments-1)
 
 ## Prerequsites
 
