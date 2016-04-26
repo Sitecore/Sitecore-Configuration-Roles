@@ -4,6 +4,9 @@ The aim of this project to make Sitecore pre-configured for one of pre-defined
 configuration roles, so after installing a Sitecore instance the only setting 
 should be changes: the roles the instance should have.
 
+**NOTE:** This PoC is being evaluated by Sitecore at the moment - we will keep you posted on any news. You are welcome to use
+it in non-production environment - please let us know if you have any comments.
+
 ### Index
 
 ##### [Prerequsites](https://github.com/Sitecore/Sitecore-Configuration-Roles#prerequsites)  
@@ -20,6 +23,8 @@ should be changes: the roles the instance should have.
 1. [Define Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#1--define-role-command)  
 2. [Require Role Command](https://github.com/Sitecore/Sitecore-Configuration-Roles#2--require-role-command)  
 3. [Modified configuration files](https://github.com/Sitecore/Sitecore-Configuration-Roles#3--modified-configuration-files)  
+
+##### [Comments](#comments)
 
 ## Prerequsites
 
@@ -180,3 +185,73 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
       Defines Content Delivery (CD) role that assumes current Sitecore instance
       is accessed only by end-users and Sitecore administrators. It cannot be 
       enabled on the same instance with other roles. 
+
+## Comments
+
+    * merging of the role:define attribute is not supported -
+      Sitecore will fail to start if the role:define attribute is defined more than once
+    * role engine transforms any "some-role-1" into "some-role|some-role-1"
+    * dedicated-publishing is hard-coded to transform into "publishing|dedicated-publishing"
+    * some-role-1 and some-role-2 cannot be used in same solution - 
+      Sitecore will fail to start if both are specified in the same Sitecore instance.
+
+    Conventions:
+
+    * dedicated-publishing must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
+    * some-role-1 must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
+    * some-role-2 must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
+
+    EXAMPLES
+
+    EXAMPLE 1
+    Here is an example of Sitecore solution with single Sitecore instance.
+
+    - SRV-01: authoring-1|dedicated-publishing|processing-1|reporting-1
+
+    EXAMPLE 2
+    Here is an example of Sitecore solution with 2 Sitecore instances: 
+    one is multipurpose, another is delivery only - both serve front-end users.
+
+    - SRV-01: authoring-1|dedicated-publishing|processing-1|reporting-1
+    - SRV-02: delivery-1
+
+    EXAMPLE 3
+    Here is an example of Sitecore solution with 5 Sitecore instances,
+    only two kinds of servers: all-in-one-cm, delivery
+
+    - SRV-01: authoring-1|publishing-1|processing-1|reporting-1
+    - SRV-02: authoring-2|publishing-2|processing-2|reporting-2
+    - SRV-03: delivery-1
+    - SRV-04: delivery-2
+    - SRV-05: delivery-3
+
+    EXAMPLE 4
+    Here is an example of Sitecore solution with 8 Sitecore instances,
+    no dedicated publishing instance, single processing+reporting server, 4 delivery
+
+    - SRV-01: authoring-1|publishing-1
+    - SRV-02: authoring-2|publishing-2
+    - SRV-03: authoring-3|publishing-3
+    - SRV-04: processing-1|reporting-1
+    - SRV-05: delivery-1
+    - SRV-06: delivery-2
+    - SRV-07: delivery-3
+    - SRV-08: delivery-4
+
+    EXAMPLE 5
+    Here is an example of Sitecore solution with 13 Sitecore instances,
+    each instance here serves only single purpose.
+
+    - SRV-01: authoring-1
+    - SRV-02: authoring-2
+    - SRV-03: authoring-3
+    - SRV-04: publishing-1|dedicated-publishing
+    - SRV-05: processing-1
+    - SRV-06: processing-2
+    - SRV-07: reporting-1
+    - SRV-08: delivery-1
+    - SRV-09: delivery-2
+    - SRV-10: delivery-3
+    - SRV-11: delivery-4
+    - SRV-12: delivery-5
+    - SRV-13: delivery-6
