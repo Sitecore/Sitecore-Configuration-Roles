@@ -7,7 +7,6 @@ should be changes: the roles the instance should have.
 ### Index
 
 ##### [Prerequsites](https://github.com/Sitecore/Sitecore-Configuration-Roles#prerequsites)  
-1. [Sitecore CMS 8.1 rev. 160302 (Update-2)](https://github.com/Sitecore/Sitecore-Configuration-Roles#sitecore-cms-81-rev-160302-update-2)  
 
 ##### [How To](https://github.com/Sitecore/Sitecore-Configuration-Roles#how-to)  
 1. [Install NuGet Package](https://github.com/Sitecore/Sitecore-Configuration-Roles#1-install-nuget-package)  
@@ -24,7 +23,7 @@ should be changes: the roles the instance should have.
 
 ## Prerequsites
 
-### Sitecore CMS 8.1 rev. 160302 (Update-2)
+**Sitecore CMS 8.1 rev. 160302 (Update-2)**
 
 In this project Sitecore configuration engine was extended with two simple commands
 and modified configuration files that use them. It is distributed as a module which
