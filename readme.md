@@ -55,10 +55,10 @@ Second step is required to enable configuration engine in the web.config file.
 Go thorough your confiugration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `authoring` environment:
 ```xml
  <configuration xmlns:role="http://www.sitecore.net/xmlconfig/role/">
-      <sitecore>
-        <contentSearch>
-          ...
-              <index id="sitecore_master_index" role:require="authoring">
+    <sitecore>
+      <contentSearch>
+        ...
+        <index id="sitecore_master_index" role:require="authoring">
 ```
 
 ### 4. Deploy
@@ -124,8 +124,9 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
 ### 2.  Require Role Command
 
     When this command is applied to a node within Sitecore include config file
-    the node will be ignored if the required role is not specified by the Define
-    command. 
+    the node will be ignored if the boolean expression is false. The logic is
+    simple: when evaluating the expression, every defined role name transforms
+    into "true" and undefined role name transforms into "false"
     
     Example:
     
@@ -133,8 +134,10 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
       <sitecore>
         <contentSearch>
           ...
-              <index id="sitecore_web_index" role:require="authoring|delivery">
-                ...
+          <index id="sitecore_web_index" role:require="(authoring && !dedicated-publishing) || delivery">
+            ...
+    
+    In this example, when role:define="authoring|delivery" is specified, the transformed expression will be "(true && !false) || false".
 
 ### 3.  Modified configuration files
 
