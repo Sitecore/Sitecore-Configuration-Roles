@@ -57,7 +57,7 @@ Second step is required to enable configuration engine in the web.config file.
 
 ### 3. Modify Include *.config files
 
-Go thorough your confiugration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `authoring` environment:
+Go through your configuration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `authoring` environment:
 ```xml
  <configuration xmlns:role="http://www.sitecore.net/xmlconfig/role/">
     <sitecore>
@@ -79,13 +79,13 @@ bin/Sitecore.Configuration.Roles.dll
 Last step is to change `web.config` files of both `authoring` and `delivery` Sitecore instances so they are aware of their role. So for `authoring` instance it should be:
 ```xml
   <appSettings>
-    <add name="role:define" value="authoring" />
+    <add key="role:define" value="authoring" />
   </appSettings>
 ```
 and this one for `delivery`:
 ```xml
   <appSettings>
-    <add name="role:define" value="delivery" />
+    <add key="role:define" value="delivery" />
   </appSettings>
 ```
 
