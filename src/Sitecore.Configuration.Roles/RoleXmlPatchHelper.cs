@@ -124,7 +124,7 @@
 
           if (attribute.NamespaceURI == RoleNamespace)
           {
-            if (!RoleConfigurationHelper.ProcessRolesNamespace(node))
+            if (!RoleConfigurationHelper.ProcessRolesNamespace(attribute))
             {
               // we need to finish enumerating attributes to avoid reader problem
               exit = true;
