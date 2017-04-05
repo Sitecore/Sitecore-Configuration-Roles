@@ -17,7 +17,7 @@
       Assert.ArgumentNotNull(patch, "patch");
       Assert.ArgumentNotNull(ns, "ns");
 
-      var attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && (a.NamespaceURI != RoleNamespace || a.LocalName == "define") && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
+      var attributes = patch.GetAttributes().Where(a => a.NamespaceURI != ns.PatchNamespace && (a.NamespaceURI != RoleNamespace) && a.NamespaceURI != "http://www.w3.org/2000/xmlns/");
       var values = attributes.Select(a => ParseXmlNodeInfo(ns, a)).ToArray();
 
       if (!values.Any())

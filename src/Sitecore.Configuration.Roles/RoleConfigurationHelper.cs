@@ -70,17 +70,6 @@ namespace Sitecore.Configuration.Roles
       var value = attribute.Value;
       switch (name)
       {
-        case "d":
-        case "define":
-          if (!string.IsNullOrEmpty(value))
-          {
-            RoleConfigurationHelper.DefineRolesOnce(value, attribute);
-
-            return false;
-          }
-
-          break;
-
         case "r":
         case "require":
           if (!string.IsNullOrEmpty(value))

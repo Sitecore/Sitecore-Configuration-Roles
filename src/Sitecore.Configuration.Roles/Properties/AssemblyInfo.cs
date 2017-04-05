@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Sitecore.Configuration.Roles")]
 [assembly: AssemblyProduct("Sitecore.Configuration.Roles")]
-[assembly: AssemblyDescription("Extends default configuration engine with role:define and role:require attributes.")]
+[assembly: AssemblyDescription("Extends default configuration engine with role:require attribute.")]
 
 [assembly: AssemblyCompany("Sitecore")]
 [assembly: AssemblyCopyright("Copyright © Sitecore 2015")]

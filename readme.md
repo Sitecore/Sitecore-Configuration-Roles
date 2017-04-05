@@ -102,14 +102,7 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
     This command can be used only once to avoid accidential misconfiguration. 
     It defines pipe-separated "white list" of roles this Sitecore instance have. 
     
-    Example 1:
-    
-    /App_Config/Include/! Role-Define.config
-    <configuration xmlns:role="http://www.sitecore.net/xmlconfig/role/">
-      <sitecore role:define="role1|role2|..." />
-    </configuration>
-    
-    Example 2:
+    Example:
     
     /web.config
     <configuration>
@@ -144,7 +137,7 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
           <index id="sitecore_web_index" role:require="(authoring && !dedicated-publishing) || delivery">
             ...
     
-    In this example, when role:define="authoring|delivery" is specified, the transformed expression will be "(true && !false) || false".
+    In this example, when roles are specified as "authoring|delivery", the transformed expression will be "(true && !false) || false".
 
 ### 3.  Modified configuration files
 
@@ -190,8 +183,6 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
 
 ## Comments
 
-    * merging of the role:define attribute is not supported -
-      Sitecore will fail to start if the role:define attribute is defined more than once
     * role engine transforms any "some-role-1" into "some-role|some-role-1"
     * dedicated-publishing is hard-coded to transform into "publishing|dedicated-publishing"
     * some-role-1 and some-role-2 cannot be used in same solution - 
