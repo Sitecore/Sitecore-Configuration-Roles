@@ -13,10 +13,10 @@ namespace Sitecore.Configuration.Roles
   /// <summary>
   /// The configuration roles helper.
   /// </summary>
-  public static class RoleConfigurationHelper
+  public class RoleConfigurationHelper
   {
     [CanBeNull]
-    private static string[] definedRoles;
+    private string[] definedRoles;
 
     /// <summary>
     /// List of defined roles.
@@ -25,7 +25,7 @@ namespace Sitecore.Configuration.Roles
     /// The defined roles.
     /// </value>
     [NotNull]
-    public static IEnumerable<string> DefinedRoles
+    public IEnumerable<string> DefinedRoles
     {
       get
       {
@@ -34,24 +34,24 @@ namespace Sitecore.Configuration.Roles
     }
 
     [CanBeNull]
-    internal static string DefinedRolesSource { get; private set; }
+    internal string DefinedRolesSource { get; private set; }
 
     [CanBeNull]
-    internal static string DefinedRolesErrorSource { get; private set; }
+    internal string DefinedRolesErrorSource { get; private set; }
 
     [CanBeNull]
-    private static string DefinedRolesErrorMessage { get; set; }
+    private string DefinedRolesErrorMessage { get; set; }
 
-    internal static void LoadAppSetting()
+    internal void LoadAppSetting()
     {
       var roleDefine = System.Configuration.ConfigurationManager.AppSettings["role:define"];
       if (!string.IsNullOrEmpty(roleDefine))
       {
-        RoleConfigurationHelper.DefineRolesOnce(roleDefine, "web.config");
+        DefineRolesOnce(roleDefine, "web.config");
       }
     }
 
-    internal static void Validate()
+    internal void Validate()
     {
       if (string.IsNullOrEmpty(DefinedRolesErrorSource) && string.IsNullOrEmpty(DefinedRolesErrorMessage))
       {
@@ -61,7 +61,7 @@ namespace Sitecore.Configuration.Roles
       throw new ConfigurationErrorsException(DefinedRolesErrorMessage, DefinedRolesErrorSource, 0);
     }
 
-    internal static bool ProcessRolesNamespace([NotNull] IXmlNode attribute)
+    internal bool ProcessRolesNamespace([NotNull] IXmlNode attribute)
     {
       Assert.ArgumentNotNull(attribute, "node");
       Assert.ArgumentCondition(attribute.NodeType == XmlNodeType.Attribute, "attribute", "The attribute node is not an XmlNodeType.Attribute");
@@ -74,7 +74,7 @@ namespace Sitecore.Configuration.Roles
         case "require":
           if (!string.IsNullOrEmpty(value))
           {
-            var tokens = new Tokenizer(value, RoleConfigurationHelper.DefinedRoles.ToArray()).Tokenize();
+            var tokens = new Tokenizer(value, DefinedRoles.ToArray()).Tokenize();
             var ret = new Parser(tokens).Parse();
 
             return ret;
@@ -86,7 +86,7 @@ namespace Sitecore.Configuration.Roles
       return true;
     }
 
-    private static void DefineRolesOnce([NotNull] string value, [NotNull] IXmlNode node)
+    private void DefineRolesOnce([NotNull] string value, [NotNull] IXmlNode node)
     {
       Assert.ArgumentNotNull(value, "value");
       Assert.ArgumentNotNull(node, "node");
@@ -97,7 +97,7 @@ namespace Sitecore.Configuration.Roles
       DefineRolesOnce(value, sourceName);
     }
 
-    private static void DefineRolesOnce([NotNull] string value, [NotNull] string sourceName)
+    private void DefineRolesOnce([NotNull] string value, [NotNull] string sourceName)
     {
       Assert.ArgumentNotNull(value, "value");
       Assert.ArgumentNotNull(sourceName, "sourceName");

@@ -11,6 +11,13 @@
   {
     private const string RoleNamespace = "http://www.sitecore.net/xmlconfig/role/";
 
+    private readonly RoleConfigurationHelper RoleConfigurationHelper;
+
+    public RoleXmlPatchHelper(RoleConfigurationHelper roleConfigurationHelper)
+    {
+      RoleConfigurationHelper = roleConfigurationHelper;
+    }
+
     public override void CopyAttributes([NotNull] XmlNode target, [NotNull] IXmlElement patch, [NotNull] XmlPatchNamespaces ns)
     {
       Assert.ArgumentNotNull(target, "target");

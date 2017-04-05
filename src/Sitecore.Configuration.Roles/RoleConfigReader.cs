@@ -8,7 +8,15 @@
   [UsedImplicitly]
   public class RoleConfigReader : ConfigReader
   {
-    private readonly XmlPatcher Patcher = new XmlPatcher("http://www.sitecore.net/xmlconfig/set/", "http://www.sitecore.net/xmlconfig/", new RoleXmlPatchHelper());
+    private readonly RoleConfigurationHelper RoleConfigurationHelper;
+
+    private readonly XmlPatcher Patcher;
+
+    public RoleConfigReader()
+    {
+      RoleConfigurationHelper = new RoleConfigurationHelper();
+      Patcher = new XmlPatcher("http://www.sitecore.net/xmlconfig/set/", "http://www.sitecore.net/xmlconfig/", new RoleXmlPatchHelper(RoleConfigurationHelper));
+    }
 
     protected override void ExpandIncludeFiles([NotNull] XmlNode rootNode, [NotNull] Hashtable cycleDetector)
     {
