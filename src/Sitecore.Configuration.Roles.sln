@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Configuration.Roles", "Sitecore.Configuration.Roles\Sitecore.Configuration.Roles.csproj", "{6A31C120-8BA2-42A3-9C9B-4D40B626EC3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Configuration.Roles.UnitTests", "Sitecore.Configuration.Roles.UnitTests\Sitecore.Configuration.Roles.UnitTests.csproj", "{66C9DFB2-5C20-4DFF-9062-50D8A6DE50FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6A31C120-8BA2-42A3-9C9B-4D40B626EC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A31C120-8BA2-42A3-9C9B-4D40B626EC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A31C120-8BA2-42A3-9C9B-4D40B626EC3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66C9DFB2-5C20-4DFF-9062-50D8A6DE50FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66C9DFB2-5C20-4DFF-9062-50D8A6DE50FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66C9DFB2-5C20-4DFF-9062-50D8A6DE50FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66C9DFB2-5C20-4DFF-9062-50D8A6DE50FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

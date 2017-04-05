@@ -163,7 +163,7 @@ namespace Sitecore.Configuration.Roles
       DefinedRolesSource = sourceName;
     }
 
-    private static string ValidateRoles(ICollection<string> roles)
+    internal static string ValidateRoles(ICollection<string> roles)
     {
       if (roles.Contains("delivery"))
       {
