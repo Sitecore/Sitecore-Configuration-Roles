@@ -59,18 +59,18 @@ Second step is required to enable configuration engine in the web.config file.
 
 ### 3. Modify Include *.config files
 
-Go through your configuration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `authoring` environment:
+Go through your configuration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `ContentManagement` environment:
 ```xml
  <configuration xmlns:role="http://www.sitecore.net/xmlconfig/role/">
     <sitecore>
       <contentSearch>
         ...
-        <index id="sitecore_master_index" role:require="authoring">
+        <index id="sitecore_master_index" role:require="ContentManagement">
 ```
 
 ### 4. Deploy
 
-Your solution is ready to deploy, so deploy the following files to both `authoring` and `delivery` Sitecore instances:
+Your solution is ready to deploy, so deploy the following files to both `ContentManagement` and `ContentDelivery` Sitecore instances:
 ```
 App_Config/Include/Sitecore.ContentSearch.Lucene.Index.Master.config
 bin/Sitecore.Configuration.Roles.dll
@@ -78,22 +78,22 @@ bin/Sitecore.Configuration.Roles.dll
 
 ### 5. Update instances roles
 
-Last step is to change `web.config` files of both `authoring` and `delivery` Sitecore instances so they are aware of their role. So for `authoring` instance it should be:
+Last step is to change `web.config` files of both `ContentManagement` and `ContentDelivery` Sitecore instances so they are aware of their role. So for `ContentManagement` instance it should be:
 ```xml
   <appSettings>
-    <add key="role:define" value="authoring" />
+    <add key="role:define" value="ContentManagement" />
   </appSettings>
 ```
-and this one for `delivery`:
+and this one for `ContentDelivery`:
 ```xml
   <appSettings>
-    <add key="role:define" value="delivery" />
+    <add key="role:define" value="ContentDelivery" />
   </appSettings>
 ```
 
 ### 6. Verify if it works
 
-It is not required, but you can verify if it works by opening `/sitecore/admin/showconfig.aspx` and trying to find definition of `sitecore_master_index` index configuration element. If everything went smoothly, you should find it in `authoring` environment and shouldn't in `delivery`.
+It is not required, but you can verify if it works by opening `/sitecore/admin/showconfig.aspx` and trying to find definition of `sitecore_master_index` index configuration element. If everything went smoothly, you should find it in `ContentManagement` environment and shouldn't in `ContentDelivery`.
 
 ## Details
 
@@ -112,12 +112,11 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
     </configuration>
     
     Roles can be any string, but out of the box this POC offers these roles:
-    * authoring
-    * publishing
-    * dedicated-publishing
-    * reporting
-    * processing
-    * delivery
+    * Standalone
+    * ContentManagement
+    * Reporting
+    * Processing
+    * ContentDelivery
     
     These roles are described below.       
     
@@ -134,10 +133,10 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
       <sitecore>
         <contentSearch>
           ...
-          <index id="sitecore_web_index" role:require="(authoring && !dedicated-publishing) || delivery">
+          <index id="sitecore_web_index" role:require="ContentManagement OR ContentDelivery">
             ...
     
-    In this example, when roles are specified as "authoring|delivery", the transformed expression will be "(true && !false) || false".
+    In this example, when roles are specified as "ContentManagement|ContentDelivery", the transformed expression will be "(true AND !false) OR false".
 
 ### 3.  Modified configuration files
 
@@ -145,106 +144,55 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
     pre-configured to serve each of these configuration roles. 
     
     There are a number of out-of-box roles that attached configuration files 
-    are aware of.                     
+    are aware of.       
+
+    - Standalone
     
-    - authoring 
+      Defines Standalone role that is the same as Sitecore pre-configured out of box. 
+      It allows only single-server set up.
+    
+    - ContentManagement 
       
       Defines Content Management (CM) role that allows editors to use editing
       applications like Content Editor, Page Editor etc.
       
-    - publishing
-      
-      Defines Publishing role that allows current Sitecore instance to
-      process publishing requests. It can be enabled on the same instance
-      with other roles or on a dedicated Sitecore instance.
-      
-    - dedicated-publishing
-    
-      Defines Dedicated Publishing (Pub) role that allows current Sitecore 
-      instance to behave as dedicated publishing instance. It can be enabled
-      only on single Sitecore instance in solution.
-      
-    - reporting
+    - Reporting
       
       Defines xDB Reporting (Rep) role that fetches reporting data from various 
       data sources to use in Sitecore reporting applications. It can be enabled
       on the same instance with other roles or on a dedicated Sitecore instance.
       
-    - processing
+    - Processing
       
       Defines xDB Processing (Proc) role. It can be enabled on the same instance 
       with other roles or on a dedicated Sitecore instance.
       
-    - delivery
+    - ContentDelivery
       
       Defines Content Delivery (CD) role that assumes current Sitecore instance
       is accessed only by end-users and Sitecore administrators. It cannot be 
       enabled on the same instance with other roles. 
 
-## Comments
-
-    * role engine transforms any "some-role-1" into "some-role|some-role-1"
-    * dedicated-publishing is hard-coded to transform into "publishing|dedicated-publishing"
-    * some-role-1 and some-role-2 cannot be used in same solution - 
-      Sitecore will fail to start if both are specified in the same Sitecore instance.
-
-    Conventions:
-
-    * dedicated-publishing must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
-    * some-role-1 must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
-    * some-role-2 must be used only in one Sitecore instance in solution (otherwise nighmare can happen)
-
-    EXAMPLES
+## Examples
 
     EXAMPLE 1
     Here is an example of Sitecore solution with single Sitecore instance.
 
-    - SRV-01: authoring-1|dedicated-publishing|processing-1|reporting-1
+    - SRV-01: Standalone
 
     EXAMPLE 2
     Here is an example of Sitecore solution with 2 Sitecore instances: 
     one is multipurpose, another is delivery only - both serve front-end users.
 
-    - SRV-01: authoring-1|dedicated-publishing|processing-1|reporting-1
-    - SRV-02: delivery-1
+    - SRV-01: ContentManagement|Processing|Reporting
+    - SRV-02: ContentDelivery
 
     EXAMPLE 3
     Here is an example of Sitecore solution with 5 Sitecore instances,
-    only two kinds of servers: all-in-one-cm, delivery
+    one content-management only, one processing and reporting and 3 delivery.
 
-    - SRV-01: authoring-1|publishing-1|processing-1|reporting-1
-    - SRV-02: authoring-2|publishing-2|processing-2|reporting-2
-    - SRV-03: delivery-1
-    - SRV-04: delivery-2
-    - SRV-05: delivery-3
-
-    EXAMPLE 4
-    Here is an example of Sitecore solution with 8 Sitecore instances,
-    no dedicated publishing instance, single processing+reporting server, 4 delivery
-
-    - SRV-01: authoring-1|publishing-1
-    - SRV-02: authoring-2|publishing-2
-    - SRV-03: authoring-3|publishing-3
-    - SRV-04: processing-1|reporting-1
-    - SRV-05: delivery-1
-    - SRV-06: delivery-2
-    - SRV-07: delivery-3
-    - SRV-08: delivery-4
-
-    EXAMPLE 5
-    Here is an example of Sitecore solution with 13 Sitecore instances,
-    each instance here serves only single purpose.
-
-    - SRV-01: authoring-1
-    - SRV-02: authoring-2
-    - SRV-03: authoring-3
-    - SRV-04: publishing-1|dedicated-publishing
-    - SRV-05: processing-1
-    - SRV-06: processing-2
-    - SRV-07: reporting-1
-    - SRV-08: delivery-1
-    - SRV-09: delivery-2
-    - SRV-10: delivery-3
-    - SRV-11: delivery-4
-    - SRV-12: delivery-5
-    - SRV-13: delivery-6
+    - SRV-01: ContentManagement
+    - SRV-02: Processing|Reporting
+    - SRV-03: ContentDelivery
+    - SRV-04: ContentDelivery
+    - SRV-05: ContentDelivery

@@ -120,36 +120,6 @@ namespace Sitecore.Configuration.Roles
         .Distinct()
         .ToList();
 
-      // expand some-role-1 into "some-role|some-role-1" and "dedicated-publishing" to "publishing|publishing-1|dedicated-publishing"
-      var regex = new Regex(@"([^|;,]+)\-(\d+)$");
-      var rolesCopy = roles.ToArray();
-      var shift = 0;
-      for (var i = 0; i < rolesCopy.Length; i++)
-      {
-        var role = rolesCopy[i];
-        var match = regex.Match(role);
-        if (match.Success && match.Groups.Count >= 1)
-        {
-          var newRole = match.Groups[1].Value;
-          if (!roles.Contains(newRole))
-          {
-            roles.Insert(i + shift++, newRole);
-          }
-        }
-        else if (role == "dedicated-publishing")
-        {
-          if (!roles.Contains("publishing"))
-          {
-            roles.Insert(i + shift++, "publishing");
-          }
-
-          if (!roles.Contains("publishing-1"))
-          {
-            roles.Insert(i + shift++, "publishing-1");
-          }
-        }
-      }
-
       var error = ValidateRoles(roles);
       if (!string.IsNullOrEmpty(error))
       {
@@ -165,15 +135,6 @@ namespace Sitecore.Configuration.Roles
 
     internal static string ValidateRoles(ICollection<string> roles)
     {
-      if (roles.Contains("delivery"))
-      {
-        var incompatibleRole = roles.FirstOrDefault(x => x != "delivery" && !x.StartsWith("delivery-"));
-        if (incompatibleRole != null)
-        {
-          return string.Format("The delivery role is specified alongside with {0} which is not supported.", incompatibleRole);
-        }
-      }
-
       return null;
     }
   }
