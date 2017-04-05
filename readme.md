@@ -28,7 +28,9 @@ it in non-production environment - please let us know if you have any comments.
 
 ## Prerequsites
 
-**Sitecore CMS 8.1 rev. 160302 (Update-2)**
+* **Sitecore CMS 8.1 rev. 160302 (Update-2)**
+* **Sitecore CMS 8.1 rev. 160302 (Update-3)**
+* **Sitecore CMS 8.2 - all releases**
 
 In this project Sitecore configuration engine was extended with two simple commands
 and modified configuration files that use them. It is distributed as a module which
