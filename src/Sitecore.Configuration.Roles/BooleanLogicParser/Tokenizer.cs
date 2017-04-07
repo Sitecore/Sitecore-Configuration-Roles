@@ -70,7 +70,7 @@
             break;
 
           default:
-            if (char.IsLetter(c))
+            if (IsValidTokenCharacter(c))
             {
               var token = ParseKeyword();
               tokens.Add(token);
@@ -87,10 +87,15 @@
       return tokens;
     }
 
+    private static bool IsValidTokenCharacter(char c)
+    {
+      return char.IsLetter(c) || char.IsDigit(c) || c == '-' || c == '_' || c == '.' || c == '/';
+    }
+
     private Token ParseKeyword()
     {
       var text = new StringBuilder();
-      while (char.IsLetter((char)_reader.Peek()))
+      while (IsValidTokenCharacter((char)_reader.Peek()))
       {
         text.Append((char)_reader.Read());
       }
