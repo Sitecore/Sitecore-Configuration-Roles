@@ -13,11 +13,10 @@ it in non-production environment - please let us know if you have any comments.
 
 ##### [How To](#how-to)  
 1. [Install NuGet Package](#1-install-nuget-package)  
-2. [Modify web.config file](#2-modify-webconfig-file)  
-3. [Modify Include *.config files](#3-modify-include-config-files)  
-4. [Deploy](#4-deploy)  
-5. [Update instances roles](#5-update-instances-roles)  
-6. [Verify if it works](#6-verify-if-it-works)  
+2. [Replace Include Configuration Files](#2-replace-include-configuration-files)  
+3. [Deploy](#3-deploy)  
+4. [Update web.config files](#4-update-webconfig-files)  
+5. [Verify if it works](#5-verify-if-it-works)  
 
 ##### [Details](#details)  
 1. [Define Role Command](#1--define-role-command)  
@@ -47,28 +46,23 @@ PS> Install-Package Sitecore.Configuration.Roles
 ```
 Alternatively, you can [download it here](https://github.com/Sitecore/Sitecore-Configuration-Roles/releases).
 
-### 2. Modify web.config file
+### 2. Replace Include Configuration Files
 
-Second step is required to enable configuration engine in the web.config file.
-```xml
-  <configSections>
-    <section name="sitecore" type="Sitecore.Configuration.Roles.RoleConfigReader, Sitecore.Configuration.Roles" />
-    ...
-  </configSections>
-```
+Replace default Sitecore configuration files in `App_Config/Include` folder with annotated ones. To do so delete entire contents of `App_Config/Include` folder (excepting for your custom files) and replace with files from one of the branches:
+* Sitecore 8.1 Update-3 - [configuration/8.1.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.1.3)
+* Sitecore 8.2 Update-2 - [configuration/8.1.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.2)
+* Sitecore 8.2 Update-3 - [configuration/8.1.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.3)
 
-### 3. Modify Include *.config files
-
-Go through your configuration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the `Sitecore.ContentSearch.Lucene.Index.Master.config` is intended to be used only in the `ContentManagement` environment:
+Go through your custom configuration files and annotate configuration nodes that must be presented only in certain kind of instances. For examplem, the item saved event handlers in `Customization.config` file to be used only in the `ContentManagement` environment:
 ```xml
  <configuration xmlns:role="http://www.sitecore.net/xmlconfig/role/">
-    <sitecore>
-      <contentSearch>
-        ...
-        <index id="sitecore_master_index" role:require="ContentManagement">
+    <sitecore role:require="ContentManagement">
+      <events>
+        <event name="item:saved" role:require="ContentManagement">
+          <handler type="Website.Class1, Website" method="OnItemSaved" />
 ```
 
-### 4. Deploy
+### 3. Deploy
 
 Your solution is ready to deploy, so deploy the following files to both `ContentManagement` and `ContentDelivery` Sitecore instances:
 ```
@@ -76,22 +70,32 @@ App_Config/Include/Sitecore.ContentSearch.Lucene.Index.Master.config
 bin/Sitecore.Configuration.Roles.dll
 ```
 
-### 5. Update instances roles
+### 4. Update web.config files
 
 Last step is to change `web.config` files of both `ContentManagement` and `ContentDelivery` Sitecore instances so they are aware of their role. So for `ContentManagement` instance it should be:
 ```xml
+  <configSections>
+    <section name="sitecore" type="Sitecore.Configuration.Roles.RoleConfigReader, Sitecore.Configuration.Roles" />
+    ...
+  </configSections>
   <appSettings>
+    ...
     <add key="role:define" value="ContentManagement" />
   </appSettings>
 ```
 and this one for `ContentDelivery`:
 ```xml
+  <configSections>
+    <section name="sitecore" type="Sitecore.Configuration.Roles.RoleConfigReader, Sitecore.Configuration.Roles" />
+    ...
+  </configSections>
   <appSettings>
+    ...
     <add key="role:define" value="ContentDelivery" />
   </appSettings>
 ```
 
-### 6. Verify if it works
+### 5. Verify if it works
 
 It is not required, but you can verify if it works by opening `/sitecore/admin/showconfig.aspx` and trying to find definition of `sitecore_master_index` index configuration element. If everything went smoothly, you should find it in `ContentManagement` environment and shouldn't in `ContentDelivery`.
 
