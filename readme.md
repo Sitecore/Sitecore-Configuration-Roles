@@ -66,7 +66,7 @@ Go through your custom configuration files and annotate configuration nodes that
 
 Your solution is ready to deploy, so deploy the following files to both `ContentManagement` and `ContentDelivery` Sitecore instances:
 ```
-App_Config/Include/Sitecore.ContentSearch.Lucene.Index.Master.config
+App_Config/Include/**/*
 bin/Sitecore.Configuration.Roles.dll
 ```
 
