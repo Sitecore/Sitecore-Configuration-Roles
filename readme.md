@@ -44,7 +44,7 @@ First you need to do is to install the `Sitecore.Configuration.Roles` NuGet pack
 ```ps
 PS> Install-Package Sitecore.Configuration.Roles
 ```
-Alternatively, you can [download it here](https://github.com/Sitecore/Sitecore-Configuration-Roles/releases).
+Alternatively, you can [download it here](https://github.com/Sitecore/Sitecore-Configuration-Roles/releases) and unpack to the `bin` folder.
 
 ### 2. Replace Include Configuration Files
 
