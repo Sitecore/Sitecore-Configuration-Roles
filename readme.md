@@ -48,7 +48,9 @@ Alternatively, you can [download it here](https://github.com/Sitecore/Sitecore-C
 
 ### 2. Replace Include Configuration Files
 
-Replace default Sitecore configuration files in `App_Config/Include` folder with annotated ones. To do so delete entire contents of `App_Config/Include` folder (excepting for your custom files) and replace with files from one of the branches:
+Replace default Sitecore configuration files in `App_Config/Include` folder with annotated ones. 
+
+To do so delete entire contents of `App_Config/Include` folder (**except `DataFolder.config` file and your custom files**) and replace with files from one of the branches:
 * Sitecore 8.1 Update-3 - [configuration/8.1.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.1.3)
 * Sitecore 8.2 Update-2 - [configuration/8.2.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.2)
 * Sitecore 8.2 Update-3 - [configuration/8.2.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.3)
