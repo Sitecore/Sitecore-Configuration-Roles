@@ -140,7 +140,7 @@ These roles are described below.
   </appSettings>
   ...
 </configuration>
-
+```
 
 ### 2. Require Role Command
 
