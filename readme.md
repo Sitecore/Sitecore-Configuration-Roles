@@ -1,11 +1,8 @@
-# CONFIGURATION ROLES SUPPORT
+# Sitecore Configuration Roles
 
-The aim of this project to make Sitecore pre-configured for one of pre-defined 
-configuration roles, so after installing a Sitecore instance the only setting 
-should be changes: the roles the instance should have.
+This document describes how to configure a Sitecore instance to use one of the pre-defined server roles. After you install a Sitecore instance, the only changes you need to make are to install the module and update settings that define which server role it will have.
 
-**NOTE:** This PoC is being evaluated by Sitecore at the moment - we will keep you posted on any news. You are welcome to use
-it in non-production environment - please let us know if you have any comments.
+**NOTE:** This module is being evaluated to become a part of Sitecore CMS, and it is already used in production environment of a number of major customers around the globe.
 
 ### Index
 
@@ -106,7 +103,7 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
 ### 1.  Define Role Command
 
     This command can be used only once to avoid accidential misconfiguration. 
-    It defines pipe-separated "white list" of roles this Sitecore instance have. 
+    It defines pipe-separated "white list" of roles the goven Sitecore instance has. 
     
     Example:
     
@@ -117,7 +114,9 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
       </appSettings>
     </configuration>
     
-    Roles can be any string, but out of the box this POC offers these roles:
+    The role name can be any [a-zA-Z0-9]+ string, but there are several commonly used
+    conventional role names to use:
+    
     * Standalone
     * ContentManagement
     * Reporting
@@ -142,15 +141,12 @@ It is not required, but you can verify if it works by opening `/sitecore/admin/s
           <index id="sitecore_web_index" role:require="ContentManagement OR ContentDelivery">
             ...
     
-    In this example, when roles are specified as "ContentManagement|ContentDelivery", the transformed expression will be "(true AND !false) OR false".
+    In this example, when roles are specified as "ContentManagement|ContentDelivery", the transformed expression will be "true OR false".
 
 ### 3.  Modified configuration files
 
-    The POC is shipped with modified stock configuration files to make Sitecore
+    The module is shipped with modified stock configuration files to make Sitecore
     pre-configured to serve each of these configuration roles. 
-    
-    There are a number of out-of-box roles that attached configuration files 
-    are aware of.       
 
     - Standalone
     
