@@ -50,7 +50,7 @@ Replace default Sitecore configuration files in `App_Config/Include` folder with
 Delete entire contents of `App_Config/Include` folder (**except `DataFolder.config` file and your custom files**) and replace with files from one of the branches:
 * Sitecore 8.1 Update-3 - [configuration/8.1.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.1.3)
 * Sitecore 8.2 Initial Release - [configuration/8.2.0](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.0)
-* Sitecore 8.2 Update-1 - [configuration/8.2.2](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.1)
+* Sitecore 8.2 Update-1 - [configuration/8.2.1](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.1)
 * Sitecore 8.2 Update-2 - [configuration/8.2.2](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.2)
 * Sitecore 8.2 Update-3 - [configuration/8.2.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.3)
 
