@@ -9,3 +9,8 @@ src/Sitecore.Configuration.Roles/obj/
 src/Website/bin/
 src/Website/obj/
 src/packages/
+src/TestResults/
+src/Transform.UnitTests/bin/
+src/Transform.UnitTests/obj/
+src/Transform/bin/
+src/Transform/obj/
