@@ -4,7 +4,6 @@ namespace Sitecore.Configuration.Roles
   using System.Collections.Generic;
   using System.Configuration;
   using System.Linq;
-  using System.Text.RegularExpressions;
   using System.Xml;
   using BooleanLogic;
   using Sitecore.Diagnostics;
@@ -17,6 +16,15 @@ namespace Sitecore.Configuration.Roles
   {
     [CanBeNull]
     private string[] definedRoles;
+    
+    public RoleConfigurationHelper()
+    {
+    }
+
+    internal RoleConfigurationHelper(string[] roles)
+    {
+      definedRoles = roles;
+    }
 
     /// <summary>
     /// List of defined roles.

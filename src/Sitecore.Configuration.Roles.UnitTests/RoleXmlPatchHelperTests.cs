@@ -71,6 +71,111 @@
       Assert.AreEqual(0, target.ChildNodes[0].ChildNodes.Count);
     }
 
+    [TestMethod]
+    public void MergeChildrenTest_RemoveChild_Role1()
+    {
+      var sut = new RoleXmlPatchHelperEx("role1");
+      var target = ParseXml(
+        "<configuration>" +
+        " <root>" +
+        "   <child1 />" +
+        "   <child2 />" +
+        "   <child3 />" +
+        " </root>" +
+        "</configuration>");
+
+      var patch = ParseIXml(
+        "<configuration xmlns:patch=\"http://www.sitecore.net/xmlconfig/\" xmlns:role=\"http://www.sitecore.net/xmlconfig/role/\">" +
+        "  <root>" +
+        "   <child1 role:require=\"role1\">" +
+        "     <patch:delete />" +
+        "   </child1>" +
+        "   <child2 role:require=\"role2\">" +
+        "     <patch:delete />" +
+        "   </child2>" +
+        "   <child3 role:require=\"role3\">" +
+        "     <patch:delete />" +
+        "   </child3>" +
+        " </root>" +
+        "</configuration>");
+
+      sut.MergeChildren(target, patch, false);
+
+      Assert.AreEqual(2, target.ChildNodes[0].ChildNodes.Count);
+      Assert.AreEqual("child2", target.ChildNodes[0].ChildNodes[0].Name);
+      Assert.AreEqual("child3", target.ChildNodes[0].ChildNodes[1].Name);
+    }
+
+    [TestMethod]
+    public void MergeChildrenTest_RemoveChild_Role2()
+    {
+      var sut = new RoleXmlPatchHelperEx("role2");
+      var target = ParseXml(
+        "<configuration>" +
+        " <root>" +
+        "   <child1 />" +
+        "   <child2 />" +
+        "   <child3 />" +
+        " </root>" +
+        "</configuration>");
+
+      var patch = ParseIXml(
+        "<configuration xmlns:patch=\"http://www.sitecore.net/xmlconfig/\" xmlns:role=\"http://www.sitecore.net/xmlconfig/role/\">" +
+        "  <root>" +
+        "   <child1 role:require=\"role1\">" +
+        "     <patch:delete />" +
+        "   </child1>" +
+        "   <child2 role:require=\"role2\">" +
+        "     <patch:delete />" +
+        "   </child2>" +
+        "   <child3 role:require=\"role3\">" +
+        "     <patch:delete />" +
+        "   </child3>" +
+        " </root>" +
+        "</configuration>");
+
+      sut.MergeChildren(target, patch, false);
+
+      Assert.AreEqual(2, target.ChildNodes[0].ChildNodes.Count);
+      Assert.AreEqual("child1", target.ChildNodes[0].ChildNodes[0].Name);
+      Assert.AreEqual("child3", target.ChildNodes[0].ChildNodes[1].Name);
+    }
+
+    [TestMethod]
+    public void MergeChildrenTest_RemoveChild_Role3()
+    {
+      var sut = new RoleXmlPatchHelperEx("role3");
+      var target = ParseXml(
+        "<configuration>" +
+        " <root>" +
+        "   <child1 />" +
+        "   <child2 />" +
+        "   <child3 />" +
+        " </root>" +
+        "</configuration>");
+
+      var patch = ParseIXml(
+        "<configuration xmlns:patch=\"http://www.sitecore.net/xmlconfig/\" xmlns:role=\"http://www.sitecore.net/xmlconfig/role/\">" +
+        "  <root>" +
+        "   <child1 role:require=\"role1\">" +
+        "     <patch:delete />" +
+        "   </child1>" +
+        "   <child2 role:require=\"role2\">" +
+        "     <patch:delete />" +
+        "   </child2>" +
+        "   <child3 role:require=\"role3\">" +
+        "     <patch:delete />" +
+        "   </child3>" +
+        " </root>" +
+        "</configuration>");
+
+      sut.MergeChildren(target, patch, false);
+
+      Assert.AreEqual(2, target.ChildNodes[0].ChildNodes.Count);
+      Assert.AreEqual("child1", target.ChildNodes[0].ChildNodes[0].Name);
+      Assert.AreEqual("child2", target.ChildNodes[0].ChildNodes[1].Name);
+    }
+
     private IXmlElement ParseIXml(string xml)
     {
       return new XmlDomSource(ParseXml(xml));
@@ -93,7 +198,7 @@
             SetNamespace = "http://www.sitecore.net/xmlconfig/set/"
           };
 
-      internal RoleXmlPatchHelperEx() : base(new RoleConfigurationHelper())
+      internal RoleXmlPatchHelperEx(params string[] roles) : base(new RoleConfigurationHelper(roles))
       {
       }
 
