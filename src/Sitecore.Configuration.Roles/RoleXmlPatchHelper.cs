@@ -81,18 +81,12 @@
       Assert.ArgumentNotNull(patch, "patch");
       Assert.ArgumentNotNull(ns, "ns");
 
-      var exit = false;
       string savedComment = null;
       var pendingOperations = new Stack<InsertOperation>();
 
       // copy child nodes
       foreach (IXmlElement node in patch.GetChildren())
       {
-        if (exit)
-        {
-          continue;
-        }
-
         if (node.NodeType == XmlNodeType.Text)
         {
           target.InnerText = node.Value;
@@ -122,6 +116,7 @@
 
         InsertOperation operation = null;
 
+        var exit = false;
         foreach (IXmlNode attribute in node.GetAttributes())
         {
           if (exit)
