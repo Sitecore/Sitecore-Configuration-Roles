@@ -8,7 +8,7 @@ This project has become deprecated since **Sitecore 9.0.0** release, which offer
 
 * refactored configuration files (stock `App_Config/Include/**` contents was moved to `App_Config/Sitecore`)
 * pre-configured roles
-* search engine support (Lucene, Solr, Azure)
+* search engine support (`Lucene`, `Solr`, `Azure`)
 * custom prefixes (you can add as many something:define and something:require as you want)
 * layers of configuration via `App_Config/Layers.config` (added `App_Config/Environment` and `App_Config/Modules`)
 
