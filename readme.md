@@ -2,7 +2,15 @@
 
 This document describes how to configure a Sitecore instance to use one of the pre-defined server roles. After you install a Sitecore instance, the only changes you need to make are to install the module and update settings that define which server role it will have.
 
-**NOTE:** This module is being evaluated to become a part of Sitecore CMS, and it is already used in production environment of a number of major customers around the globe.
+## Available in Sitecore 9.0 out-of-box
+
+This project has become deprecated since **Sitecore 9.0.0** release, which offers same functionality with extra benefits such as:
+
+* refactored configuration files (stock `App_Config/Include/**` contents was moved to `App_Config/Sitecore`)
+* pre-configured roles (`App_Config/Sitecore.config` is annotated as well as `/App_Config/Sitecore/**`)
+* search engine support (`Lucene`, `Solr`, `Azure`)
+* custom prefixes (you can add as many something:define and something:require as you want)
+* layers of configuration via `App_Config/Layers.config` (added `App_Config/Environment` and `App_Config/Modules`)
 
 ### Index
 
