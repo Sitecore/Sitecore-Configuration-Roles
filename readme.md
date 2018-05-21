@@ -61,6 +61,9 @@ Delete entire contents of `App_Config/Include` folder (**except `DataFolder.conf
 * Sitecore 8.2 Update-1 - [configuration/8.2.1](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.1)
 * Sitecore 8.2 Update-2 - [configuration/8.2.2](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.2)
 * Sitecore 8.2 Update-3 - [configuration/8.2.3](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.3)
+* Sitecore 8.2 Update-4 - [configuration/8.2.4](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.4)
+* Sitecore 8.2 Update-5 - [configuration/8.2.5](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.5)
+* Sitecore 8.2 Update-6 - [configuration/8.2.6](https://github.com/Sitecore/Sitecore-Configuration-Roles/tree/configuration/8.2.6)
 
 Go through your custom configuration files and annotate configuration nodes that must be presented only in certain kind of instances. 
 
