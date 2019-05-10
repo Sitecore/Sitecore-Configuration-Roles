@@ -161,7 +161,7 @@ These roles are described below.
 When `role:require` command is applied to a XML configuration node within Sitecore include config file
 the node will be ignored if the boolean expression is false. When the expression is evaluated, every 
 configuration role that is defined by the `role:define` command is being transformed into "true" and 
-all undefined role naes are transformed into "false" condition.
+all undefined role names are transformed into "false" condition.
 
 ### 3.  Modified configuration files
 
